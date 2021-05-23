@@ -1,0 +1,90 @@
+/* 
+  Localizable.strings
+  Pupping
+
+  Created by JeongCheol Kim on 2021/05/18.
+  
+*/
+
+"appName" = "Pupping";
+"corfirm" = "확인";
+"cancel" = "취소";
+"retry" = "다시시도";
+"close" = "닫기";
+
+"mail" = "남자";
+"femail" = "여자";
+
+"puppingCoin" = "PUPPING\nCoin";
+"point" = "Point";
+"completeMission" = "Mission\nComplete";
+"year" = "YY";
+"month" = "MM";
+"day" = "DD";
+
+/*
+  Button
+*/
+"btnView" = "더보기";
+"btnAlbum" = "앨범";
+"btnCamera" = "카메라";
+"btnDelete" = "삭제";
+"btnNext" = "다음";
+"btnPrev" = "이전";
+"btnComplete" = "완료";
+"btnSwapPupping" = "Swap to PUPPING";
+
+/*
+  Alert
+*/
+"alertApns" = "알림";
+"alertApi" = "알림";
+"alertApiErrorServer" = "접속이 지연되고 있습니다. 잠시 후 다시 이용해 주세요.";
+"alertApiErrorClient" = "네트워크 연결 상태를 확인하시고 다시 시도해 주세요.";
+"alertNetworkError" = "네트워크 연결이 원활하지 않습니다.";
+"alertDataError" = "데이타가 없습니다.";
+
+"alertLocation" = "위치 접근 권한을 허용해 주세요";
+"alertLocationSub" = "애플의 정책에 따라 사용자 위치를 확인하기 위해서 위치 접근 권한을 허용하셔야 이용이 가능합니다.";
+"alertLocationBtn" = "권한 허용 하러 가기";
+
+"alertDragdown" = "당겨서 페이지 닫기";
+
+"alertNeedProfile" = "반려동물을 추가해주세요";
+
+
+/*
+  Gnb
+*/
+"gnbMission" = "Mission";
+"gnbBoard" = "Board";
+"gnbShop" = "Shop";
+"gnbMy" = "My";
+
+/*
+  Location
+*/
+"locationNotFound" = "어디 있나요?";
+
+/*
+  PartTitle
+*/
+"titleEditProfile" = "profile 수정";
+"titleMyRewards" = "My Reward";
+"titleMyPats" = "My Pats";
+
+/*
+ PageProfileRegist
+*/
+"profileRegistImage" = "사진 등록";
+"profileRegistName" = "이름이 머조?";
+"profileRegistSpecies" = "종류가 머조?";
+"profileRegistBirth" = "탄생일은?";
+"profileRegistGender" = "아들 인지 딸인지?";
+"profileRegistNeutralization" = "중성화 했나요?";
+"profileRegistMicroFin" = "핀번호입력(없으면패스)";
+"profileRegistPass" = "다음단계로";
+"profileRegistPlaceHolder" = "???";
+
+"profileEmptyName" = "댕댕이";
+"profileEmptySpecies" = "사람아님";

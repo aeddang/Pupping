@@ -1,0 +1,86 @@
+/* 
+  Localizable.strings
+  Pupping
+
+  Created by JeongCheol Kim on 2021/05/18.
+  
+*/
+"appName" = "Pupping";
+"corfirm" = "corfirm";
+"cancel" = "cancel";
+"retry" = "retry";
+"close" = "close";
+
+"mail" = "mail";
+"femail" = "femail";
+"puppingCoin" = "PUPPING\nCoin";
+"point" = "Point";
+"completeMission" = "Mission\nComplete";
+
+"year" = "YY";
+"month" = "MM";
+"day" = "DD";
+
+/*
+  Button
+*/
+"btnView" = "more";
+"btnAlbum" = "album";
+"btnCamera" = "camera";
+"btnDelete" = "delete";
+"btnNext" = "next";
+"btnPrev" = "prev";
+"btnComplete" = "complete";
+"btnSwapPupping" = "Swap to PUPPING";
+
+/*
+  Alert
+*/
+"alertApns" = "notification";
+"alertApi" = "notification";
+"alertApiErrorServer" = "The connection is being delayed. Please try again later.";
+"alertApiErrorClient" = "Please check the network connection and try again.";
+"alertNetworkError" = "네트워크 연결이 원활하지 않습니다.";
+"alertDataError" = "데이타가 없습니다.";
+"alertLocation" = "위치 접근 권한을 허용해 주세요";
+"alertLocationSub" = "애플의 정책에 따라 사용자 위치를 확인하기 위해서 위치 접근 권한을 허용하셔야 이용이 가능합니다.";
+"alertLocationBtn" = "권한 허용 하러 가기";
+"alertDragdown" = "당겨서 페이지 닫기";
+"alertNeedProfile" = "add your pat";
+
+/*
+  Gnb
+*/
+"gnbMission" = "Mission";
+"gnbBoard" = "Board";
+"gnbShop" = "Shop";
+"gnbMy" = "My";
+
+/*
+  Location
+*/
+"locationNotFound" = "where are you?";
+
+/*
+  PartTitle
+*/
+"titleEditProfile" = "Edit profile photo";
+"titleMyRewards" = "My Reward";
+"titleMyPats" = "My Pats";
+/*
+ PageProfileRegist
+*/
+"profileRegistImage" = "사진 등록";
+"profileRegistName" = "이름이 머조?";
+"profileRegistSpecies" = "종류가 머조?";
+"profileRegistBirth" = "탄생일은?";
+"profileRegistGender" = "아들 인지 딸인지?";
+"profileRegistNeutralization" = "중성화 했나요?";
+"profileRegistMicroFin" = "핀번호입력(없으면패스)";
+"profileRegistPass" = "다음단계로";
+"profileRegistPlaceHolder" = "???";
+
+"profileEmptyName" = "DangDang2";
+"profileEmptySpecies" = "animal";
+
+

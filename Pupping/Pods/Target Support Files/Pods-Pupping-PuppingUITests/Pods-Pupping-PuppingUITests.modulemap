@@ -1,0 +1,6 @@
+framework module Pods_Pupping_PuppingUITests {
+  umbrella header "Pods-Pupping-PuppingUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
