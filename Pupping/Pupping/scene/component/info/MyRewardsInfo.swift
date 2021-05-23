@@ -60,7 +60,7 @@ struct RewardsItem : PageComponent {
     var color:Color
     
     var body: some View {
-        VStack(spacing:Dimen.margin.light){
+        VStack(alignment:.leading,spacing:Dimen.margin.light){
             HStack(spacing:Dimen.margin.tiny){
                 Image(self.icon)
                     .renderingMode(.original)

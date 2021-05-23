@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-enum InputDataType{
+enum InputDataType:String{
     case text, select, date, image
 }
 
@@ -18,6 +18,7 @@ class InputData:Identifiable{
     
     let type:InputDataType
     let title: String
+    let tip: String?
     let placeHolder:String
     let keyboardType:UIKeyboardType
     let tabs:[String]
@@ -30,12 +31,14 @@ class InputData:Identifiable{
     init(
         type:InputDataType = .text,
         title: String,
+        tip:String? = nil,
         placeHolder:String = String.pageText.profileRegistPlaceHolder,
         keyboardType:UIKeyboardType = .default,
         tabs:[String] = []) {
         
         self.type = type
         self.title = title
+        self.tip = tip
         self.placeHolder = placeHolder
         self.keyboardType = keyboardType
         self.tabs = tabs
@@ -47,6 +50,7 @@ struct PageProfileRegist: PageView {
     @EnvironmentObject var sceneObserver:PageSceneObserver
     @EnvironmentObject var appObserver:AppObserver
     @EnvironmentObject var dataProvider:DataProvider
+    @EnvironmentObject var keyboardObserver:KeyboardObserver
     
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var pageDragingModel:PageDragingModel = PageDragingModel()
@@ -86,7 +90,8 @@ struct PageProfileRegist: PageView {
                                 input: self.$input,
                                 isFocus: self.isFocus,
                                 placeHolder: inputData.placeHolder,
-                                keyboardType: inputData.keyboardType
+                                keyboardType: inputData.keyboardType,
+                                tip: inputData.tip
                             )
                         }
                     }
@@ -122,7 +127,13 @@ struct PageProfileRegist: PageView {
                 if ani {
                     self.setupInput()
                 }
-                self.isFocus = ani
+                
+            }
+            .onReceive(self.keyboardObserver.$isOn){ isOn in
+                if isOn != isFocus {
+                    self.isFocus = isOn
+                }
+                
             }
             .onReceive(self.sceneObserver.$safeAreaBottom){ pos in
                 withAnimation{
@@ -156,12 +167,12 @@ struct PageProfileRegist: PageView {
     
     let steps: [InputData] = [
         InputData(type:.image, title: String.pageText.profileRegistImage),
-        InputData(type:.text, title: String.pageText.profileRegistName),
-        InputData(type:.text, title: String.pageText.profileRegistSpecies),
+        InputData(type:.text, title: String.pageText.profileRegistName, tip:String.pageText.profileModifyAble),
+        InputData(type:.text, title: String.pageText.profileRegistSpecies, tip:String.pageText.profileModifyAble),
         InputData(type:.date, title: String.pageText.profileRegistBirth),
         InputData(type:.select, title: String.pageText.profileRegistGender,
                   tabs: [Gender.mail.getTitle(), Gender.femail.getTitle()] ),
-        InputData(type:.text, title: String.pageText.profileRegistMicroFin)
+        InputData(type:.text, title: String.pageText.profileRegistMicroFin, tip:String.pageText.profileOption)
     ]
     
     private func update(){
@@ -180,15 +191,27 @@ struct PageProfileRegist: PageView {
     }
     
     private func saveInput(){
-        self.inputData?.selectedIdx = self.selectedIdx
-        self.inputData?.inputValue = self.input
-        self.inputData?.selectedDate = self.selectedDate
-        self.inputData?.selectedImage = self.selectedImage
-        
+        if let data = self.inputData {
+            switch data.type {
+            case .date :
+                data.selectedDate = self.selectedDate
+                PageLog.d("saveInput " + self.selectedDate.debugDescription, tag: self.tag)
+            case .image :
+                data.selectedImage = self.selectedImage
+            case .select :
+                data.selectedIdx = self.selectedIdx
+                PageLog.d("saveInput " + self.selectedIdx.description, tag: self.tag)
+            case .text :
+                data.inputValue = self.input
+            }
+        }
+        self.inputData = nil
         self.selectedIdx = 0
         self.input = ""
         self.selectedDate = Date()
         self.selectedImage = nil
+        PageLog.d("saveInput reset", tag: self.tag)
+       
     }
     
     private func prev(){
@@ -212,15 +235,24 @@ struct PageProfileRegist: PageView {
     }
     private func setupInput(){
         let cdata = self.steps[self.step]
-        withAnimation{
-            self.inputData = cdata
-        }
         self.selectedIdx = cdata.selectedIdx
         self.input = cdata.inputValue
         self.selectedDate = cdata.selectedDate
         self.selectedImage = cdata.selectedImage
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.2){
+            withAnimation{
+                self.inputData = cdata
+            }
+            PageLog.d("setupInput " + cdata.type.rawValue, tag: self.tag)
+            PageLog.d("setupInput " + cdata.selectedDate.debugDescription, tag: self.tag)
+            PageLog.d("setupInput " + cdata.selectedIdx.description, tag: self.tag)
+        }
         
-        PageLog.d("setupInput " + self.step.description, tag: self.tag)
+        if cdata.type == .text {
+            self.isFocus = true
+        } else {
+            self.isFocus = false
+        }
     }
     private func setupCompleted(){
         self.dataProvider.user.registComplete()
@@ -240,6 +272,7 @@ struct PageProfileRegist_Previews: PreviewProvider {
                 .environmentObject(Repository())
                 .environmentObject(DataProvider())
                 .environmentObject(AppSceneObserver())
+                .environmentObject(KeyboardObserver())
                 .frame(width: 375, height: 640, alignment: .center)
         }
     }

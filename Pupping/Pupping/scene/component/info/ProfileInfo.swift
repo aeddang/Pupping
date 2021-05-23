@@ -13,6 +13,7 @@ import struct Kingfisher.KFImage
 struct ProfileInfo : PageComponent {
     @EnvironmentObject var pagePresenter:PagePresenter
     @EnvironmentObject var appSceneObserver:AppSceneObserver
+    @EnvironmentObject var dataProvider:DataProvider
     @ObservedObject var profile:Profile
     var axio:Axis = .vertical
     var isModifyAble:Bool = false
@@ -38,6 +39,7 @@ struct ProfileInfo : PageComponent {
                         ))
                     if !self.profile.isEmpty {
                         ProfileInfoDescription(
+                            profile: self.profile,
                             age: self.age,
                             species: self.species,
                             gender: self.gender,
@@ -52,13 +54,36 @@ struct ProfileInfo : PageComponent {
                         image: self.image,
                         isEmpty: self.profile.isEmpty)
                     VStack(alignment: .leading, spacing:Dimen.margin.tiny){
-                       Text(self.name ?? "")
-                            .modifier(BoldTextStyle(
-                                size: Font.size.bold,
-                                color: self.profile.isEmpty ? Color.app.greyLight : Color.app.greyDeep
-                            ))
+                        HStack(spacing:Dimen.margin.tiny){
+                           Text(self.name ?? "")
+                                .modifier(BoldTextStyle(
+                                    size: Font.size.bold,
+                                    color: self.profile.isEmpty ? Color.app.greyLight : Color.app.greyDeep
+                                ))
+                            
+                            if !self.profile.isEmpty && self.isModifyAble {
+                                Spacer()
+                                Button(action: {
+                                    self.appSceneObserver.alert =
+                                        .confirm(nil,  String.alert.deleteProfile){ isOk in
+                                            if !isOk {return}
+                                            
+                                            self.dataProvider.user.deleteProfile(id: self.profile.id)
+                                    }
+                        
+                                }) {
+                                    Image(Asset.icon.delete)
+                                        .renderingMode(.original)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: Dimen.icon.tiny,
+                                               height: Dimen.icon.tiny)
+                                }
+                            }
+                        }
                         if !self.profile.isEmpty {
                             ProfileInfoDescription(
+                                profile: self.profile,
                                 age: self.age,
                                 species: self.species,
                                 gender: self.gender,
@@ -138,7 +163,6 @@ struct ProfileImage:PageView{
                         = .imgPicker(SceneRequest.imagePicker.rawValue + id)
                 }
                 
-                
             }) {
                 Image( Asset.icon.add )
                     .renderingMode(.template)
@@ -154,6 +178,8 @@ struct ProfileImage:PageView{
 }
 
 struct ProfileInfoDescription:PageView{
+    @EnvironmentObject var pagePresenter:PagePresenter
+    var profile:Profile
     var age:String?
     var species:String?
     var gender:Gender?
@@ -162,8 +188,9 @@ struct ProfileInfoDescription:PageView{
         HStack(spacing:Dimen.margin.tiny){
             if let gender = self.gender {
                 Image(gender.getIcon())
-                    .renderingMode(.original)
+                    .renderingMode(.template)
                     .resizable()
+                    .foregroundColor(gender == .mail ? Color.brand.secondary :  Color.brand.primary)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: Dimen.icon.thin, height: Dimen.icon.thin)
             }
@@ -190,6 +217,10 @@ struct ProfileInfoDescription:PageView{
             }
             if isModifyAble {
                 Button(action: {
+                    self.pagePresenter.openPopup(
+                        PageProvider.getPageObject(.profileModify)
+                            .addParam(key: .data, value: self.profile)
+                    )
                    
                 }) {
                     Image(Asset.icon.modify)

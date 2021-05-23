@@ -20,18 +20,14 @@ struct PageMy: PageView {
     
     var body: some View {
         VStack(spacing: 0){
-            PageTab(
-                isBack:true
-            )
-            .padding(.top, self.sceneObserver.safeAreaTop)
+            MyRewardsInfo()
+                .modifier(ContentEdges())
+                .padding(.top, self.sceneObserver.safeAreaTop)
+                
             InfinityScrollView(
                 viewModel: self.infinityScrollModel)
             {
-                MyRewardsInfo()
-                    .modifier(ListRowInset(
-                                marginHorizontal:Dimen.margin.light,
-                                spacing: Dimen.margin.medium))
-                
+            
                 Text(String.pageTitle.myPats)
                     .modifier(ContentTitle())
                     .modifier(ListRowInset(

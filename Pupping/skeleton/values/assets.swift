@@ -56,6 +56,9 @@ extension Asset{
         public static let pupping = "ic_pupping"
         public static let point = "ic_point"
         
+        public static let delete = "ic_delete"
+        public static let hidden = "ic_hidden"
+        
     }
     
     struct shape {

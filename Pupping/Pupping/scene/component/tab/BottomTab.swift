@@ -53,16 +53,16 @@ struct BottomTab: PageComponent{
         .onAppear(){
             pages = [
                 PageSelecterble(
-                    id: .mission,
-                    idx: PageProvider.getPageIdx(.mission),
+                    id: .home,
+                    idx: PageProvider.getPageIdx(.home),
                     on: Asset.gnb.mission, off: Asset.gnb.mission, text: String.gnb.mission),
                 PageSelecterble(
-                    id: .home,
-                    idx: PageProvider.getPageIdx(.home),
+                    id: .board,
+                    idx: PageProvider.getPageIdx(.board),
                     on: Asset.gnb.board, off: Asset.gnb.board, text: String.gnb.board),
                 PageSelecterble(
-                    id: .home,
-                    idx: PageProvider.getPageIdx(.home),
+                    id: .shop,
+                    idx: PageProvider.getPageIdx(.shop),
                     on: Asset.gnb.shop, off: Asset.gnb.shop, text: String.gnb.shop),
                 PageSelecterble(
                     id: .my,

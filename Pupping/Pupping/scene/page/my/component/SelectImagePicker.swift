@@ -27,14 +27,24 @@ struct SelectImagePicker: PageComponent{
                     .modifier(RegularTextStyle(size: Font.size.light, color: Color.brand.primary))
                     .multilineTextAlignment(.leading)
             }
-            ZStack{
+            ZStack(alignment: .topTrailing){
                 Image(uiImage: self.selectedImage ??
                         UIImage(named: Asset.brand.logoLauncher)!)
                     .renderingMode(.original)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: Dimen.profile.heavy, height: Dimen.profile.heavy)
+                    .frame(width: 280, height: 280)
                     .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                    .opacity(self.selectedImage == nil ? 0.5 : 1.0)
+                if self.selectedImage == nil {
+                    Image( Asset.icon.add )
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor( Color.brand.primary )
+                        .frame(width: Dimen.icon.regular,
+                               height: Dimen.icon.regular)
+                }
             }.onTapGesture {
                 self.appSceneObserver.select
                     = .imgPicker(SceneRequest.imagePicker.rawValue + self.id)
@@ -47,7 +57,7 @@ struct SelectImagePicker: PageComponent{
             if let img = pick.image {
                 self.pagePresenter.isLoading = true
                 DispatchQueue.global(qos:.background).async {
-                    let uiImage = img.normalized().centerCrop().resize(to: CGSize(width: 240,height: 240))
+                    let uiImage = img.normalized().centerCrop().resize(to: CGSize(width: 180,height: 180))
                     DispatchQueue.main.async {
                         self.selectedImage = uiImage
                         self.pagePresenter.isLoading = false
@@ -61,6 +71,10 @@ struct SelectImagePicker: PageComponent{
         }
         .onAppear(){
             self.selectedImage = data.selectedImage
+            if self.selectedImage == nil {
+                self.appSceneObserver.select
+                    = .imgPicker(SceneRequest.imagePicker.rawValue + self.id)
+            }
             
         }
     }//body

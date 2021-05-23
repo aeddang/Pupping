@@ -32,6 +32,7 @@
 "btnNext" = "다음";
 "btnPrev" = "이전";
 "btnComplete" = "완료";
+"btnModify" = "수정";
 "btnSwapPupping" = "Swap to PUPPING";
 
 /*
@@ -51,6 +52,7 @@
 "alertDragdown" = "당겨서 페이지 닫기";
 
 "alertNeedProfile" = "반려동물을 추가해주세요";
+"alertDeleteProfile" = "관련된 모든 정보가 함께 삭제 됩니다.\n반려동물을 삭제하시겠습니까?";
 
 
 /*
@@ -72,9 +74,10 @@
 "titleEditProfile" = "profile 수정";
 "titleMyRewards" = "My Reward";
 "titleMyPats" = "My Pats";
+"titleCommingSoon" = "준비중..";
 
 /*
- PageProfileRegist
+ PageProfile
 */
 "profileRegistImage" = "사진 등록";
 "profileRegistName" = "이름이 머조?";
@@ -82,9 +85,15 @@
 "profileRegistBirth" = "탄생일은?";
 "profileRegistGender" = "아들 인지 딸인지?";
 "profileRegistNeutralization" = "중성화 했나요?";
-"profileRegistMicroFin" = "핀번호입력(없으면패스)";
+"profileRegistMicroFin" = "핀번호입력";
 "profileRegistPass" = "다음단계로";
 "profileRegistPlaceHolder" = "???";
 
+"profileModifyName" = "이름변경";
+"profileModifySpecies" = "종류변경";
+
 "profileEmptyName" = "댕댕이";
 "profileEmptySpecies" = "사람아님";
+
+"profileOption" = "선택입력";
+"profileModifyAble" = "나중에 변경가능";

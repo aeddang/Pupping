@@ -13,8 +13,12 @@ extension PageID{
     static let intro:PageID = "intro"
     static let home:PageID = "home"
     static let mission:PageID = "mission"
+    static let board:PageID = "board"
+    static let shop:PageID = "shop"
     static let my:PageID = "my"
+   
     static let profileRegist:PageID = "profileRegist"
+    static let profileModify:PageID = "profileModify"
 }
 
 struct PageProvider {
@@ -33,14 +37,14 @@ struct PageProvider {
     
     static func isHome(_ pageID:PageID)-> Bool{
         switch pageID {
-        case .home, .intro, .my, .mission : return  true
+        case .home, .intro, .my, .board, .shop: return  true
            default : return  false
         }
     }
     
     static func getType(_ pageID:PageID)-> PageAnimationType{
         switch pageID {
-        case .profileRegist : return .vertical
+        case .profileRegist, .profileModify : return .vertical
         default : return  .horizontal
         }
     }
@@ -55,7 +59,8 @@ struct PageProvider {
         switch pageID {
             case .intro : return 1
             case .home : return  100
-            case .mission : return  200
+            case .board : return  200
+            case .shop : return  300
             case .my : return  400
             default : return  9999
         }
@@ -122,9 +127,12 @@ struct PageFactory{
         switch pageObject.pageID {
         case .intro : return PageIntro()
         case .home : return PageHome()
-        case .mission : return PageMission()
+        case .board : return PageBoard()
+        case .shop : return PageShop()
         case .my : return PageMy()
         case .profileRegist: return PageProfileRegist()
+        case .profileModify: return PageProfileModify()
+        case .mission : return PageMission()
         default : return PageTest()
         }
     }
@@ -165,14 +173,14 @@ struct PageSceneModel: PageModel {
     
     static func needBottomTab(_ pageObject:PageObject) -> Bool{
         switch pageObject.pageID {
-        case .home, .mission, .my: return true
+        case .home, .board, .shop, .my: return true
         default : return false
         }
     }
     
     static func needKeyboard(_ pageObject:PageObject) -> Bool{
         switch pageObject.pageID {
-        case .profileRegist : return true
+        case .profileRegist , .profileModify: return true
         default : return false
         }
     }

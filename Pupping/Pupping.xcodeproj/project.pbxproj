@@ -163,6 +163,9 @@
 		31807D7F2659F57700531063 /* MyRewardsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D7E2659F57700531063 /* MyRewardsInfo.swift */; };
 		31807D81265A0D0300531063 /* SelectDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D80265A0D0300531063 /* SelectDatePicker.swift */; };
 		31807D83265A16C800531063 /* SelectImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D82265A16C800531063 /* SelectImagePicker.swift */; };
+		319A7DB4265A6BF100FD2CF9 /* PageBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A7DB3265A6BF100FD2CF9 /* PageBoard.swift */; };
+		319A7DB6265A6C9500FD2CF9 /* PageShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A7DB5265A6C9500FD2CF9 /* PageShop.swift */; };
+		319A7DB8265A6E1700FD2CF9 /* PageProfileModify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A7DB7265A6E1700FD2CF9 /* PageProfileModify.swift */; };
 		4D2D2C7A5BA73854A7AE4849 /* Pods_Pupping.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AB625C0025304ACB1FA97E0 /* Pods_Pupping.framework */; };
 		9DA4741603E90A2EA0807AA5 /* Pods_Pupping_PuppingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 769F622C103BE232941454DD /* Pods_Pupping_PuppingUITests.framework */; };
 		DBCA284C2D32629C65AA8E00 /* Pods_PuppingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D028913E4EA3FA965D493A11 /* Pods_PuppingTests.framework */; };
@@ -351,6 +354,9 @@
 		31807D7E2659F57700531063 /* MyRewardsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRewardsInfo.swift; sourceTree = "<group>"; };
 		31807D80265A0D0300531063 /* SelectDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePicker.swift; sourceTree = "<group>"; };
 		31807D82265A16C800531063 /* SelectImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImagePicker.swift; sourceTree = "<group>"; };
+		319A7DB3265A6BF100FD2CF9 /* PageBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageBoard.swift; sourceTree = "<group>"; };
+		319A7DB5265A6C9500FD2CF9 /* PageShop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageShop.swift; sourceTree = "<group>"; };
+		319A7DB7265A6E1700FD2CF9 /* PageProfileModify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageProfileModify.swift; sourceTree = "<group>"; };
 		43613ACF549CC6BAE624F196 /* Pods-Pupping-PuppingUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pupping-PuppingUITests.release.xcconfig"; path = "Target Support Files/Pods-Pupping-PuppingUITests/Pods-Pupping-PuppingUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4A325B06A36235732C7A9C97 /* Pods-PuppingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PuppingTests.release.xcconfig"; path = "Target Support Files/Pods-PuppingTests/Pods-PuppingTests.release.xcconfig"; sourceTree = "<group>"; };
 		769F622C103BE232941454DD /* Pods_Pupping_PuppingUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pupping_PuppingUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1059,6 +1065,7 @@
 			children = (
 				31807D6C2658C36A00531063 /* component */,
 				31807D65265885EB00531063 /* PageProfileRegist.swift */,
+				319A7DB7265A6E1700FD2CF9 /* PageProfileModify.swift */,
 				31807D772659F14900531063 /* PageMy.swift */,
 			);
 			path = my;
@@ -1085,6 +1092,7 @@
 		31807D742659F12000531063 /* board */ = {
 			isa = PBXGroup;
 			children = (
+				319A7DB3265A6BF100FD2CF9 /* PageBoard.swift */,
 			);
 			path = board;
 			sourceTree = "<group>";
@@ -1092,6 +1100,7 @@
 		31807D752659F12600531063 /* shop */ = {
 			isa = PBXGroup;
 			children = (
+				319A7DB5265A6C9500FD2CF9 /* PageShop.swift */,
 			);
 			path = shop;
 			sourceTree = "<group>";
@@ -1421,6 +1430,7 @@
 				316C46B2265392D300A8D7F5 /* fonts.swift in Sources */,
 				316C45F82653924900A8D7F5 /* AppDelegate.swift in Sources */,
 				316C46B7265392D300A8D7F5 /* CustomCaptureSession.swift in Sources */,
+				319A7DB6265A6C9500FD2CF9 /* PageShop.swift in Sources */,
 				316C46F4265392D300A8D7F5 /* SearchBar.swift in Sources */,
 				316C46C0265392D300A8D7F5 /* Navigation.swift in Sources */,
 				316C46FA265392D300A8D7F5 /* PageDragingProtocol.swift in Sources */,
@@ -1522,6 +1532,7 @@
 				316C46EB265392D300A8D7F5 /* TextButton.swift in Sources */,
 				31807D5A26552D2F00531063 /* CPGoogleMap.swift in Sources */,
 				316C46AF265392D300A8D7F5 /* util.swift in Sources */,
+				319A7DB4265A6BF100FD2CF9 /* PageBoard.swift in Sources */,
 				316C46F7265392D300A8D7F5 /* FocusableTextField.swift in Sources */,
 				316C490F2653D3E300A8D7F5 /* coordinator.swift in Sources */,
 				31807D83265A16C800531063 /* SelectImagePicker.swift in Sources */,
@@ -1531,6 +1542,7 @@
 				316C46F1265392D300A8D7F5 /* ActivityIndicator.swift in Sources */,
 				316C46EF265392D300A8D7F5 /* CircularSpinner.swift in Sources */,
 				316C46B3265392D300A8D7F5 /* dimens.swift in Sources */,
+				319A7DB8265A6E1700FD2CF9 /* PageProfileModify.swift in Sources */,
 				31807D7326592DE800531063 /* PageMission.swift in Sources */,
 				316C46B9265392D300A8D7F5 /* ImagePicker.swift in Sources */,
 				316C45FF2653924900A8D7F5 /* Pupping.xcdatamodeld in Sources */,
@@ -1735,6 +1747,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -1790,6 +1803,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
+				MARKETING_VERSION = 1.0001;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1807,6 +1821,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -1863,6 +1878,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
+				MARKETING_VERSION = 1.0001;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

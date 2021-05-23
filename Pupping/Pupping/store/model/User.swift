@@ -67,6 +67,13 @@ class User:ObservableObject, PageProtocol{
         self.currentRegistProfile = profile
         return profile
     }
+    func deleteProfile(id:String) {
+        guard let find = self.profiles.firstIndex(where: {$0.id == id}) else {
+            return
+        }
+        self.profiles.remove(at: find)
+        ProfileCoreData().remove(id: id)
+    }
     func registComplete()  {
         guard let profile = self.currentRegistProfile else {return}
         ProfileCoreData().add(profile: profile)

@@ -14,14 +14,11 @@ struct SelectDatePicker: PageComponent{
     
     var data:InputData
     
-    let dateRange: ClosedRange<Date> = {
-        let calendar = Calendar.current
-        let startComponents = DateComponents(year: 2021, month: 1, day: 1)
-        let endComponents = DateComponents(year: 2021, month: 12, day: 31, hour: 23, minute: 59, second: 59)
-        return calendar.date(from:startComponents)!
-            ...
-            calendar.date(from:endComponents)!
-    }()
+    var dateClosedRange: ClosedRange<Date> {
+        let startDay = Calendar.current.date(byAdding: .year, value: -100, to: Date())!
+        let now = Date()
+        return startDay...now
+    }
     
     @State var selectedDate = Date()
     let action: (_ date:Date) -> Void
@@ -36,14 +33,13 @@ struct SelectDatePicker: PageComponent{
             DatePicker(
                 "",
                 selection: self.$selectedDate,
-                
+                in:dateClosedRange,
                 displayedComponents: [.date]
             )
             .datePickerStyle(WheelDatePickerStyle())
             .modifier(MatchParent())
         }
         .onReceive( [self.selectedDate].publisher ) { value in
-            if data.selectedDate.timeIntervalSince1970 == value.timeIntervalSince1970 { return }
             self.action(value)
         }
         .onAppear(){

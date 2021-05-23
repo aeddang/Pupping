@@ -47,7 +47,7 @@ struct InputCell: PageView {
                             text:self.$input,
                             isfocus: true,
                             textModifier:BoldTextStyle(size: Self.inputFontSize).textModifier,
-                            usefocusAble: false,
+                            usefocusAble: true,
                             inputChanged: {text , size in
                                 //self.input = text
                                 //self.inputHeight = min(size.height, (Self.inputHeight * CGFloat(self.lineLimited)))

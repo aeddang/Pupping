@@ -31,6 +31,7 @@
 "btnNext" = "next";
 "btnPrev" = "prev";
 "btnComplete" = "complete";
+"btnModify" = "modify";
 "btnSwapPupping" = "Swap to PUPPING";
 
 /*
@@ -47,7 +48,7 @@
 "alertLocationBtn" = "권한 허용 하러 가기";
 "alertDragdown" = "당겨서 페이지 닫기";
 "alertNeedProfile" = "add your pat";
-
+"alertDeleteProfile" = "관련된 모든 정보가 함께 삭제 됩니다.\n반려동물을 삭제하시겠습니까?";
 /*
   Gnb
 */
@@ -67,6 +68,7 @@
 "titleEditProfile" = "Edit profile photo";
 "titleMyRewards" = "My Reward";
 "titleMyPats" = "My Pats";
+"titleCommingSoon" = "Comming Soon..";
 /*
  PageProfileRegist
 */
@@ -76,11 +78,17 @@
 "profileRegistBirth" = "탄생일은?";
 "profileRegistGender" = "아들 인지 딸인지?";
 "profileRegistNeutralization" = "중성화 했나요?";
-"profileRegistMicroFin" = "핀번호입력(없으면패스)";
+"profileRegistMicroFin" = "핀번호입력";
 "profileRegistPass" = "다음단계로";
 "profileRegistPlaceHolder" = "???";
 
+"profileModifyName" = "이름변경";
+"profileModifySpecies" = "종류변경";
+
 "profileEmptyName" = "DangDang2";
 "profileEmptySpecies" = "animal";
+
+"profileOption" = "선택입력";
+"profileModifyAble" = "나중에 변경가능";
 
 

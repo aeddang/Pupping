@@ -77,14 +77,11 @@ struct Alert<Presenting>: View where Presenting: View {
                         ScrollView{
                             AlertBody(title: self.title, image: self.image, text: self.text, subText: self.subText, tipText: self.tipText, referenceText: self.referenceText)
                         }
-                        .padding(.top, Dimen.margin.regular)
                         .padding(.bottom, Dimen.margin.medium)
-                        .padding(.horizontal, Dimen.margin.regular)
                     } else {
                         AlertBody(title: self.title, image: self.image, text: self.text, subText: self.subText, tipText: self.tipText, referenceText: self.referenceText)
-                            .padding(.top, Dimen.margin.regular)
                             .padding(.bottom, Dimen.margin.medium)
-                            .padding(.horizontal, Dimen.margin.regular)
+                            
                     }
                     if self.imgButtons != nil {
                         HStack(spacing:Dimen.margin.regular){
@@ -105,12 +102,13 @@ struct Alert<Presenting>: View where Presenting: View {
                         }
                         .padding(.bottom, Dimen.margin.medium)
                     }
-                    HStack(spacing:0){
+                    HStack(spacing:Dimen.margin.thin){
                         ForEach(self.buttons) { btn in
                             FillButton(
                                 text: btn.title,
                                 index: btn.index,
-                                isSelected: true
+                                isSelected: btn.index == (self.buttons.count-1),
+                                size:Dimen.button.light
                             ){idx in
                                 self.action(idx)
                                 withAnimation{
@@ -120,7 +118,9 @@ struct Alert<Presenting>: View where Presenting: View {
                         }
                     }
                 }
+                .padding(.all, Dimen.margin.regular)
                 .background(Color.app.white)
+                .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.light))
             }
             .frame(
                 minWidth: 0,

@@ -58,7 +58,7 @@ extension String {
         
         public static var dragdown = "alertDragdown".loaalized()
         public static var needProfile = "alertNeedProfile".loaalized()
-        
+        public static var deleteProfile = "alertDeleteProfile".loaalized()
     }
     
     struct button {
@@ -66,6 +66,7 @@ extension String {
         public static let album = "btnAlbum".loaalized()
         public static let camera = "btnCamera".loaalized()
         public static let delete = "btnDelete".loaalized()
+        public static let modify = "btnModify".loaalized()
         public static let prev = "btnPrev".loaalized()
         public static let next = "btnNext".loaalized()
         public static let complete = "btnComplete".loaalized()
@@ -76,6 +77,7 @@ extension String {
         public static let editProfile = "titleEditProfile".loaalized()
         public static let myRewards = "titleMyRewards".loaalized()
         public static let myPats = "titleMyPats".loaalized()
+        public static let commingSoon = "titleCommingSoon".loaalized()
     }
     
     struct pageText {
@@ -90,9 +92,13 @@ extension String {
         public static let profileRegistPass = "profileRegistPass".loaalized()
         public static let profileRegistPlaceHolder = "profileRegistPlaceHolder".loaalized()
         
+        public static let profileModifyName = "profileModifyName".loaalized()
+        public static let profileModifySpecies = "profileModifySpecies".loaalized()
+        
         public static let profileEmptyName = "profileEmptyName".loaalized()
         public static let profileEmptySpecies = "profileEmptySpecies".loaalized()
-
+        public static let profileOption = "profileOption".loaalized()
+        public static let profileModifyAble = "profileModifyAble".loaalized()
     }
     
 }
