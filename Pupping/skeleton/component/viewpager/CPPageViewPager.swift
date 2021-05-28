@@ -88,7 +88,7 @@ struct CPPageViewPager: PageComponent {
             index:idx,
             textModifier: TextModifier(
                 family:Font.family.bold,
-                size: Font.size.regular,
+                size: Font.size.regularExtra,
                 color: Color.app.grey,
                 activeColor: Color.brand.primary
             ),

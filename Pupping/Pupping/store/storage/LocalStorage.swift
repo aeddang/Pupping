@@ -13,6 +13,10 @@ class LocalStorage {
         static let VS = "1.000"
         static let initate = "initate" + VS
         static let retryPushToken = "retryPushToken" + VS
+        
+        static let loginType = "loginType" + VS
+        static let loginToken = "loginToken" + VS
+        static let loginId = "loginId" + VS
        
     }
     let defaults = UserDefaults.standard
@@ -35,6 +39,30 @@ class LocalStorage {
         }
     }
     
+    var loginType:String?{
+        set(newVal){
+            defaults.set(newVal, forKey: Keys.loginType)
+        }
+        get{
+            return defaults.string(forKey: Keys.loginType)
+        }
+    }
+    var loginToken:String?{
+        set(newVal){
+            defaults.set(newVal, forKey: Keys.loginToken)
+        }
+        get{
+            return defaults.string(forKey: Keys.loginToken)
+        }
+    }
+    var loginId:String?{
+        set(newVal){
+            defaults.set(newVal, forKey: Keys.loginId)
+        }
+        get{
+            return defaults.string(forKey: Keys.loginId) 
+        }
+    }
    
 
 }

@@ -7,51 +7,78 @@
 
 import Foundation
 import SwiftUI
+
+struct SelectData: Identifiable {
+    var id:String = UUID().uuidString
+    var idx = -1
+    var image:String? = nil
+    var text:String? = nil
+    var color:Color = Color.app.white
+}
+
 struct SelectTab: PageComponent{
-    @ObservedObject var viewModel:NavigationModel = NavigationModel()
+
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     
     var data:InputData
-    
-    @State var tabs:[NavigationButton] = []
+    @State var selectedIdx:Int = -1
     let action: (_ idx:Int) -> Void
     
     var body: some View {
-        VStack (alignment: .leading, spacing: 0){
+        VStack (alignment: .center, spacing: 0){
             if let title = self.data.title {
                 Text(title)
-                    .modifier(RegularTextStyle(size: Font.size.light, color: Color.brand.primary))
-                    .multilineTextAlignment(.leading)
+                    .modifier(SemiBoldTextStyle(size: Font.size.medium, color: Color.app.greyDeep))
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            DivisionTab(
-                viewModel: self.viewModel,
-                buttons: self.tabs,
-                height: Dimen.tab.heavy)
-            .modifier(MatchParent())
-        }
-        .onReceive(self.viewModel.$index) { idx in
-            self.updateButtons(idx: idx)
-            self.action(idx)
+            Spacer()
+            HStack(spacing:Dimen.margin.lightExtra){
+                ForEach(self.data.tabs) { tab in
+                    Button(action: {
+                        self.selectedIdx = tab.idx
+                        self.action(tab.idx)
+                    }) {
+                        ZStack{
+                            VStack(spacing:Dimen.margin.light){
+                                if let image = tab.image {
+                                    Image(image)
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .foregroundColor(
+                                            self.selectedIdx != tab.idx
+                                                ? tab.color : Color.app.white)
+                                        
+                                        .scaledToFit()
+                                        .frame(width:50, height:Dimen.icon.heavy )
+                                }
+                                if let text = tab.text {
+                                    Text(text)
+                                        .modifier(
+                                            SemiBoldTextStyle(
+                                                size: Font.size.regularExtra,
+                                                color: self.selectedIdx == tab.idx
+                                                    ? Color.app.white : Color.app.greyDeep))
+                                        .multilineTextAlignment(.center)
+                                }
+                            }
+                        }
+                        .modifier( MatchParent() )
+                        .background(self.selectedIdx == tab.idx ? tab.color : Color.app.white )
+                        .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.lightExtra))
+                        .modifier(Shadow())
+                    }
+                }
+            }
+            .frame(height:182)
+            Spacer()
         }
         .onAppear(){
-            self.viewModel.index = self.data.selectedIdx
+            self.selectedIdx = self.data.selectedIdx
         }
     }//body
     
-    private func updateButtons(idx:Int){
-        
-        self.tabs = NavigationBuilder(
-            index:idx,
-            textModifier: TextModifier(
-                family:Font.family.medium,
-                size:  Font.size.black,
-                color: Color.app.grey,
-                activeColor: Color.app.white
-                )
-            )
-        .getNavigationButtons(texts:self.data.tabs)
-       
-    }
+    
 }
 
 
@@ -60,7 +87,18 @@ struct SelectTab_Previews: PreviewProvider {
     static var previews: some View {
         Form{
             SelectTab(
-                data:InputData(title: "Test", tabs:["Test0", "Test1"])
+                data:InputData(
+                    title: "Test",
+                    tabs:[
+                        .init(
+                            idx: 0,
+                            image: Asset.icon.mail,
+                            text: String.app.mail, color: Color.brand.fourth),
+                        .init(
+                            idx: 0,
+                            image: Asset.icon.femail,
+                            text: String.app.femail, color: Color.brand.primary)
+                    ])
             ){ _ in
                 
             }

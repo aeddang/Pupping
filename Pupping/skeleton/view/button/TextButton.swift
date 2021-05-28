@@ -14,7 +14,12 @@ struct TextButton: View, SelecterbleProtocol{
     var isSelected: Bool = false
     var index: Int = 0
     var activeText:String? = nil
-    var textModifier:TextModifier = RegularTextStyle().textModifier
+    var textModifier:TextModifier = TextModifier(
+        family: Font.family.semiBold,
+        size: Font.size.lightExtra,
+        color: Color.app.greyDeep,
+        activeColor: Color.brand.primary)
+    
     var isUnderLine:Bool = false
     var image:String? = nil
     var imageSize:CGFloat = Dimen.icon.tiny

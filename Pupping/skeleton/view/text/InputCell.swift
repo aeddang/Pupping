@@ -2,72 +2,142 @@ import Foundation
 import SwiftUI
 
 extension InputCell{
-    static var inputFontSize = Font.size.black
+    static var inputFontSize = Font.size.regular
     static var inputHeight:CGFloat = inputFontSize
    
 }
 struct InputCell: PageView {
     var title:String? = nil
-    var lineLimited:Int = -1
     @Binding var input:String
+    var lineLimited:Int = -1
+    var inputLimited:Int = -1
+    var usefocusAble:Bool = true
     var isFocus:Bool = false
     var placeHolder:String = ""
     var keyboardType:UIKeyboardType = .default
     var tip:String? = nil
+    var info:String? = nil
     var isEditable:Bool = true
     var isSecure:Bool = false
     @State private var inputHeight:CGFloat = Self.inputHeight
     var actionTitle:String? = nil
     var action:(() -> Void)? = nil
+    
     var body: some View {
-        VStack(alignment: .leading, spacing:0){
+        VStack(alignment: .center, spacing:Dimen.margin.mediumExtra){
             if let title = self.title {
                 Text(title)
-                    .modifier(RegularTextStyle(size: Font.size.light, color: Color.brand.primary))
-                    .multilineTextAlignment(.leading)
+                    .modifier(SemiBoldTextStyle(size: Font.size.medium, color: Color.app.greyDeep))
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            HStack(alignment: .top, spacing:0){
-                if self.isEditable {
-                    if self.lineLimited == -1 {
-                        if self.isSecure{
-                            SecureField(self.placeHolder, text: self.$input)
-                                .keyboardType(self.keyboardType)
-                                .modifier(MediumTextStyle(
-                                            size: Self.inputFontSize))
-                        }else{
-                            TextField(self.placeHolder, text: self.$input)
-                                .keyboardType(self.keyboardType)
-                                .modifier(MediumTextStyle(
-                                    size: Self.inputFontSize))
-                        }
-                        
-                    } else {
-                        FocusableTextView(
-                            placeholder: "",
-                            text:self.$input,
-                            isfocus: true,
-                            textModifier:BoldTextStyle(size: Self.inputFontSize).textModifier,
-                            usefocusAble: true,
-                            inputChanged: {text , size in
-                                //self.input = text
-                                //self.inputHeight = min(size.height, (Self.inputHeight * CGFloat(self.lineLimited)))
-                            }
-                        ).frame(height : Self.inputHeight * CGFloat(self.lineLimited))
-                    }
-                }else{
-                    Text(self.input)
+            if self.tip != nil{
+                Text(self.tip!)
                     .modifier(MediumTextStyle(
-                                size: Self.inputFontSize,
-                        color: Color.app.greyLight)
-                    )
+                        size: Font.size.thinExtra,
+                                color: Color.brand.thirdly))
+                    .padding(.vertical, Dimen.margin.thinExtra)
+                    .padding(.horizontal, Dimen.margin.regular)
+                    .background(Color.brand.thirdly.opacity(0.2))
+                    .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.thin))
+            }
+            HStack(alignment: .center, spacing:Dimen.margin.thin){
+                ZStack(alignment: .trailing){
+                    if self.isEditable {
+                        if !self.usefocusAble {
+                            if self.isSecure{
+                                SecureField(self.placeHolder, text: self.$input)
+                                    .keyboardType(self.keyboardType)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(Color.app.greyDeep)
+                                    .modifier(MediumTextStyle(
+                                                size: Self.inputFontSize))
+                                    .padding(.trailing, Dimen.icon.tiny)
+                            }else{
+                                TextField(self.placeHolder, text: self.$input)
+                                    .keyboardType(self.keyboardType)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(Color.app.greyDeep)
+                                    .modifier(MediumTextStyle(
+                                        size: Self.inputFontSize))
+                                    .padding(.trailing, Dimen.icon.tiny)
+                            }
+                            
+                        } else {
+                            if self.lineLimited == -1 {
+                                FocusableTextField(
+                                    text: self.$input,
+                                    keyboardType: self.keyboardType,
+                                    placeholder: self.placeHolder,
+                                    maxLength: self.inputLimited,
+                                    textModifier: MediumTextStyle(size: Self.inputFontSize).textModifier,
+                                    isfocus: self.isFocus,
+                                    inputChanged: { text in
+                                        //self.input = text
+                                    },
+                                    inputCopmpleted: { text in
+                                        
+                                    }
+                                )
+                                .padding(.trailing, Dimen.icon.tiny)
+                            } else {
+                                FocusableTextView(
+                                    placeholder: "",
+                                    text:self.$input,
+                                    isfocus: self.isFocus,
+                                    textModifier:MediumTextStyle(size: Self.inputFontSize).textModifier,
+                                    usefocusAble: true,
+                                    textAlignment: .center,
+                                    inputChanged: {text , size in
+                                        self.inputHeight = min(size.height, (Self.inputHeight * CGFloat(self.lineLimited)))
+                                    }
+                                )
+                                .frame(height : Self.inputHeight * CGFloat(self.lineLimited))
+                                .padding(.trailing, Dimen.icon.tiny)
+                            }
+                        }
+                    }else{
+                        Text(self.input)
+                        .modifier(MediumTextStyle(
+                                    size: Self.inputFontSize,
+                            color: Color.app.greyLight)
+                        )
+                        .multilineTextAlignment(.center)
+                        .padding(.trailing, Dimen.icon.tiny)
+                    }
+                    if !self.input.isEmpty {
+                        Button(action: {
+                            self.input = ""
+                            
+                        }) {
+                            Image(Asset.icon.delete)
+                                .renderingMode(.original)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: Dimen.icon.tiny,
+                                       height: Dimen.icon.tiny)
+                                .opacity(0.5)
+                        }
+                    }
                 }
+                .padding(.all, Dimen.margin.thin)
+                .modifier(MatchHorizontal(height: Dimen.tab.regular))
+                .background(Color.app.white)
+                .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.lightExtra))
+                .overlay(
+                    RoundedRectangle(
+                        cornerRadius: Dimen.radius.lightExtra, style: .circular)
+                        .stroke( self.isFocus ? Color.brand.thirdly : Color.app.greyLight ,
+                                 lineWidth: 1 )
+                )
+                .modifier(Shadow())
                 if self.actionTitle != nil{
                     TextButton(
                         defaultText: self.actionTitle!,
                         textModifier:TextModifier(
                             family:Font.family.medium,
-                            size:Font.size.thin,
-                            color: Color.brand.primary),
+                            size:Font.size.thinExtra,
+                            color: Color.brand.thirdly),
                         isUnderLine: true)
                     {_ in
                         guard let action = self.action else { return }
@@ -75,14 +145,11 @@ struct InputCell: PageView {
                     }
                 }
             }
-            .modifier(MatchHorizontal(height: Dimen.tab.regular))
-            Spacer().modifier(LineHorizontal(color: self.isFocus ? Color.app.greyDeep : Color.app.grey))
-            if self.tip != nil{
-                Spacer().frame(height:Dimen.margin.thin)
-                Text(self.tip!)
-                    .modifier(MediumTextStyle(
-                        size: Font.size.thin,
-                        color: Color.app.grey))
+            
+            if let info = self.info {
+                Text(info)
+                    .modifier(MediumTextStyle(size: Font.size.thin,color: Color.app.grey))
+                    .multilineTextAlignment(.center)
             }
         }
     }
@@ -97,7 +164,7 @@ struct InputCell_Previews: PreviewProvider {
             InputCell(
                 title: "title",
                 input: .constant("test"),
-                //isFocus: .constant(true),
+                isFocus: true,
                 tip: "sdsdsdd",
                 actionTitle: "btn"
             )

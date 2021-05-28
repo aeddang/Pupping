@@ -26,7 +26,7 @@ struct NavigationBuilder{
     var index: Int = -1
     var textModifier:TextModifier = TextModifier(
         family:Font.family.medium,
-        size: Font.size.regular,
+        size: Font.size.regularExtra,
         color: Color.app.grey,
         activeColor: Color.brand.primary
     )

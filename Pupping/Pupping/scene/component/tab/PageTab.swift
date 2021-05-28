@@ -16,7 +16,8 @@ struct PageTab: PageComponent{
     var isBack:Bool = false
     var isClose:Bool = false
     var isSetting:Bool = false
-     
+    var confirm: (() -> Void)? = nil
+   
     var body: some View {
         ZStack(alignment: .leading){
             if self.title != nil {
@@ -31,29 +32,39 @@ struct PageTab: PageComponent{
             HStack{
                 if self.isBack {
                     Button(action: {
-                        self.pagePresenter.goBack()
+                        if let confirm = self.confirm {
+                            confirm()
+                        } else {
+                            self.pagePresenter.goBack()
+                        }
+                        
                     }) {
                         Image(Asset.icon.back)
                             .renderingMode(.template)
                             .resizable()
                             .scaledToFit()
                             .foregroundColor(Color.app.greyDeep)
-                            .frame(width: Dimen.icon.thin,
-                                   height: Dimen.icon.thin)
+                            .frame(width: Dimen.icon.regularExtra,
+                                   height: Dimen.icon.regularExtra)
                     }
                 }
                 Spacer()
                 if self.isClose {
                     Button(action: {
-                        self.pagePresenter.goBack()
+                        if let confirm = self.confirm {
+                            confirm()
+                        } else {
+                            self.pagePresenter.goBack()
+                        }
+                        
                     }) {
                         Image(Asset.icon.close)
                             .renderingMode(.template)
                             .resizable()
                             .scaledToFit()
                             .foregroundColor(Color.app.greyDeep)
-                            .frame(width: Dimen.icon.thin,
-                                   height: Dimen.icon.thin)
+                            .frame(width: Dimen.icon.regularExtra,
+                                   height: Dimen.icon.regularExtra)
                     }
                 }
                 if self.isSetting {
@@ -65,8 +76,8 @@ struct PageTab: PageComponent{
                             .resizable()
                             .scaledToFit()
                             .foregroundColor(Color.app.greyDeep)
-                            .frame(width: Dimen.icon.light,
-                                   height: Dimen.icon.light)
+                            .frame(width: Dimen.icon.regularExtra,
+                                   height: Dimen.icon.regularExtra)
                     }
                 }
             }

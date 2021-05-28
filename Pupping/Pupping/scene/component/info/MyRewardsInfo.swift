@@ -68,15 +68,15 @@ struct RewardsItem : PageComponent {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: Dimen.icon.regular, height: Dimen.icon.regular)
                 Text(self.title)
-                    .modifier(RegularTextStyle(size: Font.size.thin, color: Color.app.grey))
+                    .modifier(RegularTextStyle(size: Font.size.thinExtra, color: Color.app.grey))
             }
             ZStack{
                 Text(self.point.formatted(style: .decimal))
-                    .modifier(RegularTextStyle(size: Font.size.bold, color: self.color))
+                    .modifier(RegularTextStyle(size: Font.size.mediumExtra, color: self.color))
             }
             .modifier(MatchHorizontal(height: Dimen.tab.light))
             .background(self.color.opacity(0.2))
-            .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.light))
+            .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.lightExtra))
         }
     }
 }

@@ -8,22 +8,61 @@
 
 import Foundation
 import SwiftUI
+
+enum FillButtonType{
+    case normal, stroke
+}
+
+
 struct FillButton: View, SelecterbleProtocol{
     let text:String
     var index: Int = 0
     var isSelected: Bool = false
     var textModifier:TextModifier = TextModifier(
         family: Font.family.bold,
-        size: Font.size.regular,
-        color: Color.app.greyDeep,
+        size: Font.size.regularExtra,
+        color: Color.app.white,
         activeColor: Color.app.white
     )
     var size:CGFloat = Dimen.button.medium
-    var bgColor:Color = Color.app.white
-    var bgActiveColor:Color = Color.app.greyDeep
+    var bgColor:Color = Color.app.greyLight
+    var bgActiveColor:Color = Color.brand.primary
     var icon:String? = nil
     var iconSize:CGFloat = Dimen.icon.thin
+    var isStroke:Bool = false
     let action: (_ idx:Int) -> Void
+    
+    
+    init(
+        type:FillButtonType = .normal,
+        text:String,
+        icon:String? = nil,
+        index: Int = 0,
+        isSelected: Bool = true,
+        size:CGFloat? = nil,
+        action:@escaping (_ idx:Int) -> Void )
+    {
+        self.text = text
+        self.icon = icon
+        self.index = index
+        self.isSelected = isSelected
+        self.action = action
+        if let value = size {self.size = value}
+        switch type {
+        case .stroke :
+            textModifier = TextModifier(
+                family: Font.family.bold,
+                size: Font.size.regularExtra,
+                color: Color.app.greyDeep,
+                activeColor: Color.app.white
+            )
+            bgColor = Color.app.white
+            bgActiveColor = Color.app.greyDeep
+            isStroke = true
+        default : break
+        }
+    }
+    
     
     
     var body: some View {
@@ -49,10 +88,13 @@ struct FillButton: View, SelecterbleProtocol{
             }
             .modifier( MatchHorizontal(height: self.size) )
             .background(self.isSelected ? self.bgActiveColor : self.bgColor )
-            .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.light))
+            .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.lightExtra))
             .overlay(
-                RoundedRectangle(cornerRadius: Dimen.radius.light, style: .circular).stroke( self.bgActiveColor ,lineWidth: Dimen.stroke.light )
+                RoundedRectangle(
+                    cornerRadius: Dimen.radius.lightExtra, style: .circular)
+                    .stroke( self.bgActiveColor ,lineWidth: self.isStroke ? Dimen.stroke.light : 0 )
             )
+            .modifier(Shadow())
         }
         
         
@@ -65,8 +107,9 @@ struct FillButton_Previews: PreviewProvider {
         Form{
             FillButton(
                 text: "test",
-                isSelected: true,
-                icon: Asset.noImg1_1
+                icon: Asset.noImg1_1,
+                isSelected: true
+                
             ){_ in
                 
             }

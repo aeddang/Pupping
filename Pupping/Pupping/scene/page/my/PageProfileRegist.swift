@@ -19,36 +19,46 @@ class InputData:Identifiable{
     let type:InputDataType
     let title: String
     let tip: String?
+    let info: String?
     let placeHolder:String
     let keyboardType:UIKeyboardType
-    let tabs:[String]
+    let tabs:[SelectData]
     
-    var selectedIdx:Int = 0
-    var selectedDate:Date = Date()
+    var selectedIdx:Int = -1
+    var selectedDate:Date? = nil
     var selectedImage:UIImage? = nil
-    
     var inputValue:String = ""
+    var inputMax:Int = 15
+    var isOption:Bool = false
     init(
         type:InputDataType = .text,
         title: String,
         tip:String? = nil,
+        info:String? = nil,
         placeHolder:String = String.pageText.profileRegistPlaceHolder,
         keyboardType:UIKeyboardType = .default,
-        tabs:[String] = []) {
+        tabs:[SelectData] = [],
+        isOption:Bool = false
+        ) {
         
         self.type = type
         self.title = title
         self.tip = tip
+        self.info = info
         self.placeHolder = placeHolder
         self.keyboardType = keyboardType
         self.tabs = tabs
+        self.isOption = isOption
     }
+    
+    
+    
 }
 
 struct PageProfileRegist: PageView {
     @EnvironmentObject var pagePresenter:PagePresenter
     @EnvironmentObject var sceneObserver:PageSceneObserver
-    @EnvironmentObject var appObserver:AppObserver
+    @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var dataProvider:DataProvider
     @EnvironmentObject var keyboardObserver:KeyboardObserver
     
@@ -60,66 +70,125 @@ struct PageProfileRegist: PageView {
         GeometryReader { geometry in
             PageDragingBody(
                 viewModel:self.pageDragingModel,
-                axis:.vertical
+                axis:.horizontal
             ) {
                 VStack( spacing: 0 ){
                     PageTab(
-                        isClose: true
-                    )
-                    .padding(.top, self.sceneObserver.safeAreaTop)
-                    .padding(.bottom, Dimen.margin.heavy)
-                    if let inputData = self.inputData {
-                        if inputData.type == .select{
-                            SelectTab(data: inputData )
-                            { idx in
-                                self.selectedIdx = idx
+                        isBack: true
+                    ){
+                        self.appSceneObserver.alert = .confirm(
+                            nil, String.pageText.profileCancelConfirm)
+                        { isOk in
+                            if isOk {
+                                self.pagePresenter.goBack()
                             }
-                        } else if inputData.type == .date{
-                            SelectDatePicker( data: inputData )
-                            { date in
-                                self.selectedDate = date
-                            }
-                        } else if inputData.type == .image{
-                            SelectImagePicker( id:self.profile?.id ?? "", data: inputData )
-                            { image in
-                                self.selectedImage = image
-                            }
-                        }else {
-                            InputCell(
-                                title: inputData.title,
-                                input: self.$input,
-                                isFocus: self.isFocus,
-                                placeHolder: inputData.placeHolder,
-                                keyboardType: inputData.keyboardType,
-                                tip: inputData.tip
-                            )
                         }
                     }
-                    Spacer()
-                    HStack(spacing: Dimen.margin.tiny) {
-                        if self.step > 0 {
+                    .padding(.top, self.sceneObserver.safeAreaTop)
+                    .padding(.bottom, Dimen.margin.thin)
+                    VStack( spacing: 0 ){
+                        
+                        VStack(spacing: 0) {
+                            if self.step != 0 {
+                                if let img = self.selectedProfileImage {
+                                    Image(uiImage: img)
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(
+                                        width: Dimen.profile.lightExtra,
+                                        height: Dimen.profile.lightExtra)
+                                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                                }
+                            }
+                            HStack(spacing: Dimen.margin.tinyExtra) {
+                                Text(String.app.step + " " + (self.step+1).description)
+                                    .modifier(SemiBoldTextStyle(size: Font.size.lightExtra, color: Color.brand.primary))
+                                Text( String.app.of + " " + self.steps.count.description )
+                                    .modifier(SemiBoldTextStyle(size: Font.size.lightExtra, color: Color.app.greyLight))
+                            }
+                            .padding(.top, Dimen.margin.light)
+                            
+                            HStack(spacing: 0) {
+                                Spacer()
+                                    .modifier(MatchVertical(width:self.leading))
+                                    .background(Color.brand.primary)
+                                    .fixedSize(horizontal: true, vertical: false)
+                                Spacer()
+                                    .modifier(MatchVertical(width:self.trailing))
+                                    .background(Color.app.greyLight)
+                                    .fixedSize(horizontal: true, vertical: false)
+                            }
+                            .frame( height: Dimen.line.medium)
+                            .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.thin))
+                            .padding(.top, Dimen.margin.tiny)
+                        }
+                        .padding(.bottom, Dimen.margin.mediumExtra)
+                        
+                        if let inputData = self.inputData {
+                            if inputData.type == .select{
+                                SelectTab(data: inputData )
+                                { idx in
+                                    self.selectedIdx = idx
+                                }
+                            } else if inputData.type == .date{
+                                SelectDatePicker( data: inputData )
+                                { date in
+                                    self.selectedDate = date
+                                }
+                            } else if inputData.type == .image{
+                                SelectImagePicker( id:self.profile?.id ?? "", data: inputData )
+                                { image in
+                                    self.selectedImage = image
+                                }
+                            }else {
+                                InputCell(
+                                    title: inputData.title,
+                                    input: self.$input,
+                                    inputLimited: inputData.inputMax,
+                                    isFocus: self.isFocus,
+                                    placeHolder: inputData.placeHolder,
+                                    keyboardType: inputData.keyboardType,
+                                    tip: inputData.tip,
+                                    info: inputData.info
+                                )
+                            }
+                        }
+                        Spacer()
+                        if self.inputData?.isOption == true {
+                            TextButton(
+                                defaultText: String.pageText.profileOption,
+                                isSelected: true
+                            ){ _ in
+                                self.update()
+                                self.next()
+                            }
+                            .padding(.bottom, Dimen.margin.mediumExtra)
+                        }
+                        HStack(spacing: Dimen.margin.tiny) {
+                            if self.step > 0 {
+                                FillButton(
+                                    text: String.button.prev,
+                                    isSelected: false
+                                ){_ in
+                                    self.update()
+                                    self.prev()
+                                }
+                            }
                             FillButton(
-                                text: String.button.prev,
-                                isSelected: false
+                                text: self.step == self.steps.count-1
+                                    ? String.button.complete
+                                    :String.button.next,
+                                isSelected: self.isComplete
                             ){_ in
                                 self.update()
-                                self.prev()
+                                self.next()
                             }
                         }
-                        FillButton(
-                            text: self.step == self.steps.count-1
-                                ? String.button.complete
-                                :String.button.next,
-                            isSelected: self.step == self.steps.count-1
-                        ){_ in
-                            self.update()
-                            self.next()
-                        }
+                        .padding(.bottom, self.safeAreaBottom + Dimen.margin.light)
                     }
-                    .padding(.bottom, self.safeAreaBottom + Dimen.margin.light)
+                    .modifier(ContentHorizontalEdges())
                 }
-                
-                .modifier(ContentHorizontalEdges())
                 .modifier(PageFull())
                 .modifier(PageDraging(geometry: geometry, pageDragingModel: self.pageDragingModel))
             }//draging
@@ -158,27 +227,60 @@ struct PageProfileRegist: PageView {
    
     @State var isFocus:Bool = false
     @State var input:String = ""
-    @State var selectedIdx:Int = -1
     @State var inputData:InputData? = nil
-    @State var selectedDate:Date = Date()
+    @State var selectedIdx:Int = -1
+    @State var selectedDate:Date? = nil
     @State var selectedImage:UIImage? = nil
+    @State var selectedProfileImage:UIImage? = nil
     @State var step:Int  = 0
     @State var profile:Profile? = nil
     
+    @State var leading:CGFloat = 0
+    @State var trailing:CGFloat = 0
+    
     let steps: [InputData] = [
-        InputData(type:.image, title: String.pageText.profileRegistImage),
-        InputData(type:.text, title: String.pageText.profileRegistName, tip:String.pageText.profileModifyAble),
-        InputData(type:.text, title: String.pageText.profileRegistSpecies, tip:String.pageText.profileModifyAble),
-        InputData(type:.date, title: String.pageText.profileRegistBirth),
-        InputData(type:.select, title: String.pageText.profileRegistGender,
-                  tabs: [Gender.mail.getTitle(), Gender.femail.getTitle()] ),
-        InputData(type:.text, title: String.pageText.profileRegistMicroFin, tip:String.pageText.profileOption)
+        InputData(
+            type:.image,
+            title: String.pageText.profileRegistImage),
+        InputData(
+            type:.text,
+            title: String.pageText.profileRegistName,
+            tip:String.pageText.profileRegistNameTip),
+        InputData(
+            type:.text,
+            title: String.pageText.profileRegistSpecies,
+            tip:String.pageText.profileRegistNameTip),
+        InputData(
+            type:.date,
+            title: String.pageText.profileRegistBirth),
+        InputData(
+            type:.select,
+            title: String.pageText.profileRegistGender,
+            tabs: [
+                .init(
+                    idx: 0,
+                    image: Asset.icon.mail,
+                    text: String.app.mail, color: Color.brand.fourth),
+                .init(
+                    idx: 1,
+                    image: Asset.icon.femail,
+                    text: String.app.femail, color: Color.brand.primary)
+            ]),
+        InputData(
+            type:.text,
+            title: String.pageText.profileRegistMicroFin,
+            info:String.pageText.profileRegistMicroFinInfo,
+            placeHolder: String.pageText.profileRegistMicroFinPlaceHolder,
+            isOption: true
+            )
     ]
     
     private func update(){
         if self.step >= self.steps.count-1 { return }
         switch self.step {
-        case  0 : self.profile?.update(image:self.selectedImage)
+        case  0 :
+            self.selectedProfileImage = self.selectedImage
+            self.profile?.update(image:self.selectedImage)
         case  1 : self.profile?.update(data: ModifyProfileData(nickName: self.input))
         case  2 : self.profile?.update(data: ModifyProfileData(species: self.input))
         case  3 : self.profile?.update(data: ModifyProfileData(birth: self.selectedDate))
@@ -187,6 +289,20 @@ struct PageProfileRegist: PageView {
             self.profile?.update(data: ModifyProfileData(gender: gender))
         case  5 : self.profile?.update(data: ModifyProfileData(microfin: self.input))
         default : break
+        }
+    }
+    
+    var isComplete:Bool {
+        switch self.inputData?.type {
+        case .text:
+            return !self.input.isEmpty
+        case .image:
+            return self.selectedImage != nil
+        case .select:
+            return self.selectedIdx != -1
+        case .date:
+            return self.selectedDate != nil
+        default  : return false
         }
     }
     
@@ -206,10 +322,12 @@ struct PageProfileRegist: PageView {
             }
         }
         self.inputData = nil
-        self.selectedIdx = 0
-        self.input = ""
-        self.selectedDate = Date()
+        self.selectedIdx = -1
         self.selectedImage = nil
+        self.input = ""
+        self.isFocus = false
+        self.selectedDate = Date()
+       
         PageLog.d("saveInput reset", tag: self.tag)
        
     }
@@ -220,6 +338,7 @@ struct PageProfileRegist: PageView {
         if willStep < 0 { return }
        
         self.step = willStep
+        self.setBar()
         self.setupInput()
     }
     
@@ -230,7 +349,18 @@ struct PageProfileRegist: PageView {
             self.setupCompleted()
         } else {
             self.step = willStep
+            self.setBar()
             self.setupInput()
+        }
+    }
+    
+    private func setBar(){
+        let count = self.steps.count
+        let size =  Dimen.bar.medium
+        let cidx = self.step + 1
+        withAnimation{
+            self.leading = size * CGFloat(cidx)
+            self.trailing = size * CGFloat(count - cidx)
         }
     }
     private func setupInput(){
@@ -248,10 +378,10 @@ struct PageProfileRegist: PageView {
             PageLog.d("setupInput " + cdata.selectedIdx.description, tag: self.tag)
         }
         
-        if cdata.type == .text {
-            self.isFocus = true
-        } else {
-            self.isFocus = false
+        if cdata.type == .text && !cdata.isOption {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.3){
+                self.isFocus = true
+            }
         }
     }
     private func setupCompleted(){

@@ -34,7 +34,7 @@ struct ProfileInfo : PageComponent {
                     
                     Text(self.name ?? "")
                         .modifier(BoldTextStyle(
-                            size: Font.size.bold,
+                            size: Font.size.mediumExtra,
                             color: Color.app.greyDeep
                         ))
                     if !self.profile.isEmpty {
@@ -57,7 +57,7 @@ struct ProfileInfo : PageComponent {
                         HStack(spacing:Dimen.margin.tiny){
                            Text(self.name ?? "")
                                 .modifier(BoldTextStyle(
-                                    size: Font.size.bold,
+                                    size: Font.size.mediumExtra,
                                     color: self.profile.isEmpty ? Color.app.greyLight : Color.app.greyDeep
                                 ))
                             
@@ -190,7 +190,7 @@ struct ProfileInfoDescription:PageView{
                 Image(gender.getIcon())
                     .renderingMode(.template)
                     .resizable()
-                    .foregroundColor(gender == .mail ? Color.brand.secondary :  Color.brand.primary)
+                    .foregroundColor(gender == .mail ? Color.brand.fourth :  Color.brand.primary)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: Dimen.icon.thin, height: Dimen.icon.thin)
             }
@@ -200,7 +200,7 @@ struct ProfileInfoDescription:PageView{
                     .background(Color.app.grey)
                 Text(age)
                     .modifier(BoldTextStyle(
-                        size: Font.size.thin,
+                        size: Font.size.thinExtra,
                         color: Color.app.grey
                     ))
             }
@@ -211,7 +211,7 @@ struct ProfileInfoDescription:PageView{
                     .background(Color.app.grey)
                 Text(species)
                     .modifier(BoldTextStyle(
-                        size: Font.size.thin,
+                        size: Font.size.thinExtra,
                         color: Color.app.grey
                     ))
             }

@@ -64,8 +64,31 @@ struct BoldTextStyle: ViewModifier {
             
     }
 }
+
+struct SemiBoldTextStyle: ViewModifier {
+    var textModifier = TextModifier(family:Font.family.semiBold,size:Font.size.bold)
+    init(textModifier:TextModifier) {self.textModifier = textModifier}
+    init(size:CGFloat? = nil, color: Color? = nil) {
+        if let size = size {
+            self.textModifier.size = size
+        }
+        if let color = color {
+            self.textModifier.color = color
+            self.textModifier.activeColor = color
+        }
+        
+    }
+    func body(content: Content) -> some View {
+        return content
+            .font(.custom(textModifier.family, size: textModifier.size))
+            .foregroundColor(textModifier.color)
+            .lineSpacing(2)
+            
+    }
+}
+
 struct MediumTextStyle: ViewModifier {
-    var textModifier = TextModifier(family:Font.family.medium,size:Font.size.medium)
+    var textModifier = TextModifier(family:Font.family.medium,size:Font.size.medium, color:Color.app.greyDeep)
     init(textModifier:TextModifier) {self.textModifier = textModifier}
     init(size:CGFloat? = nil, color: Color? = nil) {
         if let size = size {

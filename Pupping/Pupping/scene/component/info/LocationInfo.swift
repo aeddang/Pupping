@@ -31,14 +31,14 @@ struct LocationInfo : PageComponent {
             VStack(alignment: .leading, spacing:Dimen.margin.tiny){
                 Text(self.location ?? String.location.notFound)
                     .modifier(BoldTextStyle(
-                        size: Font.size.thin,
+                        size: Font.size.thinExtra,
                         color: Color.app.grey
                     ))
                 HStack(spacing:Dimen.margin.tiny){
                     if let temperature = self.temperature {
                         Text(temperature)
                             .modifier(BoldTextStyle(
-                                size: Font.size.bold,
+                                size: Font.size.mediumExtra,
                                 color: Color.brand.primary
                             ))
                     }
@@ -50,7 +50,7 @@ struct LocationInfo : PageComponent {
                     if let weather = self.weather {
                         Text(weather)
                             .modifier(BoldTextStyle(
-                                size: Font.size.bold,
+                                size: Font.size.mediumExtra,
                                 color: Color.app.greyDeep
                             ))
                     }

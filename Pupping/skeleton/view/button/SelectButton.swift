@@ -15,7 +15,7 @@ struct SelectButton: View, SelecterbleProtocol{
     var isSelected: Bool
     var textModifier:TextModifier = TextModifier(
         family: Font.family.bold,
-        size: Font.size.regular,
+        size: Font.size.regularExtra,
         color: Color.app.greyDeep,
         activeColor: Color.brand.primary
     )

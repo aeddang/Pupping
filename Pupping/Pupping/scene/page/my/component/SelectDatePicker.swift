@@ -24,11 +24,12 @@ struct SelectDatePicker: PageComponent{
     let action: (_ date:Date) -> Void
     
     var body: some View {
-        VStack (alignment: .leading, spacing: 0){
+        VStack (alignment: .center, spacing: 0){
             if let title = self.data.title {
                 Text(title)
-                    .modifier(RegularTextStyle(size: Font.size.light, color: Color.brand.primary))
-                    .multilineTextAlignment(.leading)
+                    .modifier(SemiBoldTextStyle(size: Font.size.medium, color: Color.app.greyDeep))
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             DatePicker(
                 "",
@@ -38,12 +39,13 @@ struct SelectDatePicker: PageComponent{
             )
             .datePickerStyle(WheelDatePickerStyle())
             .modifier(MatchParent())
+            .padding(.trailing, 15)
         }
         .onReceive( [self.selectedDate].publisher ) { value in
             self.action(value)
         }
         .onAppear(){
-            self.selectedDate = data.selectedDate
+            self.selectedDate = data.selectedDate ?? Date()
         }
     }//body
 

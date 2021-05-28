@@ -42,7 +42,7 @@ struct CheckBox: View, SelecterbleProtocol {
                         }else{
                             Text(self.text!)
                                 .modifier( MediumTextStyle(
-                                        size: Font.size.thin,
+                                        size: Font.size.thinExtra,
                                         color: Color.app.white)
                                 )
                         }
@@ -51,7 +51,7 @@ struct CheckBox: View, SelecterbleProtocol {
                     if self.subText != nil {
                         Text(self.subText!)
                             .modifier(MediumTextStyle(
-                                size: Font.size.thin,
+                                size: Font.size.thinExtra,
                                 color: Color.app.greyLight))
                     }
                 }.offset(y:3)
@@ -61,7 +61,7 @@ struct CheckBox: View, SelecterbleProtocol {
                         defaultText: String.button.view,
                         textModifier:TextModifier(
                             family:Font.family.medium,
-                            size:Font.size.thin,
+                            size:Font.size.thinExtra,
                             color: Color.app.white),
                         isUnderLine: true)
                     {_ in

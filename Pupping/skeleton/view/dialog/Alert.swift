@@ -114,13 +114,13 @@ struct Alert<Presenting>: View where Presenting: View {
                                 withAnimation{
                                     self.isShowing = false
                                 }
-                            }
+                            } 
                         }
                     }
                 }
                 .padding(.all, Dimen.margin.regular)
                 .background(Color.app.white)
-                .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.light))
+                .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.lightExtra))
             }
             .frame(
                 minWidth: 0,
@@ -153,7 +153,7 @@ struct AlertBody: PageComponent{
         VStack (alignment: .center, spacing:0){
             if self.title != nil{
                 Text(self.title!)
-                    .modifier(BoldTextStyle(size: Font.size.regular))
+                    .modifier(BoldTextStyle(size: Font.size.regularExtra))
                     .fixedSize(horizontal: false, vertical: true)
                     
             }

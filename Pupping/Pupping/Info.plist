@@ -40,6 +40,19 @@
 	<string>애플의 정책에 따라 사용자 위치를 확인하기 위해서 위치 접근 권한을 허용하셔야 이용이 가능합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>애플의 정책에 따라 사용자 위치를 확인하기 위해서 위치 접근 권한을 허용하셔야 이용이 가능합니다.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Poppins-Black.ttf</string>
+		<string>Poppins-Bold.ttf</string>
+		<string>Poppins-SemiBold.ttf</string>
+		<string>Poppins-ExtraBold.ttf</string>
+		<string>Poppins-ExtraLight.ttf</string>
+		<string>Poppins-Light.ttf</string>
+		<string>Poppins-Medium.ttf</string>
+		<string>Poppins-Regular.ttf</string>
+		<string>Poppins-SemiBold.ttf</string>
+		<string>Poppins-Thin.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

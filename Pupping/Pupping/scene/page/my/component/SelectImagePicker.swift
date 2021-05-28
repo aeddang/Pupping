@@ -21,36 +21,44 @@ struct SelectImagePicker: PageComponent{
     let action: (_ image:UIImage?) -> Void
     
     var body: some View {
-        VStack (alignment: .leading, spacing: 0){
+        VStack (alignment: .center, spacing: 0){
             if let title = self.data.title {
                 Text(title)
-                    .modifier(RegularTextStyle(size: Font.size.light, color: Color.brand.primary))
-                    .multilineTextAlignment(.leading)
+                    .modifier(SemiBoldTextStyle(size: Font.size.medium, color: Color.app.greyDeep))
+                    .multilineTextAlignment(.center)
             }
-            ZStack(alignment: .topTrailing){
-                Image(uiImage: self.selectedImage ??
-                        UIImage(named: Asset.brand.logoLauncher)!)
-                    .renderingMode(.original)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 280, height: 280)
-                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                    .opacity(self.selectedImage == nil ? 0.5 : 1.0)
+            Spacer()
+            ZStack(alignment: .center){
                 if self.selectedImage == nil {
-                    Image( Asset.icon.add )
-                        .renderingMode(.template)
+                    Spacer()
+                        .frame(width: 123, height: 123)
+                        .background(Color.app.greyLight)
+                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                    Image( Asset.icon.photo )
+                        .renderingMode(.original)
                         .resizable()
                         .scaledToFit()
-                        .foregroundColor( Color.brand.primary )
-                        .frame(width: Dimen.icon.regular,
-                               height: Dimen.icon.regular)
+                        .frame(width: Dimen.icon.heavyExtra,
+                               height: Dimen.icon.heavyExtra)
+                } else {
+                    Image(uiImage: self.selectedImage ??
+                            UIImage(named: Asset.brand.logoLauncher)!)
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .modifier(MatchParent())
                 }
-            }.onTapGesture {
+            }
+            .onTapGesture {
                 self.appSceneObserver.select
                     = .imgPicker(SceneRequest.imagePicker.rawValue + self.id)
             }
-            .modifier(MatchParent())
+            .frame(width: 123, height: 123)
+            .background(Color.app.greyLight)
+            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            Spacer()
         }
+        .modifier(MatchParent())
         .onReceive(self.appSceneObserver.$pickImage) { pick in
             guard let pick = pick else {return}
             if pick.id?.hasSuffix(self.id) != true {return}

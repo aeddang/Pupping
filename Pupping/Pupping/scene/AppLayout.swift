@@ -67,7 +67,7 @@ struct AppLayout: PageComponent{
                         VStack(spacing:0){
                             ForEach(self.loadingInfo!, id: \.self ) { text in
                                 Text( text )
-                                    .modifier(MediumTextStyle( size: Font.size.bold ))
+                                    .modifier(MediumTextStyle( size: Font.size.mediumExtra ))
                             }
                         }
                         .modifier(MatchParent())
@@ -170,7 +170,6 @@ struct AppLayout: PageComponent{
         }
         .onAppear(){
             self.isLoading = true
-           
             //UITableView.appearance().separatorStyle = .none
             /*
             for family in UIFont.familyNames.sorted() {
@@ -182,10 +181,24 @@ struct AppLayout: PageComponent{
     }
     func onStoreInit(){
         //self.appSceneObserver.event = .debug("onStoreInit")
-        
+        if SystemEnvironment.firstLaunch {
+            self.pagePresenter.changePage(
+                PageProvider.getPageObject(.intro)
+            )
+            return
+        }
         self.onPageInit()
     }
     func onPageInit(){
+        
+        PageLog.d("onPageInit", tag: self.tag)
+        if !self.repository.isLogin {
+            self.pagePresenter.changePage(
+                PageProvider.getPageObject(.login)
+            )
+            return
+        }
+        
         self.isInit = true
         self.isLoading = false
         //self.appSceneObserver.event = .debug("onPageInit")

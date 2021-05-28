@@ -21,6 +21,8 @@
 "year" = "YY";
 "month" = "MM";
 "day" = "DD";
+"step" = "step";
+"of" = "of";
 
 /*
   Button
@@ -54,6 +56,7 @@
 "alertNeedProfile" = "반려동물을 추가해주세요";
 "alertDeleteProfile" = "관련된 모든 정보가 함께 삭제 됩니다.\n반려동물을 삭제하시겠습니까?";
 
+"alertSnsLoginError" = "로그인 후. 이용 가능합니다.";
 
 /*
   Gnb
@@ -77,23 +80,42 @@
 "titleCommingSoon" = "준비중..";
 
 /*
- PageProfile
+PageIntro
 */
-"profileRegistImage" = "사진 등록";
-"profileRegistName" = "이름이 머조?";
-"profileRegistSpecies" = "종류가 머조?";
-"profileRegistBirth" = "탄생일은?";
-"profileRegistGender" = "아들 인지 딸인지?";
-"profileRegistNeutralization" = "중성화 했나요?";
-"profileRegistMicroFin" = "핀번호입력";
-"profileRegistPass" = "다음단계로";
+"introText1_1" = "Walking your dog is\nthe best present\nyou can give.";
+"introText1_2" = "We cannot emphasize enough\nhow walking is important for a\ndog’s health and happiness.";
+"introText2_1" = "Walk with Pupping\nand gain encrypted\ncoins for your dog.";
+"introText2_2" = "We cannot emphasize enough\nhow walking is important for a\ndog’s health and happiness.";
+"introText3_1" = "...and friends in your town\nto walk together :)";
+"introText3_2" = "Who knows? Maybe you\ncan find a new best friend\nto talk about dogs!";
+"introComplete" = "Let’s explore!";
+
+/*
+PageLogin
+*/
+"loginText" = "Let’s walk\nour dogs together!";
+"loginStart" = "Let’s Start!";
+
+
+/*
+ PageProfileRegist
+*/
+"profileRegistImage" = "Violet’s profile picture";
+"profileRegistName" = "What is the name\nof your dog?";
+"profileRegistNameTip" = "-Max. 15 characters\n-NO special letters";
+"profileRegistSpecies" = "Violet’s breed";
+"profileRegistBirth" = "Violet’s birthday";
+"profileRegistGender" = "Violet’s sex";
+"profileRegistHealth" = "Violet’s health & immunization";
+"profileRegistMicroFin" = "Violet’s animal ID or a microchip number";
+"profileRegistMicroFinInfo" = "An animal ID is consisted of 15 digits.\nTake your pet to be scanned at the local vet,\nrescue centre or dog wardens service.";
+"profileRegistMicroFinPlaceHolder" = "ex.123456789012345";
 "profileRegistPlaceHolder" = "???";
 
-"profileModifyName" = "이름변경";
-"profileModifySpecies" = "종류변경";
+"profileCancelConfirm" = "등록을 취소하면 작성중 정보는 없어집니다 취소 하겠습니까?";
 
-"profileEmptyName" = "댕댕이";
-"profileEmptySpecies" = "사람아님";
+"profileEmptyName" = "animal";
+"profileEmptySpecies" = "animal";
 
-"profileOption" = "선택입력";
-"profileModifyAble" = "나중에 변경가능";
+"profileOption" = "Skip for now";
+

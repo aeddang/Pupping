@@ -20,6 +20,8 @@
 "year" = "YY";
 "month" = "MM";
 "day" = "DD";
+"step" = "step";
+"of" = "of";
 
 /*
   Button
@@ -49,6 +51,8 @@
 "alertDragdown" = "당겨서 페이지 닫기";
 "alertNeedProfile" = "add your pat";
 "alertDeleteProfile" = "관련된 모든 정보가 함께 삭제 됩니다.\n반려동물을 삭제하시겠습니까?";
+
+"alertSnsLoginError" = "need login";
 /*
   Gnb
 */
@@ -69,6 +73,24 @@
 "titleMyRewards" = "My Reward";
 "titleMyPats" = "My Pats";
 "titleCommingSoon" = "Comming Soon..";
+
+/*
+PageIntro
+*/
+"introText1_1" = "Walking your dog is\nthe best present\nyou can give.";
+"introText1_2" = "We cannot emphasize enough\nhow walking is important for a\ndog’s health and happiness.";
+"introText2_1" = "Walk with Pupping\nand gain encrypted\ncoins for your dog.";
+"introText2_2" = "We cannot emphasize enough\nhow walking is important for a\ndog’s health and happiness.";
+"introText3_1" = "...and friends in your town\nto walk together :)";
+"introText3_2" = "Who knows? Maybe you\ncan find a new best friend\nto talk about dogs!";
+"introComplete" = "Let’s explore!";
+
+/*
+PageLogin
+*/
+"loginText" = "Let’s walk our dogs together!";
+"loginStart" = "Let’s Start!";
+
 /*
  PageProfileRegist
 */

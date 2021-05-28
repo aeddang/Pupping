@@ -23,6 +23,7 @@ class Repository:ObservableObject, PageProtocol{
     let dataProvider:DataProvider
     let networkObserver:NetworkObserver
     let shareManager:ShareManager
+    let snsManager:SnsManager
     let apiCoreDataManager = ApiCoreDataManager()
     private let storage = LocalStorage()
     private let apiManager = ApiManager()
@@ -35,25 +36,26 @@ class Repository:ObservableObject, PageProtocol{
         dataProvider:DataProvider? = nil,
         networkObserver:NetworkObserver? = nil,
         pagePresenter:PagePresenter? = nil,
-        sceneObserver:AppSceneObserver? = nil
+        sceneObserver:AppSceneObserver? = nil,
+        snsManager:SnsManager? = nil
     ) {
         self.dataProvider = dataProvider ?? DataProvider()
         self.networkObserver = networkObserver ?? NetworkObserver()
         self.appSceneObserver = sceneObserver
         self.pagePresenter = pagePresenter
         self.shareManager = ShareManager(pagePresenter: pagePresenter)
+        self.snsManager = snsManager ?? SnsManager()
         
-        
-        self.pagePresenter?.$currentPage.sink(receiveValue: { evt in
+        self.pagePresenter?.$currentPage.sink(receiveValue: { evt in 
             self.apiManager.clear()
             self.appSceneObserver?.isApiLoading = false
             self.pagePresenter?.isLoading = false
             self.retryRegisterPushToken()
         }).store(in: &anyCancellable)
-        
+        self.setupSetting()
         self.setupDataProvider()
         self.setupApiManager()
-        self.setupSetting()
+
       
     }
     
@@ -114,9 +116,14 @@ class Repository:ObservableObject, PageProtocol{
     private func setupSetting(){
         if !self.storage.initate {
             self.storage.initate = true
+            SystemEnvironment.firstLaunch = true
             DataLog.d("initate APP", tag:self.tag)
         }
-
+        self.dataProvider.user.registUser(
+            id: self.storage.loginId,
+            token: self.storage.loginToken,
+            code: self.storage.loginType)
+        
         if self.storage.retryPushToken != "" {
             self.registerPushToken(self.storage.retryPushToken)
         }
@@ -153,7 +160,7 @@ class Repository:ObservableObject, PageProtocol{
                     //guard let data = res.data as? GnbBlock  else { return }
                     DataLog.d("save coreData getGnb", tag:self.tag)
                     //self.apiCoreDataManager.setData(key: coreDatakey, data: data)
-                default: do{}
+                default: break
             }
         }
     }
@@ -169,5 +176,14 @@ class Repository:ObservableObject, PageProtocol{
         self.storage.retryPushToken = token
     }
     
+    func registerSnsLogin(_ user:SnsUser) {
+        self.storage.loginId = user.snsID
+        self.storage.loginToken = user.snsToken
+        self.storage.loginType = user.snsType.apiCode()
+        self.dataProvider.user.registUser(user: user)
+    }
+    var isLogin: Bool {
+        self.dataProvider.user.snsUser != nil
+    }
    
 }

@@ -49,7 +49,7 @@ extension Asset{
         public static let close = "ic_close"
         public static let back = "ic_back"
         public static let mail = "ic_mail"
-        public static let femail = "ic_mail"
+        public static let femail = "ic_femail"
         
         public static let flag = "ic_flag"
         public static let location = "ic_location"
@@ -58,7 +58,8 @@ extension Asset{
         
         public static let delete = "ic_delete"
         public static let hidden = "ic_hidden"
-        
+        public static let next = "ic_next"
+        public static let photo = "ic_photo"
     }
     
     struct shape {
@@ -69,10 +70,21 @@ extension Asset{
         public static let checkBoxOff = "icCheckboxOff"
         public static let spinner = "ic_spinner"
         
+        public static let point = "sp_point"
+        public static let ellipse = "sp_ellipse"
+        
+       
     }
     
     struct image {
-        
+        public static let dog1 = "dog1"
+        public static let dog2 = "dog2"
+        public static let dog3 = "dog3"
+        public static let dog4 = "dog4"
+        public static let manWithDog = "manWithDog"
+        public static let womanWithDog = "womanWithDog"
+        public static let man = "man"
+        public static let woman = "woman"
     }
     
     struct source {

@@ -13,7 +13,7 @@ struct FocusableTextView: UIViewRepresentable {
     var returnVal: UIReturnKeyType = .done
     var placeholder: String = ""
     @Binding var text:String
-    var isfocus:Bool
+    var isfocus:Bool = false
     var textModifier:TextModifier = RegularTextStyle().textModifier
     var usefocusAble:Bool = true
     var isSecureTextEntry:Bool = false
@@ -33,7 +33,6 @@ struct FocusableTextView: UIViewRepresentable {
         textView.delegate = context.coordinator
         textView.autocorrectionType = .yes
         textView.textAlignment = self.textAlignment
-        textView.textColor = UIColor.white
         textView.sizeToFit()
         textView.textContentType = .oneTimeCode
         textView.isSecureTextEntry = self.isSecureTextEntry
@@ -46,18 +45,20 @@ struct FocusableTextView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UITextView, context: Context) {
-        if uiView.text != self.text { uiView.text = self.text }
-        if !self.usefocusAble {return}
-        if self.isfocus {
-            if !uiView.isFocused {
-                uiView.becomeFirstResponder()
-            }
-            
-        } else {
-            if uiView.isFocused {
-                uiView.resignFirstResponder()
+       
+        if self.usefocusAble {
+            if self.isfocus {
+                if !uiView.isFocused {
+                    uiView.becomeFirstResponder()
+                }
+                
+            } else {
+                if uiView.isFocused {
+                    uiView.resignFirstResponder()
+                }
             }
         }
+        if uiView.text != self.text { uiView.text = self.text }
     }
 
     func makeCoordinator() -> Coordinator {

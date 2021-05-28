@@ -28,6 +28,8 @@ extension String {
         public static let year = "year".loaalized()
         public static let month = "month".loaalized()
         public static let day = "day".loaalized()
+        public static let step = "step".loaalized()
+        public static let of = "of".loaalized()
     }
     
     struct gnb {
@@ -59,6 +61,7 @@ extension String {
         public static var dragdown = "alertDragdown".loaalized()
         public static var needProfile = "alertNeedProfile".loaalized()
         public static var deleteProfile = "alertDeleteProfile".loaalized()
+        public static var snsLoginError = "alertSnsLoginError".loaalized()
     }
     
     struct button {
@@ -82,23 +85,36 @@ extension String {
     
     struct pageText {
         
+        public static let introText1_1 = "introText1_1".loaalized()
+        public static let introText1_2 = "introText1_2".loaalized()
+        public static let introText2_1 = "introText2_1".loaalized()
+        public static let introText2_2 = "introText2_2".loaalized()
+        public static let introText3_1 = "introText3_1".loaalized()
+        public static let introText3_2 = "introText3_2".loaalized()
+        public static let introComplete = "introComplete".loaalized()
+
+        public static let loginText = "loginText".loaalized()
+        public static let loginStart = "loginStart".loaalized()
+        
         public static let profileRegistImage = "profileRegistImage".loaalized()
         public static let profileRegistName = "profileRegistName".loaalized()
+        public static let profileRegistNameTip = "profileRegistNameTip".loaalized()
         public static let profileRegistSpecies = "profileRegistSpecies".loaalized()
         public static let profileRegistBirth = "profileRegistBirth".loaalized()
         public static let profileRegistGender = "profileRegistGender".loaalized()
-        public static let profileRegistNeutralization = "profileRegistNeutralization".loaalized()
+        public static let profileRegistHealth = "profileRegistHealth".loaalized()
         public static let profileRegistMicroFin = "profileRegistMicroFin".loaalized()
-        public static let profileRegistPass = "profileRegistPass".loaalized()
+        public static let profileRegistMicroFinInfo = "profileRegistMicroFinInfo".loaalized()
+        public static let profileRegistMicroFinPlaceHolder = "profileRegistMicroFinPlaceHolder".loaalized()
+        
         public static let profileRegistPlaceHolder = "profileRegistPlaceHolder".loaalized()
-        
-        public static let profileModifyName = "profileModifyName".loaalized()
-        public static let profileModifySpecies = "profileModifySpecies".loaalized()
-        
         public static let profileEmptyName = "profileEmptyName".loaalized()
         public static let profileEmptySpecies = "profileEmptySpecies".loaalized()
         public static let profileOption = "profileOption".loaalized()
-        public static let profileModifyAble = "profileModifyAble".loaalized()
+        
+        public static let profileCancelConfirm = "profileCancelConfirm".loaalized()
+         
+        
     }
     
 }

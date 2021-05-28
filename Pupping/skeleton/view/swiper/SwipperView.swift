@@ -48,7 +48,7 @@ struct SwipperView : View , PageProtocol, Swipper {
             .offset(x: self.isUserSwiping ? self.offset : CGFloat(self.index) * -geometry.size.width)
             .frame(width: geometry.size.width, alignment: .leading)
             .opacity(max(0.2,self.progress/self.progressMax))
-            .highPriorityGesture(
+            .gesture(
                 DragGesture(minimumDistance: Self.MIN_DRAG_RANGE, coordinateSpace: self.coordinateSpace)
                 .onChanged({ value in
                     self.isUserSwiping = true
@@ -98,6 +98,17 @@ struct SwipperView : View , PageProtocol, Swipper {
                     self.viewModel.status = .stop
                     self.reset(idx: self.getWillIndex(value: value, maxIdx: self.pages.count) )
                 })
+            )
+            .gesture(
+                LongPressGesture(minimumDuration: 0.0, maximumDistance: 0.0)
+                      .simultaneously(with: RotationGesture(minimumAngleDelta:.zero))
+                      .simultaneously(with: MagnificationGesture(minimumScaleDelta: 0))
+                    .onChanged({_ in
+                        self.reset(idx: self.index)
+                    })
+                    .onEnded({_ in
+                        self.reset(idx: self.index)
+                    })
             )
             .onReceive( self.viewModel.$index ){ idx in
                 if self.index == idx {return}

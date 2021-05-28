@@ -89,6 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PageProtocol {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
+        Messaging.messaging().delegate = self
         GMSPlacesClient.provideAPIKey("AIzaSyA7D9B110eBovdJxFrtUkQEGlX3OatOw0U")
         GMSServices.provideAPIKey("AIzaSyA7D9B110eBovdJxFrtUkQEGlX3OatOw0U")
         DynamicLinks.performDiagnostics(completion: nil)
@@ -208,21 +209,14 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 }
 
 
-/*
-// [END ios_10_message_handling]
+
 extension AppDelegate : MessagingDelegate {
-    // [START refresh_token]
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        PageLog.d("Firebase registration token: \(fcmToken)", tag: self.tag)
-        let dataDict:[String: String] = ["token": fcmToken]
+        guard let token = fcmToken else { return }
+        PageLog.d("Firebase registration token: \(token)", tag: self.tag)
+        let dataDict:[String: String] = ["token": token ]
         NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
+        AppDelegate.appObserver.pushToken = token
     }
-    // [END refresh_token]
-    // [START ios_10_data_message]
-    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
-         PageLog.d("Received data message: \(remoteMessage.appData)", tag: self.tag)
-    }
-    // [END ios_10_data_message]
 }
 
-*/

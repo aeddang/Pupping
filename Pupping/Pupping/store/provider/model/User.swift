@@ -53,12 +53,24 @@ class User:ObservableObject, PageProtocol{
     @Published private(set) var coin:Double = 0
     @Published private(set) var mission:Double = 0
     private(set) var currentRegistProfile:Profile? = nil
-    
+    private(set) var snsUser:SnsUser? = nil
     
     func setProfiles() {
         DispatchQueue.main.async {
             self.profiles = ProfileCoreData().getAllProfiles()
         }
+    }
+    func registUser(user:SnsUser){
+        self.snsUser = user
+    }
+    func registUser(id:String?, token:String?, code:String?){
+        DataLog.d("id " + (id ?? ""), tag: self.tag)
+        DataLog.d("token " + (token ?? ""), tag: self.tag)
+        DataLog.d("code " + (code ?? ""), tag: self.tag)
+        guard let id = id, let token = token , let type = SnsType.getType(code: code) else {return}
+        
+        DataLog.d("user init " + (code ?? ""), tag: self.tag)
+        self.snsUser = SnsUser(snsType: type, snsID: id, snsToken: token)
     }
     
     @discardableResult

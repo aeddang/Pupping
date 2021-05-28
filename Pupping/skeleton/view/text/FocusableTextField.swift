@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 struct FocusableTextField: UIViewRepresentable {
+    @Binding var text:String
     var keyboardType: UIKeyboardType = .default
     var returnVal: UIReturnKeyType = .default
     var placeholder: String = ""
@@ -22,6 +23,7 @@ struct FocusableTextField: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UITextField {
         let textField = UITextField(frame: .zero)
+        textField.text = self.text
         textField.keyboardType = self.keyboardType
         textField.returnKeyType = self.returnVal
         textField.delegate = context.coordinator
@@ -29,7 +31,7 @@ struct FocusableTextField: UIViewRepresentable {
         textField.autocorrectionType = .no
         textField.adjustsFontSizeToFitWidth = true
         textField.textAlignment = .center
-        textField.textColor = UIColor.white
+        textField.textColor = self.textModifier.color.uiColor()
         textField.isSecureTextEntry = self.isSecureTextEntry
         textField.defaultTextAttributes.updateValue(self.kern, forKey: .kern)
         textField.attributedPlaceholder = NSAttributedString(string: self.placeholder , attributes: [ NSAttributedString.Key.kern: self.kern])
@@ -47,6 +49,7 @@ struct FocusableTextField: UIViewRepresentable {
                 uiView.resignFirstResponder()
             }
         }
+        if uiView.text != self.text { uiView.text = self.text }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -71,6 +74,7 @@ struct FocusableTextField: UIViewRepresentable {
                     if updatedText.count > parent.maxLength {return false}
                 }
                 guard let  inputChanged = self.inputChanged else { return true}
+                self.parent.text = updatedText
                 inputChanged(updatedText)
             }
             return true

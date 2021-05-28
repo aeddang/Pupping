@@ -11,6 +11,7 @@ import SwiftUI
 
 extension PageID{
     static let intro:PageID = "intro"
+    static let login:PageID = "login"
     static let home:PageID = "home"
     static let mission:PageID = "mission"
     static let board:PageID = "board"
@@ -37,14 +38,14 @@ struct PageProvider {
     
     static func isHome(_ pageID:PageID)-> Bool{
         switch pageID {
-        case .home, .intro, .my, .board, .shop: return  true
+        case .home, .intro, .my, .board, .shop, .login: return  true
            default : return  false
         }
     }
     
     static func getType(_ pageID:PageID)-> PageAnimationType{
         switch pageID {
-        case .profileRegist, .profileModify : return .vertical
+        //case  .profileModify : return .vertical
         default : return  .horizontal
         }
     }
@@ -58,6 +59,7 @@ struct PageProvider {
     static func getPageIdx(_ pageID:PageID)-> Int {
         switch pageID {
             case .intro : return 1
+            case .login : return 1
             case .home : return  100
             case .board : return  200
             case .shop : return  300
@@ -101,13 +103,14 @@ extension PageEventType {
 }
 
 enum PageStyle{
-    case dark, white, normal
+    case dark, white, normal, primary
     var textColor:Color {
         get{
             switch self {
             case .normal: return Color.app.white
             case .dark: return Color.app.white
-            case .white: return Color.app.black
+            case .primary: return Color.app.white
+            case .white: return Color.app.greyDeep
             }
         }
     }
@@ -116,6 +119,7 @@ enum PageStyle{
             switch self {
             case .normal: return Color.brand.bg
             case .dark: return Color.app.greyDeep
+            case .primary: return Color.brand.primary
             case .white: return Color.app.white
             }
         }
@@ -126,6 +130,7 @@ struct PageFactory{
     static func getPage(_ pageObject:PageObject) -> PageViewProtocol{
         switch pageObject.pageID {
         case .intro : return PageIntro()
+        case .login : return PageLogin()
         case .home : return PageHome()
         case .board : return PageBoard()
         case .shop : return PageShop()
