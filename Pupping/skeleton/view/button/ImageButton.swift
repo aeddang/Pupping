@@ -37,7 +37,7 @@ struct ImageButton: View, SelecterbleProtocol{
                     
                 if let text = self.text {
                     Text(text)
-                        .modifier(LightTextStyle(
+                        .modifier(RegularTextStyle(
                             size: Font.size.tiny,
                             color: self.isSelected ?  self.activeColor : self.defaultColor
                         ))

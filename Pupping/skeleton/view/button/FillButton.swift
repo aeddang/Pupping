@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 enum FillButtonType{
-    case normal, stroke
+    case normal, stroke, small
 }
 
 
@@ -19,7 +19,7 @@ struct FillButton: View, SelecterbleProtocol{
     var index: Int = 0
     var isSelected: Bool = false
     var textModifier:TextModifier = TextModifier(
-        family: Font.family.bold,
+        family: Font.family.semiBold,
         size: Font.size.regularExtra,
         color: Color.app.white,
         activeColor: Color.app.white
@@ -51,7 +51,7 @@ struct FillButton: View, SelecterbleProtocol{
         switch type {
         case .stroke :
             textModifier = TextModifier(
-                family: Font.family.bold,
+                family: Font.family.semiBold,
                 size: Font.size.regularExtra,
                 color: Color.app.greyDeep,
                 activeColor: Color.app.white
@@ -59,6 +59,14 @@ struct FillButton: View, SelecterbleProtocol{
             bgColor = Color.app.white
             bgActiveColor = Color.app.greyDeep
             isStroke = true
+        case .small :
+            textModifier = TextModifier(
+                family: Font.family.semiBold,
+                size: Font.size.thin,
+                color: Color.app.white,
+                activeColor: Color.app.white
+            )
+            if size == nil { self.size = Dimen.button.regular }
         default : break
         }
     }
@@ -94,7 +102,10 @@ struct FillButton: View, SelecterbleProtocol{
                     cornerRadius: Dimen.radius.lightExtra, style: .circular)
                     .stroke( self.bgActiveColor ,lineWidth: self.isStroke ? Dimen.stroke.light : 0 )
             )
-            .modifier(Shadow())
+            .modifier(Shadow(
+                color: self.isSelected ? self.bgActiveColor : self.bgColor,
+                opacity: self.isStroke ? 0 : 0.12
+            ))
         }
         
         

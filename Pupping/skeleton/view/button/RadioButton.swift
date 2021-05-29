@@ -10,39 +10,47 @@ import Foundation
 import SwiftUI
 struct RadioButton: View, SelecterbleProtocol {
     var isChecked: Bool
-    var size:CGSize = CGSize(width: Dimen.icon.light, height: Dimen.icon.light)
+    var size:CGSize = CGSize(width: Dimen.icon.mediumExtra, height: Dimen.icon.mediumExtra)
     var text:String? = nil
-    var textSize:CGFloat = Font.size.light
+    var textSize:CGFloat = Font.size.thin
     
     var action: ((_ check:Bool) -> Void)? = nil
     var body: some View {
         HStack(alignment: .center, spacing: Dimen.margin.thin){
-            ImageButton(
-                isSelected: self.isChecked, defaultImage: Asset.shape.radioBtnOff,
-                activeImage: Asset.shape.radioBtnOn,
-                size: self.size
-                ){_ in
-                    //self.isChecked.toggle()
-                    if self.action != nil {
-                        self.action!(!self.isChecked)
-                    }
-            }
-            .buttonStyle(BorderlessButtonStyle())
             if self.text != nil {
                 Button(action: {
-                   // self.isChecked.toggle()
                     if self.action != nil {
                         self.action!(!self.isChecked)
                     }
                     
                 }) {
                     Text(self.text!)
-                        .modifier(BoldTextStyle(
-                            size: self.textSize
+                        .modifier(SemiBoldTextStyle(
+                            size: self.textSize,
+                            color: self.isChecked ? Color.app.greyDeep : Color.app.grey
                         ))
                     
                 }
+                .buttonStyle(BorderlessButtonStyle())
             }
+            Spacer()
+            Button(action: {
+                if self.action != nil {
+                    self.action!(!self.isChecked)
+                }
+                
+            }) {
+                Image(self.isChecked
+                        ? Asset.shape.radioBtnOn
+                        : Asset.shape.radioBtnOff)
+                    .renderingMode(.original)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: size.width, height: size.height)
+                
+            }
+            .buttonStyle(BorderlessButtonStyle())
+            
         }
     }
 }

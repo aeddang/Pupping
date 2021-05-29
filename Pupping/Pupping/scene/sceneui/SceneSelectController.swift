@@ -65,7 +65,7 @@ struct SceneSelectController: PageComponent{
             String.button.camera,
             String.button.delete
         ]
-        self.setupSelect(data:(key,imgSelect), idx: -1)
+        self.setupSelect(data:(key,imgSelect), idx: imgSelect.count-1)
     }
 
     func setupSelect(data:(String,[String]), idx:Int) {

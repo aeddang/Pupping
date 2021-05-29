@@ -7,13 +7,13 @@
 */
 
 "appName" = "Pupping";
-"corfirm" = "확인";
-"cancel" = "취소";
-"retry" = "다시시도";
-"close" = "닫기";
+"corfirm" = "Corfirm";
+"cancel" = "Cancel";
+"retry" = "Retry";
+"close" = "Close";
 
-"mail" = "남자";
-"femail" = "여자";
+"mail" = "mail";
+"femail" = "femail";
 
 "puppingCoin" = "PUPPING\nCoin";
 "point" = "Point";
@@ -27,36 +27,36 @@
 /*
   Button
 */
-"btnView" = "더보기";
-"btnAlbum" = "앨범";
-"btnCamera" = "카메라";
-"btnDelete" = "삭제";
-"btnNext" = "다음";
-"btnPrev" = "이전";
-"btnComplete" = "완료";
-"btnModify" = "수정";
+"btnView" = "View";
+"btnAlbum" = "Album";
+"btnCamera" = "Camera";
+"btnDelete" = "Delete";
+"btnNext" = "Next";
+"btnPrev" = "Back";
+"btnComplete" = "Complete";
+"btnModify" = "Modify";
 "btnSwapPupping" = "Swap to PUPPING";
 
 /*
   Alert
 */
-"alertApns" = "알림";
-"alertApi" = "알림";
-"alertApiErrorServer" = "접속이 지연되고 있습니다. 잠시 후 다시 이용해 주세요.";
-"alertApiErrorClient" = "네트워크 연결 상태를 확인하시고 다시 시도해 주세요.";
-"alertNetworkError" = "네트워크 연결이 원활하지 않습니다.";
-"alertDataError" = "데이타가 없습니다.";
+"alertApns" = "notification";
+"alertApi" = "notification";
+"alertApiErrorServer" = "Connection is being delayed. Please try again after a while.";
+"alertApiErrorClient" = "Please check the network connection status and try again.";
+"alertNetworkError" = "The network connection is not smooth.";
+"alertDataError" = "No data.";
 
-"alertLocation" = "위치 접근 권한을 허용해 주세요";
-"alertLocationSub" = "애플의 정책에 따라 사용자 위치를 확인하기 위해서 위치 접근 권한을 허용하셔야 이용이 가능합니다.";
-"alertLocationBtn" = "권한 허용 하러 가기";
+"alertLocation" = "Please allow location access";
+"alertLocationSub" = "According to Apple's policy, you must allow location access to check the user's location to use it.";
+"alertLocationBtn" = "go to grant permission";
 
-"alertDragdown" = "당겨서 페이지 닫기";
+"alertDragdown" = "Pull to close page";
 
-"alertNeedProfile" = "반려동물을 추가해주세요";
-"alertDeleteProfile" = "관련된 모든 정보가 함께 삭제 됩니다.\n반려동물을 삭제하시겠습니까?";
+"alertNeedProfile" = "Please add a pet";
+"alertDeleteProfile" = "All related information will be deleted together. Are you sure you want to delete your pet?";
 
-"alertSnsLoginError" = "로그인 후. 이용 가능합니다.";
+"alertSnsLoginError" = "After login. Available.";
 
 /*
   Gnb
@@ -69,15 +69,15 @@
 /*
   Location
 */
-"locationNotFound" = "어디 있나요?";
+"locationNotFound" = "Where Are You?";
 
 /*
   PartTitle
 */
-"titleEditProfile" = "profile 수정";
+"titleEditProfile" = "Modify Profile";
 "titleMyRewards" = "My Reward";
 "titleMyPats" = "My Pats";
-"titleCommingSoon" = "준비중..";
+"titleCommingSoon" = "comming soon";
 
 /*
 PageIntro
@@ -110,12 +110,17 @@ PageLogin
 "profileRegistMicroFin" = "Violet’s animal ID or a microchip number";
 "profileRegistMicroFinInfo" = "An animal ID is consisted of 15 digits.\nTake your pet to be scanned at the local vet,\nrescue centre or dog wardens service.";
 "profileRegistMicroFinPlaceHolder" = "ex.123456789012345";
+"profileRegistNeutralized" = "Neutralized";
+"profileRegistDistemperVaccinated" = "Distemper Vaccinated";
+"profileRegistHepatitisVaccinated" = "Hepatitis Vaccinated";
+"profileRegistParovirusVaccinated" = "Parovirus Vaccinated";
+"profileRegistRabiesVaccinated" = "Rabies Vaccinated";
+
+
 "profileRegistPlaceHolder" = "???";
-
-"profileCancelConfirm" = "등록을 취소하면 작성중 정보는 없어집니다 취소 하겠습니까?";
-
+"profileCancelConfirm" = "If you cancel the registration, the information being created will be lost. Do you want to cancel?";
 "profileEmptyName" = "animal";
 "profileEmptySpecies" = "animal";
-
 "profileOption" = "Skip for now";
+"profileCheckAll" = "Check ALL options.";
 

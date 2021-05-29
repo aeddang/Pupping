@@ -18,6 +18,7 @@ struct FocusableTextField: UIViewRepresentable {
     var textModifier:TextModifier = RegularTextStyle().textModifier
     var isfocus:Bool
     var isSecureTextEntry:Bool = false
+    var inputChange: ((_ text:String) -> Void)? = nil
     var inputChanged: ((_ text:String) -> Void)? = nil
     var inputCopmpleted: ((_ text:String) -> Void)? = nil
     
@@ -71,14 +72,18 @@ struct FocusableTextField: UIViewRepresentable {
                 let textRange = Range(range, in: text) {
                 let updatedText = text.replacingCharacters(in: textRange, with: string)
                 if parent.maxLength != -1 {
-                    if updatedText.count > parent.maxLength {return false}
+                    if updatedText.count >= parent.maxLength {return false}
                 }
-                guard let  inputChanged = self.inputChanged else { return true}
-                self.parent.text = updatedText
-                inputChanged(updatedText)
+                parent.inputChange?(updatedText)
             }
             return true
         }
+        func textFieldDidChangeSelection(_ textField: UITextField) {
+            let text = textField.text ?? ""
+            self.parent.text = text
+            parent.inputChanged?(text)
+        }
+        
         
         func updatefocus(textfield: UITextField) {
             textfield.becomeFirstResponder()

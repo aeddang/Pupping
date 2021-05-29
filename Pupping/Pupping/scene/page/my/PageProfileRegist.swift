@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 enum InputDataType:String{
-    case text, select, date, image
+    case text, select, date, image, radio
 }
 
 class InputData:Identifiable{
@@ -23,7 +23,7 @@ class InputData:Identifiable{
     let placeHolder:String
     let keyboardType:UIKeyboardType
     let tabs:[SelectData]
-    
+    let checks:[RadioData]
     var selectedIdx:Int = -1
     var selectedDate:Date? = nil
     var selectedImage:UIImage? = nil
@@ -38,6 +38,7 @@ class InputData:Identifiable{
         placeHolder:String = String.pageText.profileRegistPlaceHolder,
         keyboardType:UIKeyboardType = .default,
         tabs:[SelectData] = [],
+        checks:[RadioData] = [],
         isOption:Bool = false
         ) {
         
@@ -48,11 +49,9 @@ class InputData:Identifiable{
         self.placeHolder = placeHolder
         self.keyboardType = keyboardType
         self.tabs = tabs
+        self.checks = checks
         self.isOption = isOption
     }
-    
-    
-    
 }
 
 struct PageProfileRegist: PageView {
@@ -76,6 +75,7 @@ struct PageProfileRegist: PageView {
                     PageTab(
                         isBack: true
                     ){
+                        self.isFocus = false
                         self.appSceneObserver.alert = .confirm(
                             nil, String.pageText.profileCancelConfirm)
                         { isOk in
@@ -131,6 +131,9 @@ struct PageProfileRegist: PageView {
                                 { idx in
                                     self.selectedIdx = idx
                                 }
+                            } else if inputData.type == .radio{
+                                SelectRadio( data: inputData )
+                                
                             } else if inputData.type == .date{
                                 SelectDatePicker( data: inputData )
                                 { date in
@@ -260,7 +263,7 @@ struct PageProfileRegist: PageView {
                 .init(
                     idx: 0,
                     image: Asset.icon.mail,
-                    text: String.app.mail, color: Color.brand.fourth),
+                    text: String.app.mail, color: Color.brand.fourthExtra),
                 .init(
                     idx: 1,
                     image: Asset.icon.femail,
@@ -272,11 +275,21 @@ struct PageProfileRegist: PageView {
             info:String.pageText.profileRegistMicroFinInfo,
             placeHolder: String.pageText.profileRegistMicroFinPlaceHolder,
             isOption: true
-            )
+            ),
+        InputData(
+            type:.radio,
+            title: String.pageText.profileRegistHealth,
+            checks:[
+                .init(text: String.pageText.profileRegistNeutralized),
+                .init(text: String.pageText.profileRegistDistemperVaccinated),
+                .init(text: String.pageText.profileRegistHepatitisVaccinated),
+                .init(text: String.pageText.profileRegistParovirusVaccinated),
+                .init(text: String.pageText.profileRegistRabiesVaccinated)
+            ])
     ]
     
     private func update(){
-        if self.step >= self.steps.count-1 { return }
+        if self.step >= self.steps.count { return }
         switch self.step {
         case  0 :
             self.selectedProfileImage = self.selectedImage
@@ -288,6 +301,16 @@ struct PageProfileRegist: PageView {
             let gender:Gender = self.selectedIdx == 0 ? .mail : .femail
             self.profile?.update(data: ModifyProfileData(gender: gender))
         case  5 : self.profile?.update(data: ModifyProfileData(microfin: self.input))
+        case  6 :
+            guard let inputData = self.inputData else {return}
+            self.profile?.update(data:
+                            ModifyProfileData(
+                                neutralization: inputData.checks[0].isCheck,
+                                distemper: inputData.checks[1].isCheck,
+                                hepatitis: inputData.checks[2].isCheck,
+                                parovirus: inputData.checks[3].isCheck,
+                                rabies: inputData.checks[4].isCheck))
+            
         default : break
         }
     }
@@ -302,6 +325,8 @@ struct PageProfileRegist: PageView {
             return self.selectedIdx != -1
         case .date:
             return self.selectedDate != nil
+        case .radio:
+            return true
         default  : return false
         }
     }
@@ -319,6 +344,7 @@ struct PageProfileRegist: PageView {
                 PageLog.d("saveInput " + self.selectedIdx.description, tag: self.tag)
             case .text :
                 data.inputValue = self.input
+            case .radio : break
             }
         }
         self.inputData = nil
@@ -327,9 +353,7 @@ struct PageProfileRegist: PageView {
         self.input = ""
         self.isFocus = false
         self.selectedDate = Date()
-       
         PageLog.d("saveInput reset", tag: self.tag)
-       
     }
     
     private func prev(){

@@ -60,9 +60,8 @@ struct ProfileInfo : PageComponent {
                                     size: Font.size.mediumExtra,
                                     color: self.profile.isEmpty ? Color.app.greyLight : Color.app.greyDeep
                                 ))
-                            
+                            Spacer()
                             if !self.profile.isEmpty && self.isModifyAble {
-                                Spacer()
                                 Button(action: {
                                     self.appSceneObserver.alert =
                                         .confirm(nil,  String.alert.deleteProfile){ isOk in
@@ -92,6 +91,13 @@ struct ProfileInfo : PageComponent {
                     }
                 }
             }
+            
+        }
+        .onTapGesture {
+            if !self.profile.isEmpty { return }
+            self.pagePresenter.openPopup(
+                PageProvider.getPageObject(.profileRegist)
+            )
         }
         
         .onReceive(self.appSceneObserver.$pickImage) { pick in
@@ -149,28 +155,25 @@ struct ProfileImage:PageView{
                 .renderingMode(.original)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
+                .padding(.all, self.isEmpty ? Dimen.margin.tiny : 0)
                 .frame(width: Dimen.profile.regular, height: Dimen.profile.regular)
                 .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                 .padding(.horizontal, Dimen.margin.tiny)
-                
-            Button(action: {
-                if self.isEmpty {
-                    self.pagePresenter.openPopup(
-                        PageProvider.getPageObject(.profileRegist)
-                    )
-                } else {
+            if !self.isEmpty {
+                Button(action: {
                     self.appSceneObserver.select
-                        = .imgPicker(SceneRequest.imagePicker.rawValue + id)
+                            = .imgPicker(SceneRequest.imagePicker.rawValue + id)
+                }) {
+                    Image( Asset.icon.add )
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(self.isEmpty ? Color.brand.primary : Color.app.greyLight)
+                        .frame(width: Dimen.icon.thin,
+                               height: Dimen.icon.thin)
+                        .background(Color.app.white)
+                        .clipShape(Circle())
                 }
-                
-            }) {
-                Image( Asset.icon.add )
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundColor(self.isEmpty ? Color.brand.primary : Color.app.greyLight)
-                    .frame(width: Dimen.icon.thin,
-                           height: Dimen.icon.thin)
             }
         }
        

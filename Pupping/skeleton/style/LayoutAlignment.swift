@@ -127,16 +127,20 @@ struct LineVerticalDotted: Shape {
 }
 
 struct Shadow: ViewModifier {
+    var color:Color = Color.app.grey
+    var opacity:Double = 0.12
     func body(content: Content) -> some View {
         return content
-            .shadow(color: Color.app.grey.opacity(0.12), radius: Dimen.radius.thin, x: 1, y: 1)
+            .shadow(color: color.opacity(opacity), radius: Dimen.radius.thin, x: 1, y: 1)
     }
 }
 
 struct ShadowTop: ViewModifier {
+    var color:Color = Color.app.grey
+    var opacity:Double = 0.12
     func body(content: Content) -> some View {
         return content
-            .shadow(color: Color.app.grey.opacity(0.12), radius: Dimen.radius.thin, x: 0, y: -1)
+            .shadow(color: color.opacity(opacity), radius: Dimen.radius.thin, x: 0, y: -1)
     }
 }
 

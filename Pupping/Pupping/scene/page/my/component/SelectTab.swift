@@ -93,7 +93,7 @@ struct SelectTab_Previews: PreviewProvider {
                         .init(
                             idx: 0,
                             image: Asset.icon.mail,
-                            text: String.app.mail, color: Color.brand.fourth),
+                            text: String.app.mail, color: Color.brand.fourthExtra),
                         .init(
                             idx: 0,
                             image: Asset.icon.femail,

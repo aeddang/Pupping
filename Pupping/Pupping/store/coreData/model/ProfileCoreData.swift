@@ -21,6 +21,11 @@ class ProfileCoreData:PageProtocol {
         static let exp = "exp"
         static let microfin = "microfin"
         static let neutralization = "neutralization"
+        static let distemper = "distemper"
+        static let hepatitis = "hepatitis"
+        static let parovirus = "parovirus"
+        static let rabies = "rabies"
+        
     }
     
     func add(profile:Profile){
@@ -38,6 +43,10 @@ class ProfileCoreData:PageProtocol {
         if let value = profile.species { item.setValue(value, forKey: Keys.species) }
         if let value = profile.microfin { item.setValue(value, forKey: Keys.microfin) }
         if let value = profile.neutralization { item.setValue(value, forKey: Keys.neutralization) }
+        if let value = profile.distemper { item.setValue(value, forKey: Keys.distemper) }
+        if let value = profile.hepatitis { item.setValue(value, forKey: Keys.hepatitis) }
+        if let value = profile.parovirus { item.setValue(value, forKey: Keys.parovirus) }
+        if let value = profile.rabies { item.setValue(value, forKey: Keys.rabies) }
         item.setValue(profile.lv, forKey: Keys.lv)
         item.setValue(profile.exp, forKey: Keys.exp)
     
@@ -85,6 +94,10 @@ class ProfileCoreData:PageProtocol {
                 if let value = data.species { item.setValue(value, forKey: Keys.species) }
                 if let value = data.microfin { item.setValue(value, forKey: Keys.microfin) }
                 if let value = data.neutralization { item.setValue(value, forKey: Keys.neutralization) }
+                if let value = data.distemper { item.setValue(value, forKey: Keys.distemper) }
+                if let value = data.hepatitis { item.setValue(value, forKey: Keys.hepatitis) }
+                if let value = data.parovirus { item.setValue(value, forKey: Keys.parovirus) }
+                if let value = data.rabies { item.setValue(value, forKey: Keys.rabies) }
             }
             self.saveContext()
         } catch {

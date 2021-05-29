@@ -7,14 +7,18 @@
     </entity>
     <entity name="ProfileEntity" representedClassName=".ProfileEntity" syncable="YES" codeGenerationType="class">
         <attribute name="birth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="distemper" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="exp" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="gender" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="hepatitis" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="lv" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="microfin" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="neutralization" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="parovirus" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="rabies" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="species" optional="YES" attributeType="String"/>
     </entity>
     <entity name="UserEntity" representedClassName=".UserEntity" syncable="YES" codeGenerationType="class">
@@ -25,7 +29,7 @@
     </entity>
     <elements>
         <element name="Item" positionX="-63" positionY="-18" width="128" height="74"/>
-        <element name="ProfileEntity" positionX="-63" positionY="9" width="128" height="179"/>
+        <element name="ProfileEntity" positionX="-63" positionY="9" width="128" height="239"/>
         <element name="UserEntity" positionX="-54" positionY="63" width="128" height="89"/>
     </elements>
 </model>

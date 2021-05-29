@@ -26,7 +26,8 @@ extension Color {
         public static let secondary = Color.init(red: 0/255, green:198/255, blue: 115/255)
         public static let secondaryExtra = Color.init(red: 98/255, green:201/255, blue: 150/255)
         public static let thirdly = Color.init(red: 242/255, green:39/255, blue: 11/255)
-        public static let fourth = Color.init(red: 136/255, green:161/255, blue: 251/255)
+        public static let fourth = Color.init(red: 10/255, green:132/255, blue: 255/255)
+        public static let fourthExtra = Color.init(red: 136/255, green:161/255, blue: 251/255)
         
         public static let bg = app.whiteDeep
     }

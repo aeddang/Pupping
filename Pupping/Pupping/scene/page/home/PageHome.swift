@@ -81,9 +81,10 @@ struct PageHome: PageView {
         }//geo
         .modifier(PageFull())
         .onAppear{
-           
+           //mission = Mission(type: .always, playType: .duration)
         }
     }//body
+    @State var mission:Mission? = nil
     @State var profiles:[Profile]? = nil
     @State var profilePages: [PageViewProtocol] = []
 }

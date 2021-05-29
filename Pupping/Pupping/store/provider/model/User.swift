@@ -118,6 +118,10 @@ struct ModifyProfileData {
     var birth:Date? = nil
     var microfin:String? = nil
     var neutralization:Bool? = nil
+    var distemper:Bool? = nil
+    var hepatitis:Bool? = nil
+    var parovirus:Bool? = nil
+    var rabies:Bool? = nil
 }
 
 struct ModifyPlayData {
@@ -137,6 +141,10 @@ class Profile:ObservableObject, PageProtocol, Identifiable {
     @Published private(set) var lv:Int = 1
     private(set) var microfin:String? = nil
     private(set) var neutralization:Bool? = nil
+    private(set) var distemper:Bool? = nil
+    private(set) var hepatitis:Bool? = nil
+    private(set) var parovirus:Bool? = nil
+    private(set) var rabies:Bool? = nil
     private(set) var isEmpty:Bool = false
     
     init(){}
@@ -158,6 +166,10 @@ class Profile:ObservableObject, PageProtocol, Identifiable {
         self.microfin = data.microfin
         if let imgData = data.image { self.image =  UIImage(data: imgData) }
         self.neutralization = data.neutralization
+        self.distemper = data.distemper
+        self.hepatitis = data.hepatitis
+        self.parovirus = data.parovirus
+        self.rabies = data.rabies
     }
     
     @discardableResult
@@ -174,6 +186,12 @@ class Profile:ObservableObject, PageProtocol, Identifiable {
         if let value = data.species { self.species = value }
         if let value = data.gender { self.gender = value }
         if let value = data.birth { self.birth = value }
+        if let value = data.neutralization { self.neutralization = value }
+        if let value = data.distemper { self.distemper = value }
+        if let value = data.hepatitis { self.hepatitis = value }
+        if let value = data.parovirus { self.parovirus = value }
+        if let value = data.rabies { self.rabies = value }
+        
         ProfileCoreData().update(id: self.id, data: data)
         return self
     }

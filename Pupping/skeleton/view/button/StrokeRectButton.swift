@@ -14,7 +14,7 @@ struct StrokeRectButton: View, SelecterbleProtocol{
     var index: Int = 0
     var textModifier:TextModifier = TextModifier(
         family: Font.family.bold,
-        size: Font.size.tiny,
+        size: Font.size.tinyExtra,
         color: Color.app.greyLight,
         activeColor: Color.app.white
     )

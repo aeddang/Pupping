@@ -55,7 +55,7 @@ struct Select<Presenting>: View where Presenting: View {
             VStack{
                 Spacer()
                 VStack (alignment: .leading, spacing:0){
-                    VStack(alignment: .leading, spacing:0){
+                    VStack(alignment: .center, spacing:0){
                         ForEach(self.buttons) { btn in
                             SelectButton(
                                 text: btn.title ,
@@ -66,18 +66,21 @@ struct Select<Presenting>: View where Presenting: View {
                                 self.index = idx
                                 self.action(idx)
                             }
+                            .frame(height:Dimen.button.heavy)
+                            if btn.index != (self.buttons.count - 1) {
+                                Spacer().modifier(MatchHorizontal(height: 1))
+                                    .background(Color.app.greyLight)
+                                    .padding(.horizontal, Dimen.margin.thin)
+                            }
                         }
                     }
                 }
-                .padding(.bottom, self.safeAreaBottom)
                 .background(Color.app.white)
-                .mask(
-                    ZStack(alignment: .bottom){
-                        RoundedRectangle(cornerRadius: Dimen.radius.regular)
-                        Rectangle().modifier(MatchHorizontal(height: Dimen.radius.regular))
-                    }
-                )
-                .modifier(ShadowTop())
+                .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.regular))
+                .modifier(Shadow())
+                .padding(.top, Dimen.margin.regular)
+                .padding(.horizontal, Dimen.margin.regular)
+                .padding(.bottom, self.safeAreaBottom)
                 .offset(y:self.isShowing ? 0 : 200)
             }
         }

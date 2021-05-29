@@ -102,13 +102,13 @@ struct Alert<Presenting>: View where Presenting: View {
                         }
                         .padding(.bottom, Dimen.margin.medium)
                     }
-                    HStack(spacing:Dimen.margin.thin){
+                    HStack(spacing:Dimen.margin.tinyExtra){
                         ForEach(self.buttons) { btn in
                             FillButton(
+                                type:.small,
                                 text: btn.title,
                                 index: btn.index,
-                                isSelected: btn.index == (self.buttons.count-1),
-                                size:Dimen.button.light
+                                isSelected: btn.index == (self.buttons.count-1)
                             ){idx in
                                 self.action(idx)
                                 withAnimation{
@@ -124,15 +124,15 @@ struct Alert<Presenting>: View where Presenting: View {
             }
             .frame(
                 minWidth: 0,
-                idealWidth:  247,
-                maxWidth:   320,
+                idealWidth:  320,
+                maxWidth:   460,
                 minHeight: 0,
                 maxHeight: (self.text?.count ?? 0) > self.maxTextCount
                     ?  320
                     : .infinity
             )
             .modifier(Shadow())
-            .padding(.all, Dimen.margin.heavy)
+            .padding(.all, Dimen.margin.regular)
             
         }
         .modifier(MatchParent())
@@ -184,7 +184,7 @@ struct AlertBody: PageComponent{
             if self.tipText != nil{
                 Text(self.tipText!)
                     .multilineTextAlignment(.center)
-                    .modifier(MediumTextStyle(size: Font.size.tiny, color: Color.brand.primary))
+                    .modifier(MediumTextStyle(size: Font.size.tinyExtra, color: Color.brand.primary))
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.top, Dimen.margin.regular)
@@ -192,7 +192,7 @@ struct AlertBody: PageComponent{
             if self.referenceText != nil{
                 Text(self.referenceText!)
                     .multilineTextAlignment(.center)
-                    .modifier(MediumTextStyle(size: Font.size.tiny, color: Color.app.greyLight))
+                    .modifier(MediumTextStyle(size: Font.size.tinyExtra, color: Color.app.greyLight))
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.top, Dimen.margin.tiny)

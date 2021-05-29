@@ -106,12 +106,17 @@ extension String {
         public static let profileRegistMicroFin = "profileRegistMicroFin".loaalized()
         public static let profileRegistMicroFinInfo = "profileRegistMicroFinInfo".loaalized()
         public static let profileRegistMicroFinPlaceHolder = "profileRegistMicroFinPlaceHolder".loaalized()
+        public static let profileRegistNeutralized = "profileRegistNeutralized".loaalized()
+        public static let profileRegistDistemperVaccinated = "profileRegistDistemperVaccinated".loaalized()
+        public static let profileRegistHepatitisVaccinated = "profileRegistHepatitisVaccinated".loaalized()
+        public static let profileRegistParovirusVaccinated = "profileRegistParovirusVaccinated".loaalized()
+        public static let profileRegistRabiesVaccinated = "profileRegistRabiesVaccinated".loaalized()
         
         public static let profileRegistPlaceHolder = "profileRegistPlaceHolder".loaalized()
         public static let profileEmptyName = "profileEmptyName".loaalized()
         public static let profileEmptySpecies = "profileEmptySpecies".loaalized()
         public static let profileOption = "profileOption".loaalized()
-        
+        public static let profileCheckAll = "profileCheckAll".loaalized()
         public static let profileCancelConfirm = "profileCancelConfirm".loaalized()
          
         

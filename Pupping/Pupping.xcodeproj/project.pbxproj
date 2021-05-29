@@ -163,6 +163,9 @@
 		31807D7F2659F57700531063 /* MyRewardsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D7E2659F57700531063 /* MyRewardsInfo.swift */; };
 		31807D81265A0D0300531063 /* SelectDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D80265A0D0300531063 /* SelectDatePicker.swift */; };
 		31807D83265A16C800531063 /* SelectImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D82265A16C800531063 /* SelectImagePicker.swift */; };
+		318DDC6726619DFC00543185 /* SelectRadio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318DDC6626619DFC00543185 /* SelectRadio.swift */; };
+		318DDC692662020A00543185 /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318DDC682662020A00543185 /* Mission.swift */; };
+		318DDC6C266228DF00543185 /* MissionGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318DDC6B266228DF00543185 /* MissionGenerator.swift */; };
 		318EEA142660703F0047DB0D /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 318EEA0A26606E810047DB0D /* Poppins-Black.ttf */; };
 		318EEA152660703F0047DB0D /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 318EEA0726606E810047DB0D /* Poppins-BlackItalic.ttf */; };
 		318EEA162660703F0047DB0D /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 318EEA0F26606E820047DB0D /* Poppins-Bold.ttf */; };
@@ -382,6 +385,9 @@
 		31807D7E2659F57700531063 /* MyRewardsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRewardsInfo.swift; sourceTree = "<group>"; };
 		31807D80265A0D0300531063 /* SelectDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePicker.swift; sourceTree = "<group>"; };
 		31807D82265A16C800531063 /* SelectImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImagePicker.swift; sourceTree = "<group>"; };
+		318DDC6626619DFC00543185 /* SelectRadio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRadio.swift; sourceTree = "<group>"; };
+		318DDC682662020A00543185 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
+		318DDC6B266228DF00543185 /* MissionGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionGenerator.swift; sourceTree = "<group>"; };
 		318EEA0226606E800047DB0D /* Poppins-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Italic.ttf"; sourceTree = "<group>"; };
 		318EEA0326606E810047DB0D /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
 		318EEA0426606E810047DB0D /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -905,6 +911,7 @@
 		316C471D2653D2A100A8D7F5 /* store */ = {
 			isa = PBXGroup;
 			children = (
+				318DDC6A2662041600543185 /* mission */,
 				31D07B9E2660A2B600BCC169 /* provider */,
 				316C47242653D3A300A8D7F5 /* api */,
 				316C471F2653D3A200A8D7F5 /* coreData */,
@@ -1154,6 +1161,7 @@
 				31807D682658C19200531063 /* SelectTab.swift */,
 				31807D80265A0D0300531063 /* SelectDatePicker.swift */,
 				31807D82265A16C800531063 /* SelectImagePicker.swift */,
+				318DDC6626619DFC00543185 /* SelectRadio.swift */,
 			);
 			path = component;
 			sourceTree = "<group>";
@@ -1188,6 +1196,15 @@
 				31807D7A2659F3B900531063 /* ProfileItem.swift */,
 			);
 			path = component;
+			sourceTree = "<group>";
+		};
+		318DDC6A2662041600543185 /* mission */ = {
+			isa = PBXGroup;
+			children = (
+				318DDC682662020A00543185 /* Mission.swift */,
+				318DDC6B266228DF00543185 /* MissionGenerator.swift */,
+			);
+			path = mission;
 			sourceTree = "<group>";
 		};
 		31D07B892660798400BCC169 /* sns */ = {
@@ -1608,6 +1625,7 @@
 				316C47862653D3A300A8D7F5 /* Repository.swift in Sources */,
 				316C46B1265392D300A8D7F5 /* assets.swift in Sources */,
 				316C49222653D3E300A8D7F5 /* PageSample.swift in Sources */,
+				318DDC692662020A00543185 /* Mission.swift in Sources */,
 				316C4710265392D300A8D7F5 /* KeyboardObserver.swift in Sources */,
 				316C46BF265392D300A8D7F5 /* WebView.swift in Sources */,
 				316C46C6265392D300A8D7F5 /* CPYTPlayer.swift in Sources */,
@@ -1624,6 +1642,7 @@
 				316C46ED265392D300A8D7F5 /* CheckBox.swift in Sources */,
 				316C49632653D3E300A8D7F5 /* AppLayout.swift in Sources */,
 				316C46E0265392D300A8D7F5 /* Alert.swift in Sources */,
+				318DDC6C266228DF00543185 /* MissionGenerator.swift in Sources */,
 				316C46F8265392D300A8D7F5 /* PageSceneDelegate.swift in Sources */,
 				316C470F265392D300A8D7F5 /* OffsetKey.swift in Sources */,
 				316C46CB265392D300A8D7F5 /* CPAirPlayButton.swift in Sources */,
@@ -1673,6 +1692,7 @@
 				316C46DD265392D300A8D7F5 /* ProgressSlider.swift in Sources */,
 				316C46CE265392D300A8D7F5 /* SimplePlayerUI.swift in Sources */,
 				316C46D9265392D300A8D7F5 /* SwipperView.swift in Sources */,
+				318DDC6726619DFC00543185 /* SelectRadio.swift in Sources */,
 				316C48B02653D3E300A8D7F5 /* SceneSelectController.swift in Sources */,
 				316C46E7265392D300A8D7F5 /* RectButton.swift in Sources */,
 				316C46EB265392D300A8D7F5 /* TextButton.swift in Sources */,
@@ -1899,7 +1919,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -1955,7 +1975,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MARKETING_VERSION = 1.0002;
+				MARKETING_VERSION = 1.0003;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1973,7 +1993,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -2030,7 +2050,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MARKETING_VERSION = 1.0002;
+				MARKETING_VERSION = 1.0003;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

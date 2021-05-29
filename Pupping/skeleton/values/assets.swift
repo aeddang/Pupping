@@ -63,11 +63,11 @@ extension Asset{
     }
     
     struct shape {
-        public static let radioBtnOn = "icRadioSOn"
-        public static let radioBtnOff = "icRadioSOff"
-        public static let checkBoxOn = "icCheckboxOn"
-        public static let checkBoxOn2 = "icCheckboxOn02"
-        public static let checkBoxOff = "icCheckboxOff"
+        public static let radioBtnOn = "sp_checkOn"
+        public static let radioBtnOff = "sp_checkOff"
+        
+        public static let checkBoxOn = "sp_checkOn"
+        public static let checkBoxOff = "sp_checkOff"
         public static let spinner = "ic_spinner"
         
         public static let point = "sp_point"

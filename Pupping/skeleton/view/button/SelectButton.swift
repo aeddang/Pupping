@@ -14,10 +14,10 @@ struct SelectButton: View, SelecterbleProtocol{
     var index: Int = 0
     var isSelected: Bool
     var textModifier:TextModifier = TextModifier(
-        family: Font.family.bold,
+        family: Font.family.medium,
         size: Font.size.regularExtra,
-        color: Color.app.greyDeep,
-        activeColor: Color.brand.primary
+        color: Color.brand.fourth,
+        activeColor: Color.brand.thirdly
     )
     var size:CGFloat = Dimen.button.medium
     let action: (_ idx:Int) -> Void
@@ -45,7 +45,7 @@ struct SelectButton: View, SelecterbleProtocol{
                 .padding(.horizontal, Dimen.margin.medium)
             }
             .modifier( MatchHorizontal(height: self.size) )
-            .background(self.isSelected ? Color.app.greyLight : Color.app.white )
+            //.background(self.isSelected ? Color.app.greyLight : Color.app.white )
         }
         
         

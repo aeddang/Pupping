@@ -31,7 +31,7 @@ struct PageMission: PageView {
         }
         .modifier(PageFull())
         .onAppear{
-           
+            
         }
     }//body
    

@@ -23,7 +23,7 @@ struct PageProfileModify: PageView {
     
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var pageDragingModel:PageDragingModel = PageDragingModel()
-    
+    @ObservedObject var infinityScrollModel:InfinityScrollModel = InfinityScrollModel()
     @State var safeAreaBottom:CGFloat = 0
     var body: some View {
         GeometryReader { geometry in
@@ -44,46 +44,64 @@ struct PageProfileModify: PageView {
                         }
                     }
                     .padding(.top, self.sceneObserver.safeAreaTop)
-                    .padding(.bottom, Dimen.margin.heavy)
-                    
-                    VStack( spacing: 0 ){
-                        if self.isReady {
-                            InputCell(
-                                title: String.pageText.profileRegistName,
-                                input: self.$inputName,
-                                isFocus: self.currentModifyType == .name,
-                                placeHolder: String.pageText.profileEmptyName,
-                                keyboardType: .default
-                            )
-                            .padding(.bottom, Dimen.margin.medium)
-                            InputCell(
-                                title:String.pageText.profileRegistSpecies,
-                                input: self.$inputSpecies,
-                                isFocus: self.currentModifyType == .species,
-                                placeHolder: String.pageText.profileEmptySpecies,
-                                keyboardType: .default
-                            )
-                       
-                            Spacer()
-                            HStack(spacing: Dimen.margin.tiny) {
-                                FillButton(
-                                    text: String.app.cancel,
-                                    isSelected: false
-                                ){_ in
-                                    self.pagePresenter.goBack()
-                                }
-                                FillButton(
-                                    text:  String.button.modify,
-                                    isSelected: true
-                                ){_ in
-                                    self.profile?.update(data: ModifyProfileData(nickName:self.inputName, species: self.inputSpecies))
-                                    self.pagePresenter.goBack()
-                                }
+                    .padding(.bottom, Dimen.margin.thin)
+                    InfinityScrollView(
+                        viewModel: self.infinityScrollModel,
+                        isRecycle:false,
+                        useTracking:false)
+                    {
+                        VStack( spacing: Dimen.margin.medium ){
+                            if self.isReady {
+                                InputCell(
+                                    title: String.pageText.profileRegistName,
+                                    input: self.$inputName,
+                                    isFocus: self.currentModifyType == .name,
+                                    placeHolder: String.pageText.profileEmptyName,
+                                    keyboardType: .default
+                                )
+                                InputCell(
+                                    title:String.pageText.profileRegistSpecies,
+                                    input: self.$inputSpecies,
+                                    isFocus: self.currentModifyType == .species,
+                                    placeHolder: String.pageText.profileEmptySpecies,
+                                    keyboardType: .default
+                                )
+                                SelectRadio(
+                                    data: self.healthData,
+                                    margin: Dimen.margin.regular
+                                )
+                                .padding(.bottom, Dimen.margin.medium)
                             }
-                            .padding(.bottom, self.safeAreaBottom + Dimen.margin.light)
+                        }
+                        .modifier(ContentHorizontalEdges())
+                    }
+                    HStack(spacing: Dimen.margin.tiny) {
+                        FillButton(
+                            text: String.app.cancel,
+                            isSelected: false
+                        ){_ in
+                            self.pagePresenter.goBack()
+                        }
+                        FillButton(
+                            text:  String.button.modify,
+                            isSelected: true
+                        ){_ in
+                            self.profile?.update(
+                                data: ModifyProfileData(
+                                    nickName:self.inputName,
+                                    species: self.inputSpecies,
+                                    neutralization: self.healthData.checks[0].isCheck,
+                                    distemper: self.healthData.checks[1].isCheck,
+                                    hepatitis: self.healthData.checks[2].isCheck,
+                                    parovirus: self.healthData.checks[3].isCheck,
+                                    rabies: self.healthData.checks[4].isCheck))
+                           
+                            self.pagePresenter.goBack()
                         }
                     }
                     .modifier(ContentHorizontalEdges())
+                    .padding(.bottom, self.safeAreaBottom + Dimen.margin.light)
+                    
                 }
                 .modifier(PageFull())
                 .modifier(PageDraging(geometry: geometry, pageDragingModel: self.pageDragingModel))
@@ -105,6 +123,13 @@ struct PageProfileModify: PageView {
                 self.inputName = profile.nickName ?? ""
                 self.inputSpecies = profile.species ?? ""
                 self.isReady = true
+                
+                self.healthData.checks[0].isCheck = profile.neutralization ?? false
+                self.healthData.checks[1].isCheck = profile.distemper ?? false
+                self.healthData.checks[2].isCheck = profile.hepatitis ?? false
+                self.healthData.checks[3].isCheck = profile.parovirus ?? false
+                self.healthData.checks[4].isCheck =  profile.rabies ?? false
+                
             }
             .onDisappear{
                
@@ -117,8 +142,18 @@ struct PageProfileModify: PageView {
     @State var currentModifyType:ModifyType = .none
     @State var inputName:String = ""
     @State var inputSpecies:String = ""
+    @State var healthData:InputData = InputData(
+        type:.radio,
+        title: String.pageText.profileRegistHealth,
+        checks:[
+            .init(text: String.pageText.profileRegistNeutralized),
+            .init(text: String.pageText.profileRegistDistemperVaccinated),
+            .init(text: String.pageText.profileRegistHepatitisVaccinated),
+            .init(text: String.pageText.profileRegistParovirusVaccinated),
+            .init(text: String.pageText.profileRegistRabiesVaccinated)
+        ])
     @State var profile:Profile? = nil
-    
+   
 }
 
 
