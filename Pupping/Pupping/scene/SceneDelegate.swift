@@ -26,19 +26,23 @@ class SceneDelegate: PageSceneDelegate {
         let dataProvider = DataProvider()
         let networkObserver = NetworkObserver()
         let snsManager = SnsManager()
+        let keyboardObserver = KeyboardObserver()
+        let locationObserver = LocationObserver()
+        let missionGenerator = MissionGenerator()
+        let missionManager = MissionManager(generator: missionGenerator)
         self.pagePresenter.bodyColor = Color.brand.bg
         let res = Repository(
             dataProvider: dataProvider,
             networkObserver: networkObserver,
             pagePresenter: self.pagePresenter,
             sceneObserver: sceneObserver,
-            snsManager: snsManager
+            snsManager: snsManager,
+            locationObserver: locationObserver,
+            missionGenerator: missionGenerator,
+            missionManager: missionManager
         )
         self.repository = res
         
-        let keyboardObserver = KeyboardObserver()
-        let locationObserver = LocationObserver()
-       
         let environmentView = view
             .environmentObject(AppDelegate.appObserver)
             .environmentObject(res)
@@ -48,6 +52,8 @@ class SceneDelegate: PageSceneDelegate {
             .environmentObject(keyboardObserver)
             .environmentObject(locationObserver)
             .environmentObject(snsManager)
+            .environmentObject(missionGenerator)
+            .environmentObject(missionManager)
             
         return AnyView(environmentView)
     }

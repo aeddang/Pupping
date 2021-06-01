@@ -24,6 +24,9 @@ class Repository:ObservableObject, PageProtocol{
     let networkObserver:NetworkObserver
     let shareManager:ShareManager
     let snsManager:SnsManager
+    let locationObserver:LocationObserver
+    let missionGenerator:MissionGenerator
+    let missionManager:MissionManager
     let apiCoreDataManager = ApiCoreDataManager()
     private let storage = LocalStorage()
     private let apiManager = ApiManager()
@@ -37,7 +40,11 @@ class Repository:ObservableObject, PageProtocol{
         networkObserver:NetworkObserver? = nil,
         pagePresenter:PagePresenter? = nil,
         sceneObserver:AppSceneObserver? = nil,
-        snsManager:SnsManager? = nil
+        snsManager:SnsManager? = nil,
+        locationObserver:LocationObserver? = nil,
+        missionGenerator:MissionGenerator? = nil,
+        missionManager:MissionManager? = nil
+        
     ) {
         self.dataProvider = dataProvider ?? DataProvider()
         self.networkObserver = networkObserver ?? NetworkObserver()
@@ -45,13 +52,19 @@ class Repository:ObservableObject, PageProtocol{
         self.pagePresenter = pagePresenter
         self.shareManager = ShareManager(pagePresenter: pagePresenter)
         self.snsManager = snsManager ?? SnsManager()
-        
+        self.locationObserver = locationObserver ?? LocationObserver()
+        let generator = missionGenerator ?? MissionGenerator()
+        self.missionGenerator = generator
+        self.missionManager = missionManager ?? MissionManager(generator: generator)
         self.pagePresenter?.$currentPage.sink(receiveValue: { evt in 
             self.apiManager.clear()
             self.appSceneObserver?.isApiLoading = false
             self.pagePresenter?.isLoading = false
             self.retryRegisterPushToken()
         }).store(in: &anyCancellable)
+        
+        
+        self.setupLocationMission()
         self.setupSetting()
         self.setupDataProvider()
         self.setupApiManager()
@@ -82,7 +95,16 @@ class Repository:ObservableObject, PageProtocol{
             }
         }).store(in: &anyCancellable)
     }
-    
+    private func setupLocationMission(){
+        self.locationObserver.$event.sink(receiveValue: { evt in
+            switch evt {
+            case .updateLocation(let loc) :
+                self.missionGenerator.finalLocation = loc
+            default : break
+            }
+            
+        }).store(in: &anyCancellable)
+    }
     private func setupApiManager(){
         
         self.apiManager.$status.sink(receiveValue: { status in

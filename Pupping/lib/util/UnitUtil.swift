@@ -118,6 +118,7 @@ extension String{
         return String(self[range])
     }
     
+    
     func parseJson() -> [String: Any]? {
         guard let data = self.data(using: .utf8) else {
             DataLog.e("parse : jsonString data error", tag: "parseJson")

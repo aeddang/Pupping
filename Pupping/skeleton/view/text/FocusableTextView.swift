@@ -82,7 +82,7 @@ struct FocusableTextView: UIViewRepresentable {
                 let textRange = Range(range, in: currentText) {
                 let updatedText = currentText.replacingCharacters(in: textRange, with: text)
                 if self.parent.limitedSize != -1 {
-                    if updatedText.count >= self.parent.limitedSize { return false }
+                    if updatedText.count > self.parent.limitedSize { return false }
                 }
                 self.parent.inputChange?(updatedText, textView.contentSize)
             }

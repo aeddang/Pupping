@@ -106,21 +106,25 @@ class LocationObserver: NSObject, ObservableObject, CLLocationManagerDelegate {
         let geoCoder = CLGeocoder()
         let location = CLLocation(latitude: latitude, longitude: longitude)
         geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
+            
             // Place details
             var address = LocationAddress()
-            var placeMark: CLPlacemark!
-            placeMark = placemarks?[0]
-            // Street address
-            address.street = placeMark.thoroughfare
-            // City
-            address.city = placeMark.locality
-            // State
-            address.state = placeMark.administrativeArea
-            // Zip code
-            address.zipCode = placeMark.postalCode
-            // Country
-            address.country = placeMark.country
-            com(address)
+            
+            if let placeMark = placemarks?[0] {
+                // Street address
+                address.street = placeMark.thoroughfare
+                // City
+                address.city = placeMark.locality
+                // State
+                address.state = placeMark.administrativeArea
+                // Zip code
+                address.zipCode = placeMark.postalCode
+                // Country
+                address.country = placeMark.country
+                com(address)
+            } else {
+                com(address)
+            }
         })
         
     }

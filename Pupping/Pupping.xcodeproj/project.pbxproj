@@ -184,6 +184,8 @@
 		318EEA232660703F0047DB0D /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 318EEA0926606E810047DB0D /* Poppins-SemiBoldItalic.ttf */; };
 		318EEA242660703F0047DB0D /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 318EEA0E26606E820047DB0D /* Poppins-Thin.ttf */; };
 		318EEA252660703F0047DB0D /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 318EEA0626606E810047DB0D /* Poppins-ThinItalic.ttf */; };
+		318F5934266345DF0054FA34 /* MissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318F5933266345DF0054FA34 /* MissionManager.swift */; };
+		318F593626636AED0054FA34 /* MissionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318F593526636AED0054FA34 /* MissionInfo.swift */; };
 		319A7DB4265A6BF100FD2CF9 /* PageBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A7DB3265A6BF100FD2CF9 /* PageBoard.swift */; };
 		319A7DB6265A6C9500FD2CF9 /* PageShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A7DB5265A6C9500FD2CF9 /* PageShop.swift */; };
 		319A7DB8265A6E1700FD2CF9 /* PageProfileModify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A7DB7265A6E1700FD2CF9 /* PageProfileModify.swift */; };
@@ -406,6 +408,8 @@
 		318EEA1126606E820047DB0D /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		318EEA1226606E830047DB0D /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		318EEA1326606E830047DB0D /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		318F5933266345DF0054FA34 /* MissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionManager.swift; sourceTree = "<group>"; };
+		318F593526636AED0054FA34 /* MissionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionInfo.swift; sourceTree = "<group>"; };
 		319A7DB3265A6BF100FD2CF9 /* PageBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageBoard.swift; sourceTree = "<group>"; };
 		319A7DB5265A6C9500FD2CF9 /* PageShop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageShop.swift; sourceTree = "<group>"; };
 		319A7DB7265A6E1700FD2CF9 /* PageProfileModify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageProfileModify.swift; sourceTree = "<group>"; };
@@ -792,11 +796,11 @@
 			isa = PBXGroup;
 			children = (
 				316C4686265392D300A8D7F5 /* InputAccssory.swift */,
-				316C4687265392D300A8D7F5 /* FocusableTextView.swift */,
 				316C4688265392D300A8D7F5 /* SearchBar.swift */,
 				316C4689265392D300A8D7F5 /* InputCell.swift */,
 				316C468A265392D300A8D7F5 /* SpanText.swift */,
 				316C468B265392D300A8D7F5 /* FocusableTextField.swift */,
+				316C4687265392D300A8D7F5 /* FocusableTextView.swift */,
 			);
 			path = text;
 			sourceTree = "<group>";
@@ -1114,6 +1118,7 @@
 				31807D522654DAE300531063 /* ProfileInfo.swift */,
 				31807D5D265625A000531063 /* LocationInfo.swift */,
 				31807D7E2659F57700531063 /* MyRewardsInfo.swift */,
+				318F593526636AED0054FA34 /* MissionInfo.swift */,
 			);
 			path = info;
 			sourceTree = "<group>";
@@ -1203,6 +1208,7 @@
 			children = (
 				318DDC682662020A00543185 /* Mission.swift */,
 				318DDC6B266228DF00543185 /* MissionGenerator.swift */,
+				318F5933266345DF0054FA34 /* MissionManager.swift */,
 			);
 			path = mission;
 			sourceTree = "<group>";
@@ -1593,6 +1599,7 @@
 				319A7DB6265A6C9500FD2CF9 /* PageShop.swift in Sources */,
 				316C46F4265392D300A8D7F5 /* SearchBar.swift in Sources */,
 				316C46C0265392D300A8D7F5 /* Navigation.swift in Sources */,
+				318F593626636AED0054FA34 /* MissionInfo.swift in Sources */,
 				316C46FA265392D300A8D7F5 /* PageDragingProtocol.swift in Sources */,
 				316C46E3265392D300A8D7F5 /* Radio.swift in Sources */,
 				316C48B32653D3E300A8D7F5 /* SceneRadioController.swift in Sources */,
@@ -1730,6 +1737,7 @@
 				316C49212653D3E300A8D7F5 /* PageIntro.swift in Sources */,
 				31D07B9526607B9E00BCC169 /* IntroItem1.swift in Sources */,
 				316C47CC2653D3A300A8D7F5 /* ShareManager.swift in Sources */,
+				318F5934266345DF0054FA34 /* MissionManager.swift in Sources */,
 				31D07B9A26608E1000BCC169 /* IntroItem3.swift in Sources */,
 				316C46BA265392D300A8D7F5 /* CustomImagePicker.swift in Sources */,
 				316C46B4265392D300A8D7F5 /* durations.swift in Sources */,
@@ -1919,7 +1927,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -1975,7 +1983,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MARKETING_VERSION = 1.0003;
+				MARKETING_VERSION = 1.0005;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1993,7 +2001,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -2050,7 +2058,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MARKETING_VERSION = 1.0003;
+				MARKETING_VERSION = 1.0005;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

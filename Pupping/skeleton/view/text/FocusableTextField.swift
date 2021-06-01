@@ -72,7 +72,7 @@ struct FocusableTextField: UIViewRepresentable {
                 let textRange = Range(range, in: text) {
                 let updatedText = text.replacingCharacters(in: textRange, with: string)
                 if parent.maxLength != -1 {
-                    if updatedText.count >= parent.maxLength {return false}
+                    if updatedText.count > parent.maxLength {return false}
                 }
                 parent.inputChange?(updatedText)
             }

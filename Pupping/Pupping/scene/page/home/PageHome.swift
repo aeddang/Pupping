@@ -14,8 +14,9 @@ import Combine
 struct PageHome: PageView {
     @EnvironmentObject var pagePresenter:PagePresenter
     @EnvironmentObject var sceneObserver:PageSceneObserver
-    @EnvironmentObject var appObserver:AppObserver
+    @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var dataProvider:DataProvider
+    @EnvironmentObject var missionManager:MissionManager
     
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var infinityScrollModel:InfinityScrollModel = InfinityScrollModel()
@@ -43,6 +44,11 @@ struct PageHome: PageView {
                         )
                         .modifier(MatchHorizontal(height: 150))
                         LocationInfo()
+                        if let missions = self.missions {
+                            ForEach(missions){ mission in
+                                MissionInfo(data:mission)
+                            }
+                        }
                     }
                     .modifier(ContentHorizontalEdges())
                     .padding(.top, self.sceneObserver.safeAreaTop + Dimen.margin.regular)
@@ -53,7 +59,9 @@ struct PageHome: PageView {
                 guard let evt = evt else {return}
                 switch evt {
                 case .pullCompleted :
-                    if !self.infinityScrollModel.isLoading {  }
+                    if !self.missionManager.isBusy {
+                        self.missionManager.generateMission()
+                    }
                     withAnimation{ self.reloadDegree = 0 }
                 case .pullCancel :
                     withAnimation{ self.reloadDegree = 0 }
@@ -78,15 +86,43 @@ struct PageHome: PageView {
                     self.viewPagerModel.request = .jump(0)
                 }
             }
+            .onReceive(self.missionManager.generator.$isBusy){ isBusy in
+                self.appSceneObserver.isApiLoading = isBusy
+            }
+            .onReceive(self.missionManager.$isMissionsUpdated) { isUpdated in
+                if isUpdated {
+                    self.onMissionUpdated()
+                }
+            }
         }//geo
         .modifier(PageFull())
+        .onReceive(self.pageObservable.$isAnimationComplete){ ani in
+            if ani {
+                if self.missionManager.missions.isEmpty {
+                    
+                    self.missionManager.generateMission()
+                } else {
+                    self.onMissionUpdated()
+                }
+            }
+        }
         .onAppear{
-           //mission = Mission(type: .always, playType: .duration)
+            
         }
     }//body
-    @State var mission:Mission? = nil
+    @State var missions:[Mission]? = nil
     @State var profiles:[Profile]? = nil
     @State var profilePages: [PageViewProtocol] = []
+    
+    private func onMissionUpdated(){
+        self.pagePresenter.isLoading = false
+        self.missions = self.missionManager.missions
+        self.missions?.forEach{ mission in
+            PageLog.d("mission " + mission.type.info() , tag: self.tag)
+            PageLog.d("mission " + mission.playType.info() , tag: self.tag)
+            PageLog.d("mission " + mission.description , tag: self.tag)
+        }
+    }
 }
 
 
