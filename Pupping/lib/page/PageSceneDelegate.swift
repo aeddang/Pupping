@@ -41,6 +41,14 @@ final class PagePresenter:ObservableObject{
         guard let pageKey = id else { return }
         PageSceneDelegate.instance?.closePopup(id:pageKey )
     }
+    
+    func setLayerPopup(pageObject: PageObject, isLayer:Bool){
+        pageObject.isLayer = isLayer
+        self.currentTopPage = isLayer ? getBelowPage(page:pageObject) : pageObject
+        if let top = self.currentTopPage {
+            self.currentPopup = top.isPopup ? top : nil
+        }
+    }
     func closeAllPopup(exception pageKey:String? = nil){
         PageSceneDelegate.instance?.closeAllPopup(exception: pageKey ?? "")
     }
@@ -55,7 +63,7 @@ final class PagePresenter:ObservableObject{
     
     func getBelowPage(page:PageObject)->PageObject?{
         if page.isPopup {
-            let find = PageSceneDelegate.instance?.popups.firstIndex(of: page)
+            let find = PageSceneDelegate.instance?.popups.filter{!$0.isLayer}.firstIndex(of: page)
             if let find = find , find > 0{
                 return PageSceneDelegate.instance?.popups[find - 1]
             }
@@ -435,7 +443,11 @@ class PageSceneDelegate: UIResponder, UIWindowSceneDelegate, PageProtocol {
     func willChangeAblePage(_ page:PageObject?)->Bool{ return true }
     
     func onWillChangePage(prevPage:PageObject?, nextPage:PageObject?){
-        guard let willChangePage = nextPage else { return }
+        guard let nextPage = nextPage else {return}
+        guard let willChangePage = ( !nextPage.isLayer
+                ? nextPage
+                : pagePresenter.getBelowPage(page: nextPage) )
+              else { return }
         if willChangePage.isPopup {
             pagePresenter.currentPopup = willChangePage
         }else{
@@ -444,6 +456,7 @@ class PageSceneDelegate: UIResponder, UIWindowSceneDelegate, PageProtocol {
         }
         pagePresenter.currentTopPage = willChangePage
         pageModel.topPageObject = willChangePage
+       
         let willChangeOrientationMask = pageModel.getPageOrientation(willChangePage)
         AppDelegate.orientationLock = pageModel.getPageOrientationLock(willChangePage) ?? .all
         guard let willChangeOrientation = willChangeOrientationMask else { return }

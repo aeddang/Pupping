@@ -107,7 +107,7 @@ enum MissionKeyword: CaseIterable {
     }
 }
 
-class Mission:ObservableObject, PageProtocol, Identifiable{
+class Mission:PageProtocol, Identifiable{
     let id:String = UUID().uuidString
     let type:MissionType
     let lv:MissionLv
@@ -115,9 +115,11 @@ class Mission:ObservableObject, PageProtocol, Identifiable{
     let placesClient = GMSPlacesClient.shared()
     
     private (set) var description:String = ""
+    private (set) var summary:String = ""
     private (set) var recommandPlaces:[GMSAutocompletePrediction] = []
     private (set) var start:GMSPlace? = nil
     private (set) var destination:GMSPlace? = nil
+   
     private (set) var waypoints:[GMSPlace] = []
     private (set) var startTime:Double = 0
     private (set) var endTime:Double = 0
@@ -201,6 +203,7 @@ class Mission:ObservableObject, PageProtocol, Identifiable{
             } else {
                 self.description = viewDuration + " 안에\n" + (destination.name ?? "") + "로(으로) 이동"
             }
+            self.summary = viewDuration + " 안에 " + (destination.name ?? "") + "로(으로) 이동"
         } else {
             switch self.playType {
             case .endurance:
@@ -219,8 +222,11 @@ class Mission:ObservableObject, PageProtocol, Identifiable{
                     + viewDistence + " 이동"
             default: break
             }
-            
+            self.summary =  description
         }
+        
+       
+        
         return self
     }
     

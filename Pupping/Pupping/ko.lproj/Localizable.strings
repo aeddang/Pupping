@@ -36,6 +36,8 @@
 "btnComplete" = "Complete";
 "btnModify" = "Modify";
 "btnSwapPupping" = "Swap to PUPPING";
+"btnStart" = "Start";
+"btnPreview" = "Preview";
 
 /*
   Alert
@@ -58,6 +60,9 @@
 
 "alertSnsLoginError" = "After login. Available.";
 
+"alertPrevPlayMission" = "수행중인 미션이 있습니다.\n종료하고 새로운 미션을 시작하겠습니까?";
+"alertClosePlayMission" = "미션을 종료하시겠습니까?\n저장되지 않은 정보는 모두 지워집니다.";
+
 /*
   Gnb
 */
@@ -78,6 +83,8 @@
 "titleMyRewards" = "My Reward";
 "titleMyPats" = "My Pats";
 "titleCommingSoon" = "comming soon";
+"titleMission" = "Mission Play";
+"titleMissionInfo" = "Mission Preview";
 
 /*
 PageIntro

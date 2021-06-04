@@ -121,7 +121,7 @@ struct ContentVerticalEdges: ViewModifier {
 struct PageTitle: ViewModifier {
     func body(content: Content) -> some View {
         return content
-            .modifier(BlackTextStyle(size: Font.size.mediumExtra, color: Color.app.greyDeep))
+            .modifier(BoldTextStyle(size: Font.size.mediumExtra, color: Color.app.greyDeep))
     }
 }
 
@@ -129,7 +129,7 @@ struct PageTitle: ViewModifier {
 struct ContentTitle: ViewModifier {
     func body(content: Content) -> some View {
         return content
-            .modifier(BoldTextStyle( size: Font.size.regular, color: Color.app.greyDeep))
+            .modifier(SemiBoldTextStyle( size: Font.size.regular, color: Color.app.greyDeep))
     }
 }
 

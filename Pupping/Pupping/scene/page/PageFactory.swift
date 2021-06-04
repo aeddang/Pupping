@@ -14,6 +14,7 @@ extension PageID{
     static let login:PageID = "login"
     static let home:PageID = "home"
     static let mission:PageID = "mission"
+    static let missionInfo:PageID = "missionInfo"
     static let board:PageID = "board"
     static let shop:PageID = "shop"
     static let my:PageID = "my"
@@ -45,14 +46,15 @@ struct PageProvider {
     
     static func getType(_ pageID:PageID)-> PageAnimationType{
         switch pageID {
-        //case  .profileModify : return .vertical
+        case  .mission ,.missionInfo: return .vertical
         default : return  .horizontal
         }
     }
     
     static func isTop(_ pageID:PageID)-> Bool{
         switch pageID{
-           default : return  false
+        case .mission : return true
+        default : return  false
         }
     }
     
@@ -138,6 +140,7 @@ struct PageFactory{
         case .profileRegist: return PageProfileRegist()
         case .profileModify: return PageProfileModify()
         case .mission : return PageMission()
+        case .missionInfo : return PageMissionInfo()
         default : return PageTest()
         }
     }
@@ -167,7 +170,7 @@ struct PageSceneModel: PageModel {
         }
     }
     func getCloseExceptions() -> [PageID]? {
-        return []
+        return [.mission]
     }
     
     func isHistoryPage(_ pageObject:PageObject ) -> Bool {

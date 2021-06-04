@@ -63,8 +63,8 @@ struct PageTab: PageComponent{
                             .resizable()
                             .scaledToFit()
                             .foregroundColor(Color.app.greyDeep)
-                            .frame(width: Dimen.icon.regularExtra,
-                                   height: Dimen.icon.regularExtra)
+                            .frame(width: Dimen.icon.thin,
+                                   height: Dimen.icon.thin)
                     }
                 }
                 if self.isSetting {

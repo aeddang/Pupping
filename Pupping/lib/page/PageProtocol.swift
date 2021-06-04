@@ -24,6 +24,7 @@ class PageObject : Equatable, Identifiable{
     var isDimed:Bool
     var isHome:Bool = false
     var isAnimation:Bool = false
+    var isLayer:Bool = false
     var animationType:PageAnimationType = .horizontal
     let id:String
     init(

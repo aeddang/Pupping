@@ -29,7 +29,14 @@ struct SceneSelectController: PageComponent{
             buttons: self.buttons)
         { idx in
             switch self.currentSelect {
-            case .select(_ , _) , .selectBtn(_ , _), .imgPicker(_): self.selectedSelect(idx ,data:self.currentSelect!)
+            case .select(_ , _, let handler) , .selectBtn(_ , _, let handler) :
+                if let handler = handler {
+                    self.selectedSelect(idx ,data:self.currentSelect!, completionHandler: handler)
+                } else {
+                    self.selectedSelect(idx ,data:self.currentSelect!)
+                }
+                
+            case .imgPicker(_): self.selectedSelect(idx ,data:self.currentSelect!)
                 default: do { return }
             }
             withAnimation{
@@ -43,8 +50,8 @@ struct SceneSelectController: PageComponent{
         .onReceive(self.sceneObserver.$select){ select in
             self.currentSelect = select
             switch select{
-                case .select(let data, let idx): self.setupSelect(data:data, idx: idx)
-                case .selectBtn(let data, let idx): self.setupSelect(data:data, idx: idx)
+                case .select(let data, let idx, _): self.setupSelect(data:data, idx: idx)
+                case .selectBtn(let data, let idx, _): self.setupSelect(data:data, idx: idx)
                 case .imgPicker(let key): self.setupImagePicker(key: key)
                 default: do { return }
             }
@@ -80,7 +87,11 @@ struct SceneSelectController: PageComponent{
         self.buttons = data.1
     }
     
+    func selectedSelect(_ idx:Int, data:SceneSelect, completionHandler: @escaping (Int) -> Void) {
+        completionHandler(idx)
+    }
     func selectedSelect(_ idx:Int, data:SceneSelect) {
+        
         self.sceneObserver.selectResult = .complete(data, idx)
         self.sceneObserver.selectResult = nil
     }

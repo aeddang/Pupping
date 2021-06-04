@@ -163,6 +163,7 @@
 		31807D7F2659F57700531063 /* MyRewardsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D7E2659F57700531063 /* MyRewardsInfo.swift */; };
 		31807D81265A0D0300531063 /* SelectDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D80265A0D0300531063 /* SelectDatePicker.swift */; };
 		31807D83265A16C800531063 /* SelectImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D82265A16C800531063 /* SelectImagePicker.swift */; };
+		318D10122669AD1300B66977 /* PageMissionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D10112669AD1300B66977 /* PageMissionInfo.swift */; };
 		318DDC6726619DFC00543185 /* SelectRadio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318DDC6626619DFC00543185 /* SelectRadio.swift */; };
 		318DDC692662020A00543185 /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318DDC682662020A00543185 /* Mission.swift */; };
 		318DDC6C266228DF00543185 /* MissionGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318DDC6B266228DF00543185 /* MissionGenerator.swift */; };
@@ -387,6 +388,7 @@
 		31807D7E2659F57700531063 /* MyRewardsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRewardsInfo.swift; sourceTree = "<group>"; };
 		31807D80265A0D0300531063 /* SelectDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePicker.swift; sourceTree = "<group>"; };
 		31807D82265A16C800531063 /* SelectImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImagePicker.swift; sourceTree = "<group>"; };
+		318D10112669AD1300B66977 /* PageMissionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMissionInfo.swift; sourceTree = "<group>"; };
 		318DDC6626619DFC00543185 /* SelectRadio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRadio.swift; sourceTree = "<group>"; };
 		318DDC682662020A00543185 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
 		318DDC6B266228DF00543185 /* MissionGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionGenerator.swift; sourceTree = "<group>"; };
@@ -1175,6 +1177,7 @@
 			isa = PBXGroup;
 			children = (
 				31807D7226592DE800531063 /* PageMission.swift */,
+				318D10112669AD1300B66977 /* PageMissionInfo.swift */,
 			);
 			path = mission;
 			sourceTree = "<group>";
@@ -1744,6 +1747,7 @@
 				316C49232653D3E300A8D7F5 /* PageTest.swift in Sources */,
 				31D07B8D266079AA00BCC169 /* AppleManager.swift in Sources */,
 				316C49112653D3E300A8D7F5 /* PageHome.swift in Sources */,
+				318D10122669AD1300B66977 /* PageMissionInfo.swift in Sources */,
 				31807D6E265923FC00531063 /* ImageProcess.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1927,7 +1931,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -1983,7 +1987,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MARKETING_VERSION = 1.0005;
+				MARKETING_VERSION = 1.0006;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2001,7 +2005,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -2058,7 +2062,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MARKETING_VERSION = 1.0005;
+				MARKETING_VERSION = 1.0006;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

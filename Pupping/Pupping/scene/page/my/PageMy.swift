@@ -25,22 +25,25 @@ struct PageMy: PageView {
                 .padding(.top, self.sceneObserver.safeAreaTop)
                 
             InfinityScrollView(
-                viewModel: self.infinityScrollModel)
+                viewModel: self.infinityScrollModel,
+                isRecycle:false,
+                useTracking:true)
             {
-            
-                Text(String.pageTitle.myPats)
-                    .modifier(ContentTitle())
-                    .modifier(ListRowInset(
-                                marginHorizontal:Dimen.margin.light,
-                                spacing: Dimen.margin.regular))
-                
-                ForEach(self.profiles) { profile in
-                    ProfileInfo(profile: profile, axio:.horizontal, isModifyAble:true )
+                VStack(alignment: .leading, spacing:0){
+                    Text(String.pageTitle.myPats)
+                        .modifier(ContentTitle())
                         .modifier(ListRowInset(
                                     marginHorizontal:Dimen.margin.light,
                                     spacing: Dimen.margin.regular))
+                    
+                    ForEach(self.profiles) { profile in
+                        ProfileInfo(profile: profile, axio:.horizontal, isModifyAble:true )
+                            .modifier(ListRowInset(
+                                        marginHorizontal:Dimen.margin.light,
+                                        spacing: Dimen.margin.regular))
+                    }
                 }
-                
+                .padding(.bottom, Dimen.app.bottomTab)
             }
             .padding(.bottom, self.sceneObserver.safeAreaBottom + Dimen.app.bottom)
         }

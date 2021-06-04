@@ -138,7 +138,8 @@ enum PageDragingUIEvent {
          pullCancel(GeometryProxy? = nil),
          drag(GeometryProxy, DragGesture.Value),
          draged(GeometryProxy, DragGesture.Value),
-         dragCancel
+         dragCancel,
+         setBodyOffset(CGFloat)
 }
 enum PageDragingEvent {
     case dragInit, drag(CGFloat, Double), draged(Bool,CGFloat)
@@ -173,16 +174,20 @@ struct PageDragingBody<Content>: PageDragingView  where Content: View{
     
     private let minDiff:CGFloat = 1.0
     private let maxDiff:CGFloat = 600
+    private var dragingEndAction:((Bool) -> Void)? = nil
+    
     init(
         viewModel: PageDragingModel,
         axis:Axis.Set = .vertical,
         minPullAmount:CGFloat? = nil,
+        dragingEndAction:((Bool) -> Void)? = nil,
         @ViewBuilder content: () -> Content) {
         self.viewModel = viewModel
         self.axis = axis
         self.content = content()
         self.initPullRange = minPullAmount ?? ( axis == .vertical ? 0 : 0 )
         self.pullOffset = self.initPullRange
+        self.dragingEndAction = dragingEndAction
     }
     
 
@@ -260,6 +265,10 @@ struct PageDragingBody<Content>: PageDragingView  where Content: View{
                     }
                     if self.viewModel.status != .drag { return }
                     self.onDragCancel()
+                case .setBodyOffset(let pos) :
+                    withAnimation{
+                        self.bodyOffset = pos
+                    }
                 default : do {}
                 }
             }
@@ -273,7 +282,7 @@ struct PageDragingBody<Content>: PageDragingView  where Content: View{
     }//body
     
     func onDragInit(offset:CGFloat = 0) {
-        if offset < 0 {return}
+       // if offset < 0 {return}
         self.isDragingCompleted = false
         self.isDraging = true
         self.dragInitOffset = offset
@@ -307,6 +316,11 @@ struct PageDragingBody<Content>: PageDragingView  where Content: View{
         
         //ComponentLog.d("onDragEndAction " + self.isDragingCompleted.description , tag: "InfinityScrollViewProtocol")
         if self.isDragingCompleted {return}
+        if let dragingEndAction = self.dragingEndAction {
+            self.isBottom = isBottom
+            dragingEndAction(isBottom)
+            return
+        }
         if isBottom {
             self.isDragingCompleted = true
             self.pagePresenter.goBack()

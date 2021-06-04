@@ -62,6 +62,8 @@ extension String {
         public static var needProfile = "alertNeedProfile".loaalized()
         public static var deleteProfile = "alertDeleteProfile".loaalized()
         public static var snsLoginError = "alertSnsLoginError".loaalized()
+        public static var prevPlayMission = "alertPrevPlayMission".loaalized()
+        public static var closePlayMission = "alertClosePlayMission".loaalized()
     }
     
     struct button {
@@ -74,6 +76,8 @@ extension String {
         public static let next = "btnNext".loaalized()
         public static let complete = "btnComplete".loaalized()
         public static let swapPupping = "btnSwapPupping".loaalized()
+        public static let start = "btnStart".loaalized()
+        public static let preview = "btnPreview".loaalized()
     }
     
     struct pageTitle {
@@ -81,6 +85,8 @@ extension String {
         public static let myRewards = "titleMyRewards".loaalized()
         public static let myPats = "titleMyPats".loaalized()
         public static let commingSoon = "titleCommingSoon".loaalized()
+        public static let mission = "titleMission".loaalized()
+        public static let missionInfo = "titleMissionInfo".loaalized()
     }
     
     struct pageText {

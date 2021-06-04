@@ -146,10 +146,10 @@ struct ShadowTop: ViewModifier {
 
 
 struct ContentTab: ViewModifier {
-    
+    var margin:CGFloat = Dimen.margin.regular
     func body(content: Content) -> some View {
         return content
-            .padding(.all, Dimen.margin.regular)
+            .padding(.all, margin)
             .background(Color.app.white)
             .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.light))
             .modifier(Shadow())

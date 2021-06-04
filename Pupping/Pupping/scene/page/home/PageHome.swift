@@ -47,11 +47,15 @@ struct PageHome: PageView {
                         if let missions = self.missions {
                             ForEach(missions){ mission in
                                 MissionInfo(data:mission)
+                                .onTapGesture {
+                                    self.selectMission(mission)
+                                }
                             }
                         }
                     }
                     .modifier(ContentHorizontalEdges())
                     .padding(.top, self.sceneObserver.safeAreaTop + Dimen.margin.regular)
+                    .padding(.bottom, Dimen.app.bottomTab)
                 }
                 .padding(.bottom, self.sceneObserver.safeAreaBottom + Dimen.app.bottom)
             }
@@ -121,6 +125,33 @@ struct PageHome: PageView {
             PageLog.d("mission " + mission.type.info() , tag: self.tag)
             PageLog.d("mission " + mission.playType.info() , tag: self.tag)
             PageLog.d("mission " + mission.description , tag: self.tag)
+        }
+    }
+    
+    private func selectMission(_ mission:Mission){
+        self.appSceneObserver.select = .select((self.tag , [String.button.preview, String.button.start]), 1){ idx in
+            if idx == 0 {
+                self.pagePresenter.openPopup(
+                    PageProvider.getPageObject(.missionInfo)
+                        .addParam(key: .data, value: mission)
+                )
+            }else {
+                startMission(mission)
+            }
+            
+        }
+    }
+    
+    private func startMission(_ mission:Mission){
+        if self.missionManager.currentMission != nil {
+            self.appSceneObserver.alert = .confirm(nil, String.alert.prevPlayMission){ ac in
+                if ac {
+                    self.missionManager.startMission(mission)
+                }
+            }
+        } else {
+            self.missionManager.startMission(mission)
+            self.pagePresenter.openPopup(PageProvider.getPageObject(.mission))
         }
     }
 }
