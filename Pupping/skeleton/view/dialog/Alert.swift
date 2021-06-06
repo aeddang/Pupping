@@ -98,6 +98,7 @@ struct Alert<Presenting>: View where Presenting: View {
                                         self.isShowing = false
                                     }
                                 }
+                                .clipShape(Circle())
                             }
                         }
                         .padding(.bottom, Dimen.margin.medium)

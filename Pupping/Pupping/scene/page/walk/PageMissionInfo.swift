@@ -8,7 +8,13 @@
 import Foundation
 import SwiftUI
 import Combine
-
+import GoogleMaps
+extension PageMissionInfo {
+    static let zoomRatio:Float = 15.0
+    static let zoomCloseup:Float = 16.0
+    static let mapMoveDuration:Double = 1.0
+    static let forceMoveDelay:Double = 2.0
+}
 struct PageMissionInfo: PageView {
     @EnvironmentObject var pagePresenter:PagePresenter
     @EnvironmentObject var sceneObserver:PageSceneObserver
@@ -17,9 +23,12 @@ struct PageMissionInfo: PageView {
     
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var pageDragingModel:PageDragingModel = PageDragingModel()
-    @ObservedObject var mapModel:MapModel = MapModel()
+    @ObservedObject var mapModel:PlayMapModel = PlayMapModel()
     
     @State var mission:Mission? = nil
+    @State var isUiReady:Bool = false
+    @State var isFollowMe:Bool = false
+    @State var isForceMove:Bool = false
     var body: some View {
         GeometryReader { geometry in
             PageDragingBody(
@@ -38,28 +47,43 @@ struct PageMissionInfo: PageView {
                                 MissionInfo(data: mission)
                             }
                             ZStack{
-                                CPGoogleMap(viewModel: self.mapModel, pageObservable: self.pageObservable)
+                                PlayMap(
+                                    pageObservable: self.pageObservable,
+                                    viewModel: self.mapModel,
+                                    isFollowMe: self.$isFollowMe,
+                                    isForceMove: self.$isForceMove
+                                    )
                             }
                             .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.light))
                             .modifier(Shadow())
                         }
                         .modifier(ContentHorizontalEdges())
                     }
-                    
-                    
+                    .padding(.bottom, Dimen.margin.regular + self.sceneObserver.safeAreaBottom)
                 }
                 .modifier(PageFull())
                 .modifier(PageDraging(geometry: geometry, pageDragingModel: self.pageDragingModel))
             }
-    
+            .onReceive(self.pageObservable.$isAnimationComplete){ ani in
+                if ani {
+                    self.prevInit()
+                }
+            }
             .onAppear{
+                self.mapModel.zoom = Self.zoomRatio
+                self.mapModel.startLocation = self.missionManager.generator.finalLocation ?? CLLocation()
+                self.mapModel.uiEvent = .move(self.mapModel.startLocation)
                 guard let obj = self.pageObject  else { return }
                 self.mission = obj.getParamValue(key: .data) as? Mission
-                
             }
+            
         }//geo
     }//body
    
+    private func prevInit(){
+        guard let mission = self.mission else { return }
+        self.mapModel.playEvent = .setupMission(mission)
+    }
 }
 
 

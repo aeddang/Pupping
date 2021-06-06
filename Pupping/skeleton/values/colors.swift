@@ -21,6 +21,7 @@ extension Color {
     }
     
     struct brand {
+        public static let primaryStrong = Color.init(red: 244/255, green: 136/255, blue: 8/255)
         public static let primary = Color.init(red: 255/255, green: 152/255, blue: 31/255)
         public static let primaryExtra = Color.init(red: 255/255, green: 241/255, blue: 229/255)
         public static let secondary = Color.init(red: 0/255, green:198/255, blue: 115/255)

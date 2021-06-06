@@ -30,6 +30,12 @@ extension String {
         public static let day = "day".loaalized()
         public static let step = "step".loaalized()
         public static let of = "of".loaalized()
+        
+        public static let kmPerH = "kmPerH".loaalized()
+        public static let km = "km".loaalized()
+        public static let m = "m".loaalized()
+        public static let min = "min".loaalized()
+        public static let redeem = "redeem".loaalized()
     }
     
     struct gnb {
@@ -37,6 +43,7 @@ extension String {
         public static let board = "gnbBoard".loaalized()
         public static let shop = "gnbShop".loaalized()
         public static let my = "gnbMy".loaalized()
+        public static let walk = "gnbWalk".loaalized()
        
     }
     
@@ -62,8 +69,13 @@ extension String {
         public static var needProfile = "alertNeedProfile".loaalized()
         public static var deleteProfile = "alertDeleteProfile".loaalized()
         public static var snsLoginError = "alertSnsLoginError".loaalized()
+        
+        public static var currentPlayMission = "alertCurrentPlayMission".loaalized()
         public static var prevPlayMission = "alertPrevPlayMission".loaalized()
         public static var closePlayMission = "alertClosePlayMission".loaalized()
+        
+        public static var needProfileRegist = "alertNeedProfileRegist".loaalized()
+        public static var selectProfile = "alertSelectProfile".loaalized()
     }
     
     struct button {
@@ -124,7 +136,8 @@ extension String {
         public static let profileOption = "profileOption".loaalized()
         public static let profileCheckAll = "profileCheckAll".loaalized()
         public static let profileCancelConfirm = "profileCancelConfirm".loaalized()
-         
+        public static let missionCompleted = "missionCompleted".loaalized()
+        public static let missionCompletedText = "missionCompletedText".loaalized()
         
     }
     

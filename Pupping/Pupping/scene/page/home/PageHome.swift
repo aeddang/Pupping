@@ -129,6 +129,10 @@ struct PageHome: PageView {
     }
     
     private func selectMission(_ mission:Mission){
+        if self.missionManager.currentMission == mission {
+            self.appSceneObserver.event = .toast(String.alert.currentPlayMission)
+            return
+        }
         self.appSceneObserver.select = .select((self.tag , [String.button.preview, String.button.start]), 1){ idx in
             if idx == 0 {
                 self.pagePresenter.openPopup(
@@ -143,15 +147,30 @@ struct PageHome: PageView {
     }
     
     private func startMission(_ mission:Mission){
+        if self.missionManager.currentMission == mission {
+            self.appSceneObserver.event = .toast(String.alert.currentPlayMission)
+            return
+        }
         if self.missionManager.currentMission != nil {
             self.appSceneObserver.alert = .confirm(nil, String.alert.prevPlayMission){ ac in
                 if ac {
-                    self.missionManager.startMission(mission)
+                    self.missionManager.endMission()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        self.missionManager.startMission(mission)
+                        self.pagePresenter.openPopup(
+                            PageProvider.getPageObject(.mission)
+                                .addParam(key: UUID().uuidString, value:  "")
+                        )
+                    }
+                    
                 }
             }
         } else {
             self.missionManager.startMission(mission)
-            self.pagePresenter.openPopup(PageProvider.getPageObject(.mission))
+            self.pagePresenter.openPopup(
+                PageProvider.getPageObject(.mission)
+                    .addParam(key: UUID().uuidString, value:  "")
+            )
         }
     }
 }

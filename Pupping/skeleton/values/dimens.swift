@@ -50,7 +50,7 @@ struct Dimen{
     
     struct tab {
         public static let heavy:CGFloat = 85//
-        public static let medium:CGFloat = 56
+        public static let medium:CGFloat = 56 //
         public static let regular:CGFloat = 46
         public static let light:CGFloat = 36//
         public static let thin:CGFloat = 18
@@ -62,15 +62,19 @@ struct Dimen{
         public static let regular:CGFloat = 40
         public static let light:CGFloat = 36 //
         public static let thin:CGFloat = 20
+        
+        public static let regularRect:CGSize = CGSize(width: 211, height: 40)
+        public static let lightRect:CGSize = CGSize(width: 150, height: 30)
     }
 
     struct radius {
         public static let heavy:CGFloat = 32//
         public static let medium:CGFloat = 24//
-        public static let regular:CGFloat = 21//
+        public static let regular:CGFloat = 20//
         public static let light:CGFloat = 16//
         public static let lightExtra:CGFloat = 14//
         public static let thin:CGFloat = 12//
+        public static let tiny:CGFloat = 8//
     }
     
     struct circle {
@@ -84,7 +88,8 @@ struct Dimen{
     
     struct line {
         public static let heavy:CGFloat = 10
-        public static let medium:CGFloat = 5//
+        public static let medium:CGFloat = 6//
+        public static let mediumExtra:CGFloat = 5//
         public static let regular:CGFloat =  2
         public static let light:CGFloat = 1//
     }
@@ -100,7 +105,7 @@ struct Dimen{
     struct app {
         public static let bottom:CGFloat = 64
         public static let top:CGFloat = 50
-        public static let bottomTab:CGFloat = 60
+        public static let bottomTab:CGFloat = 100
     }
     
 }

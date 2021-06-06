@@ -65,6 +65,25 @@ class MissionManager:ObservableObject, PageProtocol{
         }
     }
     
+    func completedMission() {
+        guard let mission = self.currentMission else {
+            return
+        }
+        self.createCount -= 1
+        if let find = self.missions.firstIndex(of: mission) {
+            self.missions.remove(at: find)
+        }
+        switch mission.type {
+        case .today:
+            self.generator.request(q: .create(type: .today, playType: .nearby, lv: nil, keyword: nil), id: self.tag)
+        case .always:
+            self.generator.request(q: .create(type: .always, playType: nil, lv: nil, keyword: nil), id: self.tag)
+        case .event:
+            self.generator.request(q: .create(type: .event, playType: .location, lv: nil, keyword: nil), id: self.tag)
+        }
+    
+    }
+    
     func addMission(_ mission:Mission) {
         self.missions.append(mission)
     }
@@ -75,6 +94,7 @@ class MissionManager:ObservableObject, PageProtocol{
     func endMission() {
         self.currentMission = nil
     }
+    
 
 }
     

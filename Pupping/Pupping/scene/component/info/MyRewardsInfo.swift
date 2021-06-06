@@ -61,7 +61,7 @@ struct RewardsItem : PageComponent {
     
     var body: some View {
         VStack(alignment:.leading,spacing:Dimen.margin.light){
-            HStack(spacing:Dimen.margin.tiny){
+            HStack(alignment:.top, spacing:Dimen.margin.tiny){
                 Image(self.icon)
                     .renderingMode(.original)
                     .resizable()
@@ -70,6 +70,7 @@ struct RewardsItem : PageComponent {
                 Text(self.title)
                     .modifier(RegularTextStyle(size: Font.size.thinExtra, color: Color.app.grey))
             }
+            .frame( height: 50 )
             ZStack{
                 Text(self.point.formatted(style: .decimal))
                     .modifier(RegularTextStyle(size: Font.size.mediumExtra, color: self.color))

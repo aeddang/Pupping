@@ -50,6 +50,14 @@ enum MissionLv:CaseIterable {
         case .lv4: return "매우 어려움"
         }
     }
+    func point() -> Double{
+        switch self {
+        case .lv1: return 10
+        case .lv2: return 20
+        case .lv3: return 30
+        case .lv4: return 50
+        }
+    }
     func speed() -> Double{ // meter per sec
         switch self {
         case .lv1: return 1000 / 3600
@@ -107,7 +115,7 @@ enum MissionKeyword: CaseIterable {
     }
 }
 
-class Mission:PageProtocol, Identifiable{
+class Mission:PageProtocol, Identifiable, Equatable{ 
     let id:String = UUID().uuidString
     let type:MissionType
     let lv:MissionLv
@@ -122,13 +130,18 @@ class Mission:PageProtocol, Identifiable{
    
     private (set) var waypoints:[GMSPlace] = []
     private (set) var startTime:Double = 0
-    private (set) var endTime:Double = 0
     private (set) var totalDistence:Double = 0 //miter
     private (set) var duration:Double = 0 //sec
     private (set) var speed:Double = 0 //meter per hour
-    //play
-    private (set) var playTime:Double = 0
-    private (set) var playDistence:Double = 0
+    
+    
+    var playTime:Double = 0
+    var playDistence:Double = 0
+    
+    
+    public static func == (l:Mission, r:Mission)-> Bool {
+        return l.id == r.id
+    }
     
     init(type:MissionType, playType:MissionPlayType, lv:MissionLv){
         self.type = type
@@ -168,13 +181,13 @@ class Mission:PageProtocol, Identifiable{
     }
     
     var viewSpeed:String {
-        return (self.speed * 3600 / 1000).toTruncateDecimal(n:1) + "km/h"
+        return (self.speed * 3600 / 1000).toTruncateDecimal(n:1) + String.app.kmPerH
     }
     var viewDistence:String {
-        return (self.totalDistence/1000).toTruncateDecimal(n:1) + "Km"
+        return (self.totalDistence/1000).toTruncateDecimal(n:1) + String.app.km
     }
     var viewDuration:String {
-        return (self.duration/60).toTruncateDecimal(n:1) + "분"
+        return (self.duration/60).toTruncateDecimal(n:1) + String.app.min
     }
     
     @discardableResult
@@ -224,9 +237,6 @@ class Mission:PageProtocol, Identifiable{
             }
             self.summary =  description
         }
-        
-       
-        
         return self
     }
     

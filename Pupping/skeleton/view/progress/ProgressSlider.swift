@@ -24,12 +24,12 @@ struct ProgressSlider: PageView {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 Rectangle()
-                    .foregroundColor(Color.app.white)
+                    .foregroundColor(Color.app.greyLightExtra)
                     .frame(
                         width: geometry.size.width,
                         height: progressHeight
                     )
-                    .opacity(0.15)
+                    
                 Rectangle()
                     .foregroundColor(Color.brand.primary)
                     .frame(

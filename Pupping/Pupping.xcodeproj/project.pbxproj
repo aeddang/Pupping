@@ -164,6 +164,15 @@
 		31807D81265A0D0300531063 /* SelectDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D80265A0D0300531063 /* SelectDatePicker.swift */; };
 		31807D83265A16C800531063 /* SelectImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D82265A16C800531063 /* SelectImagePicker.swift */; };
 		318D10122669AD1300B66977 /* PageMissionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D10112669AD1300B66977 /* PageMissionInfo.swift */; };
+		318D1014266ADA1F00B66977 /* PlayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D1013266ADA1F00B66977 /* PlayInfo.swift */; };
+		318D1018266ADF6B00B66977 /* PlayMissionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D1017266ADF6B00B66977 /* PlayMissionModel.swift */; };
+		318D101A266B423800B66977 /* PlaySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D1019266B423800B66977 /* PlaySummary.swift */; };
+		318D101C266C2CF000B66977 /* SelectProfiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D101B266C2CF000B66977 /* SelectProfiles.swift */; };
+		318D101E266C3B3B00B66977 /* PageSelectProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D101D266C3B3B00B66977 /* PageSelectProfile.swift */; };
+		318D1021266C7B7200B66977 /* PlayMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D1020266C7B7200B66977 /* PlayMap.swift */; };
+		318D1024266C910700B66977 /* PageMissionCompleted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D1023266C910700B66977 /* PageMissionCompleted.swift */; };
+		318D1026266C919000B66977 /* RedeemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D1025266C919000B66977 /* RedeemInfo.swift */; };
+		318D1028266C9ACB00B66977 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D1027266C9ACB00B66977 /* Profile.swift */; };
 		318DDC6726619DFC00543185 /* SelectRadio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318DDC6626619DFC00543185 /* SelectRadio.swift */; };
 		318DDC692662020A00543185 /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318DDC682662020A00543185 /* Mission.swift */; };
 		318DDC6C266228DF00543185 /* MissionGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318DDC6B266228DF00543185 /* MissionGenerator.swift */; };
@@ -389,6 +398,15 @@
 		31807D80265A0D0300531063 /* SelectDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePicker.swift; sourceTree = "<group>"; };
 		31807D82265A16C800531063 /* SelectImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImagePicker.swift; sourceTree = "<group>"; };
 		318D10112669AD1300B66977 /* PageMissionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMissionInfo.swift; sourceTree = "<group>"; };
+		318D1013266ADA1F00B66977 /* PlayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayInfo.swift; sourceTree = "<group>"; };
+		318D1017266ADF6B00B66977 /* PlayMissionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayMissionModel.swift; sourceTree = "<group>"; };
+		318D1019266B423800B66977 /* PlaySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySummary.swift; sourceTree = "<group>"; };
+		318D101B266C2CF000B66977 /* SelectProfiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfiles.swift; sourceTree = "<group>"; };
+		318D101D266C3B3B00B66977 /* PageSelectProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageSelectProfile.swift; sourceTree = "<group>"; };
+		318D1020266C7B7200B66977 /* PlayMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayMap.swift; sourceTree = "<group>"; };
+		318D1023266C910700B66977 /* PageMissionCompleted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMissionCompleted.swift; sourceTree = "<group>"; };
+		318D1025266C919000B66977 /* RedeemInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemInfo.swift; sourceTree = "<group>"; };
+		318D1027266C9ACB00B66977 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		318DDC6626619DFC00543185 /* SelectRadio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRadio.swift; sourceTree = "<group>"; };
 		318DDC682662020A00543185 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
 		318DDC6B266228DF00543185 /* MissionGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionGenerator.swift; sourceTree = "<group>"; };
@@ -942,6 +960,7 @@
 			isa = PBXGroup;
 			children = (
 				31807D552654ED2800531063 /* User.swift */,
+				318D1027266C9ACB00B66977 /* Profile.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1003,6 +1022,7 @@
 		316C47D42653D3E200A8D7F5 /* component */ = {
 			isa = PBXGroup;
 			children = (
+				318D101F266C7B6000B66977 /* map */,
 				31D07B9B2660A10A00BCC169 /* button */,
 				31807D542654DAF300531063 /* info */,
 				31807D4D2654C85200531063 /* tab */,
@@ -1040,7 +1060,7 @@
 				31807D742659F12000531063 /* board */,
 				31807D64265885BC00531063 /* my */,
 				316C48432653D3E200A8D7F5 /* home */,
-				31807D7126592DDC00531063 /* mission */,
+				31807D7126592DDC00531063 /* walk */,
 				316C48582653D3E200A8D7F5 /* intro */,
 				316C485B2653D3E200A8D7F5 /* test */,
 				316C48932653D3E300A8D7F5 /* PageStyle.swift */,
@@ -1173,13 +1193,17 @@
 			path = component;
 			sourceTree = "<group>";
 		};
-		31807D7126592DDC00531063 /* mission */ = {
+		31807D7126592DDC00531063 /* walk */ = {
 			isa = PBXGroup;
 			children = (
+				318D1016266ADF5C00B66977 /* model */,
+				318D1015266ADA2400B66977 /* component */,
 				31807D7226592DE800531063 /* PageMission.swift */,
 				318D10112669AD1300B66977 /* PageMissionInfo.swift */,
+				318D1023266C910700B66977 /* PageMissionCompleted.swift */,
+				318D101D266C3B3B00B66977 /* PageSelectProfile.swift */,
 			);
-			path = mission;
+			path = walk;
 			sourceTree = "<group>";
 		};
 		31807D742659F12000531063 /* board */ = {
@@ -1204,6 +1228,33 @@
 				31807D7A2659F3B900531063 /* ProfileItem.swift */,
 			);
 			path = component;
+			sourceTree = "<group>";
+		};
+		318D1015266ADA2400B66977 /* component */ = {
+			isa = PBXGroup;
+			children = (
+				318D1013266ADA1F00B66977 /* PlayInfo.swift */,
+				318D1019266B423800B66977 /* PlaySummary.swift */,
+				318D101B266C2CF000B66977 /* SelectProfiles.swift */,
+				318D1025266C919000B66977 /* RedeemInfo.swift */,
+			);
+			path = component;
+			sourceTree = "<group>";
+		};
+		318D1016266ADF5C00B66977 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				318D1017266ADF6B00B66977 /* PlayMissionModel.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		318D101F266C7B6000B66977 /* map */ = {
+			isa = PBXGroup;
+			children = (
+				318D1020266C7B7200B66977 /* PlayMap.swift */,
+			);
+			path = map;
 			sourceTree = "<group>";
 		};
 		318DDC6A2662041600543185 /* mission */ = {
@@ -1595,6 +1646,7 @@
 				316C494B2653D3E300A8D7F5 /* PageStyle.swift in Sources */,
 				316C478A2653D3A300A8D7F5 /* Api.swift in Sources */,
 				316C46EA265392D300A8D7F5 /* RadioButton.swift in Sources */,
+				318D1028266C9ACB00B66977 /* Profile.swift in Sources */,
 				316C4702265392D300A8D7F5 /* AppUtil.swift in Sources */,
 				316C46B2265392D300A8D7F5 /* fonts.swift in Sources */,
 				316C45F82653924900A8D7F5 /* AppDelegate.swift in Sources */,
@@ -1611,6 +1663,7 @@
 				316C4708265392D300A8D7F5 /* SelecterbleView.swift in Sources */,
 				316C470E265392D300A8D7F5 /* WhereverYouCanGo.swift in Sources */,
 				316C4707265392D300A8D7F5 /* Resource.swift in Sources */,
+				318D1021266C7B7200B66977 /* PlayMap.swift in Sources */,
 				31807D7F2659F57700531063 /* MyRewardsInfo.swift in Sources */,
 				31807D532654DAE300531063 /* ProfileInfo.swift in Sources */,
 				31D07B982660893F00BCC169 /* IntroItem2.swift in Sources */,
@@ -1622,6 +1675,7 @@
 				316C46B6265392D300A8D7F5 /* CPImagePicker.swift in Sources */,
 				316C4705265392D300A8D7F5 /* Rest.swift in Sources */,
 				316C45FA2653924900A8D7F5 /* SceneDelegate.swift in Sources */,
+				318D1024266C910700B66977 /* PageMissionCompleted.swift in Sources */,
 				316C46E1265392D300A8D7F5 /* PickerSelect.swift in Sources */,
 				316C46E5265392D300A8D7F5 /* FillButton.swift in Sources */,
 				316C4709265392D300A8D7F5 /* InfinityScroll.swift in Sources */,
@@ -1637,6 +1691,7 @@
 				316C49222653D3E300A8D7F5 /* PageSample.swift in Sources */,
 				318DDC692662020A00543185 /* Mission.swift in Sources */,
 				316C4710265392D300A8D7F5 /* KeyboardObserver.swift in Sources */,
+				318D101C266C2CF000B66977 /* SelectProfiles.swift in Sources */,
 				316C46BF265392D300A8D7F5 /* WebView.swift in Sources */,
 				316C46C6265392D300A8D7F5 /* CPYTPlayer.swift in Sources */,
 				31807D7B2659F3B900531063 /* ProfileItem.swift in Sources */,
@@ -1644,6 +1699,7 @@
 				316C46CD265392D300A8D7F5 /* CustomAVPlayer.swift in Sources */,
 				316C470B265392D300A8D7F5 /* DynamicLinkManager.swift in Sources */,
 				316C470D265392D300A8D7F5 /* IndexMap.swift in Sources */,
+				318D1018266ADF6B00B66977 /* PlayMissionModel.swift in Sources */,
 				31807D562654ED2800531063 /* User.swift in Sources */,
 				31807D5E265625A000531063 /* LocationInfo.swift in Sources */,
 				316C46CC265392D300A8D7F5 /* CPPlayer.swift in Sources */,
@@ -1651,6 +1707,7 @@
 				316C46D1265392D300A8D7F5 /* CustomToggleStyle.swift in Sources */,
 				316C46ED265392D300A8D7F5 /* CheckBox.swift in Sources */,
 				316C49632653D3E300A8D7F5 /* AppLayout.swift in Sources */,
+				318D101A266B423800B66977 /* PlaySummary.swift in Sources */,
 				316C46E0265392D300A8D7F5 /* Alert.swift in Sources */,
 				318DDC6C266228DF00543185 /* MissionGenerator.swift in Sources */,
 				316C46F8265392D300A8D7F5 /* PageSceneDelegate.swift in Sources */,
@@ -1701,6 +1758,7 @@
 				316C46E4265392D300A8D7F5 /* Toast.swift in Sources */,
 				316C46DD265392D300A8D7F5 /* ProgressSlider.swift in Sources */,
 				316C46CE265392D300A8D7F5 /* SimplePlayerUI.swift in Sources */,
+				318D1014266ADA1F00B66977 /* PlayInfo.swift in Sources */,
 				316C46D9265392D300A8D7F5 /* SwipperView.swift in Sources */,
 				318DDC6726619DFC00543185 /* SelectRadio.swift in Sources */,
 				316C48B02653D3E300A8D7F5 /* SceneSelectController.swift in Sources */,
@@ -1726,6 +1784,7 @@
 				31D07B9326607A1B00BCC169 /* SnsManager.swift in Sources */,
 				316C46F6265392D300A8D7F5 /* SpanText.swift in Sources */,
 				316C46FD265392D300A8D7F5 /* PageProtocol.swift in Sources */,
+				318D101E266C3B3B00B66977 /* PageSelectProfile.swift in Sources */,
 				316C46F3265392D300A8D7F5 /* FocusableTextView.swift in Sources */,
 				316C46CF265392D300A8D7F5 /* PlayerUI.swift in Sources */,
 				316C46D8265392D300A8D7F5 /* LoopSwipperView.swift in Sources */,
@@ -1740,6 +1799,7 @@
 				316C49212653D3E300A8D7F5 /* PageIntro.swift in Sources */,
 				31D07B9526607B9E00BCC169 /* IntroItem1.swift in Sources */,
 				316C47CC2653D3A300A8D7F5 /* ShareManager.swift in Sources */,
+				318D1026266C919000B66977 /* RedeemInfo.swift in Sources */,
 				318F5934266345DF0054FA34 /* MissionManager.swift in Sources */,
 				31D07B9A26608E1000BCC169 /* IntroItem3.swift in Sources */,
 				316C46BA265392D300A8D7F5 /* CustomImagePicker.swift in Sources */,
@@ -1931,7 +1991,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -1987,7 +2047,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MARKETING_VERSION = 1.0006;
+				MARKETING_VERSION = 1.0007;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2005,7 +2065,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -2062,7 +2122,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MARKETING_VERSION = 1.0006;
+				MARKETING_VERSION = 1.0007;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

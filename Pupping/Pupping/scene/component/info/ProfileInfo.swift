@@ -17,12 +17,14 @@ struct ProfileInfo : PageComponent {
     @ObservedObject var profile:Profile
     var axio:Axis = .vertical
     var isModifyAble:Bool = false
+    var isSelectAble:Bool = false
     @State var image:UIImage? = nil
     @State var name:String? = nil
     @State var age:String? = nil
     @State var species:String? = nil
     @State var gender:Gender? = nil
-    
+    @State var lv:String = ""
+    @State var exp:String = ""
     var body: some View {
         ZStack{
             if self.axio == .vertical {
@@ -31,12 +33,20 @@ struct ProfileInfo : PageComponent {
                         id : self.profile.id,
                         image: self.image,
                         isEmpty: self.profile.isEmpty)
-                    
-                    Text(self.name ?? "")
-                        .modifier(BoldTextStyle(
-                            size: Font.size.mediumExtra,
-                            color: Color.app.greyDeep
-                        ))
+                    HStack(spacing:Dimen.margin.thin){
+                        Text(self.name ?? "")
+                            .modifier(BoldTextStyle(
+                                size: Font.size.mediumExtra,
+                                color: Color.app.greyDeep
+                            ))
+                        if !self.profile.isEmpty {
+                            Text(self.lv)
+                                .modifier(BoldTextStyle(
+                                    size: Font.size.thinExtra,
+                                    color: Color.brand.primary
+                                ))
+                        }
+                    }
                     if !self.profile.isEmpty {
                         ProfileInfoDescription(
                             profile: self.profile,
@@ -54,12 +64,24 @@ struct ProfileInfo : PageComponent {
                         image: self.image,
                         isEmpty: self.profile.isEmpty)
                     VStack(alignment: .leading, spacing:Dimen.margin.tiny){
-                        HStack(spacing:Dimen.margin.tiny){
+                        HStack(alignment: .bottom, spacing:Dimen.margin.tiny){
                            Text(self.name ?? "")
                                 .modifier(BoldTextStyle(
                                     size: Font.size.mediumExtra,
                                     color: self.profile.isEmpty ? Color.app.greyLight : Color.app.greyDeep
                                 ))
+                            if !self.profile.isEmpty {
+                                Text(self.lv)
+                                    .modifier(BoldTextStyle(
+                                        size: Font.size.thinExtra,
+                                        color: Color.brand.primary
+                                    ))
+                                Text(self.exp)
+                                    .modifier(SemiBoldTextStyle(
+                                        size: Font.size.thinExtra,
+                                        color: Color.app.greyLight
+                                    ))
+                            }
                             Spacer()
                             if !self.profile.isEmpty && self.isModifyAble {
                                 Button(action: {
@@ -127,6 +149,12 @@ struct ProfileInfo : PageComponent {
             let birthYY = birth.toDateFormatter(dateFormat:"yyyy")
             self.age = (yy.toInt() - birthYY.toInt() + 1).description + "yrs"
         }
+        .onReceive(self.profile.$lv) { lv in
+            self.lv = "lv" + lv.description
+        }
+        .onReceive(self.profile.$exp) { exp in
+            self.exp = "(exp " + exp.description + ")"
+        }
         .onReceive(self.profile.$image) { img in
             self.image = img
         }
@@ -151,7 +179,7 @@ struct ProfileImage:PageView{
     var body: some View {
         ZStack(alignment: .bottomTrailing){
             Image(uiImage: self.image ??
-                    UIImage(named: self.isEmpty ? Asset.gnb.mission : Asset.brand.logoLauncher)!)
+                    UIImage(named: self.isEmpty ? Asset.icon.footPrint : Asset.brand.logoLauncher)!)
                 .renderingMode(.original)
                 .resizable()
                 .aspectRatio(contentMode: .fill)

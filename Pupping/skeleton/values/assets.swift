@@ -31,8 +31,8 @@ extension Asset{
     }
     
     struct gnb {
-        public static let mission =  "ic_mission"
-        public static let board =  "ic_board"
+        public static let mission =  "ic_flag"
+        public static let walk =  "ic_footPrint"
         public static let shop =  "ic_shop"
         public static let my =  "ic_my"
     }
@@ -52,14 +52,17 @@ extension Asset{
         public static let femail = "ic_femail"
         
         public static let flag = "ic_flag"
+        public static let footPrint =  "ic_footPrint"
         public static let location = "ic_location"
         public static let pupping = "ic_pupping"
         public static let point = "ic_point"
+        public static let destination = "ic_destination"
         
         public static let delete = "ic_delete"
         public static let hidden = "ic_hidden"
         public static let next = "ic_next"
         public static let photo = "ic_photo"
+        public static let fixMap = "ic_fixMap"
     }
     
     struct shape {
@@ -85,6 +88,7 @@ extension Asset{
         public static let womanWithDog = "womanWithDog"
         public static let man = "man"
         public static let woman = "woman"
+        public static let present = "present"
     }
     
     struct source {

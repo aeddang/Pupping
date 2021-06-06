@@ -119,7 +119,7 @@ struct PageProfileRegist: PageView {
                                     .background(Color.app.greyLight)
                                     .fixedSize(horizontal: true, vertical: false)
                             }
-                            .frame( height: Dimen.line.medium)
+                            .frame( height: Dimen.line.mediumExtra)
                             .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.thin))
                             .padding(.top, Dimen.margin.tiny)
                         }

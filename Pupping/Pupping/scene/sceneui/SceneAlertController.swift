@@ -12,6 +12,7 @@ import Combine
 
 enum SceneAlert {
     case confirm(String?, String?,(Bool) -> Void),
+         select(String?, String?, [String], (Int) -> Void),
          alert(String?, String?, String? = nil, (() -> Void)? = nil),
          recivedApns, apiError(ApiResultError),
          requestLocation((Bool) -> Void),
@@ -60,6 +61,7 @@ struct SceneAlertController: PageComponent{
             switch self.currentAlert {
             case .alert(_, _, _, let completionHandler) :
                 if let handler = completionHandler { self.selectedAlert(idx, completionHandler:handler) }
+            case .select(_, _, _, let completionHandler) : self.selectedSelect(idx, completionHandler:completionHandler)
             case .confirm(_, _, let completionHandler) : self.selectedConfirm(idx, completionHandler:completionHandler)
             case .apiError(let data): self.selectedApi(idx, data:data)
             case .requestLocation(let completionHandler): self.selectedRequestLocation(idx, completionHandler:completionHandler)
@@ -82,6 +84,7 @@ struct SceneAlertController: PageComponent{
                 }
                 return
             case .alert(let title,let text, let subText, _) : self.setupAlert(title:title, text:text, subText:subText)
+            case .select(let title,let text, let selects, _) : self.setupSelect(title: title, text: text, selects: selects)
             case .confirm(let title,let text, _) : self.setupConfirm(title:title, text:text)
             case .apiError(let data): self.setupApi(data:data)
             case .requestLocation: self.setupRequestLocation()
@@ -212,7 +215,16 @@ struct SceneAlertController: PageComponent{
     }
     
     
-    
+    func setupSelect(title:String?, text:String?, selects:[String] ) {
+        self.title = title
+        self.text = text ?? ""
+        self.imgButtons = zip(selects, 0..<selects.count).map{ img, idx in
+            AlertBtnData(title: "", img: img, index: idx)
+        }
+    }
+    func selectedSelect(_ idx:Int, completionHandler: @escaping (Int) -> Void) {
+        completionHandler(idx)
+    }
 }
 
 

@@ -51,7 +51,7 @@ class UserCoreData:PageProtocol {
         self.saveContext()
     }
     
-    func update(id:String, data:ModifyUserData){
+    func update( data:ModifyUserData, id:String = UserCoreData.defaultId){
         let container = self.persistentContainer
         do {
             let fetchRequest:NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
@@ -63,7 +63,7 @@ class UserCoreData:PageProtocol {
                 if let value = data.coin { item.setValue(value, forKey: Keys.coin) }
             }
             self.saveContext()
-        } catch {
+        } catch { 
             DataLog.e(error.localizedDescription, tag: self.tag)
         }
     }

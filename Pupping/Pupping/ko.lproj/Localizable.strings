@@ -24,6 +24,12 @@
 "step" = "step";
 "of" = "of";
 
+"kmPerH" = "km/h";
+"km" = "km";
+"m" = "m";
+"min" = "분";
+"redeem" = "Redeem";
+
 /*
   Button
 */
@@ -60,8 +66,11 @@
 
 "alertSnsLoginError" = "After login. Available.";
 
+"alertCurrentPlayMission" = "현재 수행중인 미션입니다.";
 "alertPrevPlayMission" = "수행중인 미션이 있습니다.\n종료하고 새로운 미션을 시작하겠습니까?";
 "alertClosePlayMission" = "미션을 종료하시겠습니까?\n저장되지 않은 정보는 모두 지워집니다.";
+"alertNeedProfileRegist" = "함께할 강아지가 없습니다?\n강아지 등록 후 이용해주세요.";
+"alertSelectProfile" = "함께할 강아지를 선택해주세요";
 
 /*
   Gnb
@@ -70,6 +79,7 @@
 "gnbBoard" = "Board";
 "gnbShop" = "Shop";
 "gnbMy" = "My";
+"gnbWalk" = "Walk";
 
 /*
   Location
@@ -131,3 +141,9 @@ PageLogin
 "profileOption" = "Skip for now";
 "profileCheckAll" = "Check ALL options.";
 
+
+/*
+ PageMission
+*/
+"missionCompleted" = "Mission Complete!";
+"missionCompletedText" = "Walk your dog for %s mins.";
