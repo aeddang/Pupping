@@ -169,6 +169,7 @@ struct ProfileListItem: PageView {
             self.prevExp = exp.formatted(style: .decimal)
         }
         .onReceive(self.profile.$nextExp) { exp in
+            if exp == 0 {return}
             self.nextExp = exp.formatted(style: .decimal)
             let prev = self.profile.prevExp
             withAnimation{

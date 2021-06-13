@@ -43,6 +43,14 @@ struct BottomTab: PageComponent{
                                 self.appSceneObserver.event = .toast(String.alert.currentPlay)
                                 return
                             }
+                            if self.dataProvider.user.profiles.isEmpty {
+                                self.appSceneObserver.alert = .alert(nil, String.alert.needProfileRegist, nil){
+                                    self.pagePresenter.openPopup(
+                                        PageProvider.getPageObject(.profileRegist)
+                                    )
+                                }
+                                return
+                            }
                             self.pagePresenter.openPopup(
                                 PageProvider.getPageObject(gnb.id)
                             )

@@ -72,7 +72,6 @@ class Profile:ObservableObject, PageProtocol, Identifiable, Equatable {
         self.gender = Gender.getGender(Int(data.gender))
         self.birth = data.birth
         self.lv = Int(data.lv)
-        self.updatedLv()
         self.exp = Double(data.exp)
         self.microfin = data.microfin
         if let imgData = data.image { self.image =  UIImage(data: imgData) }
@@ -81,6 +80,7 @@ class Profile:ObservableObject, PageProtocol, Identifiable, Equatable {
         self.hepatitis = data.hepatitis
         self.parovirus = data.parovirus
         self.rabies = data.rabies
+        self.updatedLv()
     }
     
     @discardableResult
@@ -133,5 +133,8 @@ class Profile:ObservableObject, PageProtocol, Identifiable, Equatable {
     private func updatedLv(){
         self.prevExp = Double(self.lv - 1) * Self.expRange
         self.nextExp = Double(self.lv) * Self.expRange
+        DataLog.d("prevExp " + self.prevExp.description, tag: self.tag)
+        DataLog.d("nextExp " + self.nextExp.description, tag: self.tag)
+        DataLog.d("lv " + self.lv.description, tag: self.tag)
     }
 }

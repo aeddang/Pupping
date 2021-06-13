@@ -106,7 +106,7 @@ struct FocusableTextView: UIViewRepresentable {
 
         func textViewShouldReturn(_ textView: UITextView) -> Bool {
             guard let  inputCopmpleted = self.parent.inputCopmpleted else { return true }
-            inputCopmpleted(textView.text)
+            inputCopmpleted(textView.text ?? "")
             return false
         
         }

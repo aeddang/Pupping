@@ -52,9 +52,8 @@ struct PageHome: PageView {
                     }
                     .modifier(ContentHorizontalEdges())
                     .padding(.top, self.appSceneObserver.safeHeaderHeight + Dimen.margin.regular)
-                    .padding(.bottom, Dimen.app.bottomTab)
+                    .padding(.bottom, self.bottomMargin + Dimen.app.bottomTab)
                 }
-                .padding(.bottom, self.bottomMargin)
             }
             .onReceive(self.appSceneObserver.$safeBottomHeight){ height in
                 withAnimation{ self.bottomMargin = height }
