@@ -9,21 +9,18 @@ import Foundation
 import SwiftUI
 import Combine
 
-
-
 struct PageHome: PageView {
     @EnvironmentObject var pagePresenter:PagePresenter
-    @EnvironmentObject var sceneObserver:PageSceneObserver
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var dataProvider:DataProvider
     @EnvironmentObject var missionManager:MissionManager
-    
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var infinityScrollModel:InfinityScrollModel = InfinityScrollModel()
     @ObservedObject var viewPagerModel:ViewPagerModel = ViewPagerModel()
     
     @State var reloadDegree:Double = 0
     @State var reloadDegreeMax:Double = Double(InfinityScrollModel.PULL_COMPLETED_RANGE)
+    @State var bottomMargin:CGFloat = 0
     
     var body: some View {
         GeometryReader { geometry in
@@ -54,10 +51,13 @@ struct PageHome: PageView {
                         }
                     }
                     .modifier(ContentHorizontalEdges())
-                    .padding(.top, self.sceneObserver.safeAreaTop + Dimen.margin.regular)
+                    .padding(.top, self.appSceneObserver.safeHeaderHeight + Dimen.margin.regular)
                     .padding(.bottom, Dimen.app.bottomTab)
                 }
-                .padding(.bottom, self.sceneObserver.safeAreaBottom + Dimen.app.bottom)
+                .padding(.bottom, self.bottomMargin)
+            }
+            .onReceive(self.appSceneObserver.$safeBottomHeight){ height in
+                withAnimation{ self.bottomMargin = height }
             }
             .onReceive(self.infinityScrollModel.$event){evt in
                 guard let evt = evt else {return}
@@ -129,6 +129,7 @@ struct PageHome: PageView {
     }
     
     private func selectMission(_ mission:Mission){
+        
         if self.missionManager.currentMission == mission {
             self.appSceneObserver.event = .toast(String.alert.currentPlayMission)
             return
@@ -147,8 +148,30 @@ struct PageHome: PageView {
     }
     
     private func startMission(_ mission:Mission){
+        
         if self.missionManager.currentMission == mission {
             self.appSceneObserver.event = .toast(String.alert.currentPlayMission)
+            return
+        }
+        if self.pagePresenter.hasLayerPopup() {
+            if self.missionManager.currentMission == nil {
+                self.appSceneObserver.alert = .confirm(nil, String.alert.prevPlayWalk){ ac in
+                    if ac {
+                        self.pagePresenter.closePopup(pageId: .walk)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            self.startMission(mission)
+                        }
+                    }
+                }
+                return
+            }
+        }
+        if self.dataProvider.user.profiles.isEmpty {
+            self.appSceneObserver.alert = .alert(nil, String.alert.needProfileRegist, nil){
+                self.pagePresenter.openPopup(
+                    PageProvider.getPageObject(.profileRegist)
+                )
+            }
             return
         }
         if self.missionManager.currentMission != nil {

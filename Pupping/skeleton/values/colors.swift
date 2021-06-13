@@ -24,12 +24,14 @@ extension Color {
         public static let primaryStrong = Color.init(red: 244/255, green: 136/255, blue: 8/255)
         public static let primary = Color.init(red: 255/255, green: 152/255, blue: 31/255)
         public static let primaryExtra = Color.init(red: 255/255, green: 241/255, blue: 229/255)
+        public static let primaryLight = Color.init(red: 255/255, green: 201/255, blue: 64/255)
+        
         public static let secondary = Color.init(red: 0/255, green:198/255, blue: 115/255)
         public static let secondaryExtra = Color.init(red: 98/255, green:201/255, blue: 150/255)
         public static let thirdly = Color.init(red: 242/255, green:39/255, blue: 11/255)
         public static let fourth = Color.init(red: 10/255, green:132/255, blue: 255/255)
         public static let fourthExtra = Color.init(red: 136/255, green:161/255, blue: 251/255)
-        
+        public static let fiveth = Color.init(red: 10/255, green:132/255, blue: 255/255)
         public static let bg = app.whiteDeep
     }
     struct app {
@@ -40,7 +42,7 @@ extension Color {
         public static let greyLight = Color.init(red: 216/255, green: 216/255, blue: 225/255)
         public static let greyLightExtra = Color.init(red: 229/255, green: 231/255, blue: 235/255)
         public static let white =  Color.white
-        public static let whiteDeep =  Color.init(red: 250/255, green: 250/255, blue: 250/255)
+        public static let whiteDeep =  Color.init(red: 249/255, green: 249/255, blue: 250/255)
     }
     
     struct transparent {

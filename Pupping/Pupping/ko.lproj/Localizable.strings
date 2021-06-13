@@ -15,9 +15,9 @@
 "mail" = "mail";
 "femail" = "femail";
 
-"puppingCoin" = "PUPPING\nCoin";
+"puppingCoin" = "Pupping";
 "point" = "Point";
-"completeMission" = "Mission\nComplete";
+"completeMission" = "Mission";
 "year" = "YY";
 "month" = "MM";
 "day" = "DD";
@@ -45,6 +45,10 @@
 "btnStart" = "Start";
 "btnPreview" = "Preview";
 
+"btnStop" = "Finish";
+"btnPause" = "Stop";
+"btnResume" = "Walk";
+
 /*
   Alert
 */
@@ -67,11 +71,17 @@
 "alertSnsLoginError" = "After login. Available.";
 
 "alertCurrentPlayMission" = "현재 수행중인 미션입니다.";
+"alertCurrentPlay" = "현재 수행중인 미션을 종료후 진행해주세요.";
 "alertPrevPlayMission" = "수행중인 미션이 있습니다.\n종료하고 새로운 미션을 시작하겠습니까?";
+"alertPrevPlayWalk" = "산책을 종료하고 새로운 미션을 시작하겠습니까?";
 "alertClosePlayMission" = "미션을 종료하시겠습니까?\n저장되지 않은 정보는 모두 지워집니다.";
+"alertClosePlayWalk" = "산책을 종료하시겠습니까?";
 "alertNeedProfileRegist" = "함께할 강아지가 없습니다?\n강아지 등록 후 이용해주세요.";
 "alertSelectProfile" = "함께할 강아지를 선택해주세요";
 
+"alertNeedInput" = "필수 항목을 입력 해 주세요";
+"alertCoinSwap" = "코인이 충전됬습니다.";
+"alertPointEmpty" = "포인트가. 부족합니다.";
 /*
   Gnb
 */
@@ -126,7 +136,7 @@ PageLogin
 "profileRegistHealth" = "Violet’s health & immunization";
 "profileRegistMicroFin" = "Violet’s animal ID or a microchip number";
 "profileRegistMicroFinInfo" = "An animal ID is consisted of 15 digits.\nTake your pet to be scanned at the local vet,\nrescue centre or dog wardens service.";
-"profileRegistMicroFinPlaceHolder" = "ex.123456789012345";
+
 "profileRegistNeutralized" = "Neutralized";
 "profileRegistDistemperVaccinated" = "Distemper Vaccinated";
 "profileRegistHepatitisVaccinated" = "Hepatitis Vaccinated";
@@ -134,13 +144,15 @@ PageLogin
 "profileRegistRabiesVaccinated" = "Rabies Vaccinated";
 
 
-"profileRegistPlaceHolder" = "???";
 "profileCancelConfirm" = "If you cancel the registration, the information being created will be lost. Do you want to cancel?";
 "profileEmptyName" = "animal";
 "profileEmptySpecies" = "animal";
 "profileOption" = "Skip for now";
 "profileCheckAll" = "Check ALL options.";
 
+"profileNamePlaceHolder" = "Name here";
+"profileSpeciesPlaceHolder" = "ex. Maltese";
+"profileMicroFinPlaceHolder" = "ex.123456789012345";
 
 /*
  PageMission

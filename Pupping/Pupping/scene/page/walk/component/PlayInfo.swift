@@ -19,7 +19,7 @@ struct PlayInfo : PageComponent {
     @EnvironmentObject var dataProvider:DataProvider
     @EnvironmentObject var locationObserver:LocationObserver
     
-    @ObservedObject var playMissionModel:PlayMissionModel = PlayMissionModel()
+    @ObservedObject var viewModel:PlayWalkModel = PlayWalkModel()
     
     
     var profiles:[Profile] = []
@@ -28,6 +28,8 @@ struct PlayInfo : PageComponent {
     @State var progress:Float = 0
     @State var currentDistence:String? = nil
     @State var currentLocation:String = ""
+    @State var currentStatus:PlayMissionStatus = .stop
+    
     var body: some View {
         VStack(spacing:Dimen.margin.thin){
             HStack{
@@ -44,62 +46,85 @@ struct PlayInfo : PageComponent {
                         color: Color.app.greyDeep
                     ))
             }
-            HStack(spacing:Dimen.margin.thin){
+            HStack(spacing:Dimen.margin.tiny){
                 ForEach(profiles) { profile in
-                    Image(uiImage: profile.image ?? UIImage(named: Asset.brand.logoLauncher)!)
-                        .renderingMode(.original)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: Dimen.profile.thin, height: Dimen.profile.thin)
-                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                        
+                    PlayProfileInfo(
+                        profile: profile
+                    )
                 }
                 Spacer()
-                if let currentLocation = self.currentLocation {
-                    ZStack{
-                        Image(Asset.icon.flag)
-                            .renderingMode(.template)
-                            .resizable()
-                            .foregroundColor(Color.app.greyDeep)
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: Dimen.icon.tiny, height: Dimen.icon.tiny)
-                    }
-                    .frame(width: Dimen.icon.regular, height: Dimen.icon.regular)
-                    .background(Color.app.greyLight)
-                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text(currentLocation)
-                            .modifier(RegularTextStyle(size: Font.size.tiny, color: Color.brand.primary))
-                        Text(self.currentDistence ?? "...")
-                            .modifier(SemiBoldTextStyle(size: Font.size.tiny, color: Color.app.grey))
+                if self.viewModel.type == .mission {
+                    if let currentLocation = self.currentLocation {
+                        ZStack{
+                            Image(Asset.icon.flag)
+                                .renderingMode(.template)
+                                .resizable()
+                                .foregroundColor(Color.app.greyDeep)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: Dimen.icon.tiny, height: Dimen.icon.tiny)
+                        }
+                        .frame(width: Dimen.icon.regular, height: Dimen.icon.regular)
+                        .background(Color.app.greyLight)
+                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text(currentLocation)
+                                .modifier(RegularTextStyle(size: Font.size.tiny, color: Color.brand.primary))
+                            Text(self.currentDistence ?? "...")
+                                .modifier(SemiBoldTextStyle(size: Font.size.tiny, color: Color.app.grey))
+                        }
                     }
                 }
             }
-            ProgressSlider(
-                progress: self.progress,
-                useGesture: false,
-                progressHeight: Dimen.line.medium)
-                .frame(height:Dimen.line.medium)
-            HStack(spacing:Dimen.margin.thin){
-                FillButton(
-                    text: String.button.next, isSelected:false){ _ in
-                    self.playMissionModel.next()
+            if self.viewModel.type == .mission {
+                ProgressSlider(
+                    progress: self.progress,
+                    useGesture: false,
+                    progressHeight: Dimen.line.medium)
+                    .frame(height:Dimen.line.medium)
+            
+                HStack(spacing:Dimen.margin.thin){
+                    FillButton(
+                        type: .stroke,
+                        text:  String.button.next,
+                        isSelected:false){ _ in
+                        self.viewModel.next()
+                    }
+                    FillButton(
+                        type: .stroke,
+                        text: String.button.complete , isSelected:true){ _ in
+                        self.viewModel.complete()
+                    }
+                    .frame(width: 211)
                 }
-                FillButton(
-                    text: String.button.complete, isSelected:true){ _ in
-                    self.playMissionModel.complete()
+            } else {
+                HStack(spacing:Dimen.margin.thin){
+                    FillButton(
+                        type: .stroke,
+                        text: self.currentStatus == .play
+                            ? String.button.resume : String.button.pause,
+                        icon:self.currentStatus == .play
+                            ? Asset.icon.resume: Asset.icon.pause,
+                        isSelected:false){ _ in
+                        self.viewModel.toggleWalk()
+                    }
+                    FillButton(
+                        type: .stroke,
+                        text: String.button.stop , isSelected:true){ _ in
+                        self.viewModel.complete()
+                    }
+                    .frame(width: 211)
                 }
             }
             
         }
         .modifier(BottomFunctionTab())
-        .onReceive(self.playMissionModel.$playTime) { time in
+        .onReceive(self.viewModel.$playTime) { time in
             self.playTime = time.secToMinString()
         }
-        .onReceive(self.playMissionModel.$playDistence) { distence in
+        .onReceive(self.viewModel.$playDistence) { distence in
             self.playDistence = distence.toTruncateDecimal(n:1) + String.app.m
         }
-        .onReceive(self.playMissionModel.$currentDistenceFromDestination) { distence in
+        .onReceive(self.viewModel.$currentDistenceFromDestination) { distence in
             if let distence = distence {
                 self.currentDistence = distence.toTruncateDecimal(n:1) + String.app.m
             } else {
@@ -107,17 +132,22 @@ struct PlayInfo : PageComponent {
             }
             
         }
-        .onReceive(self.playMissionModel.$currentProgress) { progress in
+        .onReceive(self.viewModel.$currentProgress) { progress in
             self.progress = min(progress, 1.0)
         }
-        .onReceive(self.playMissionModel.$event) { evt in
+        .onReceive(self.viewModel.$status) { status in
+            self.currentStatus = status
+        }
+        .onReceive(self.viewModel.$event) { evt in
             guard let evt = evt  else { return }
             switch evt {
+            
             case .next(_):
-                self.currentLocation = self.playMissionModel.currentDestination?.place.name ?? ""
+                self.currentLocation = self.viewModel.currentDestination?.place.name ?? ""
             default : break
             }
         }
+        
         .onAppear(){
            
         }

@@ -17,14 +17,17 @@ struct PageProfileModify: PageView {
     }
 
     @EnvironmentObject var pagePresenter:PagePresenter
-    @EnvironmentObject var sceneObserver:PageSceneObserver
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var dataProvider:DataProvider
     
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var pageDragingModel:PageDragingModel = PageDragingModel()
     @ObservedObject var infinityScrollModel:InfinityScrollModel = InfinityScrollModel()
-    @State var safeAreaBottom:CGFloat = 0
+    
+    @State var bottomMargin:CGFloat = 0
+    @State var isUiReady:Bool = false
+   
+   
     var body: some View {
         GeometryReader { geometry in
             PageDragingBody(
@@ -43,7 +46,7 @@ struct PageProfileModify: PageView {
                             }
                         }
                     }
-                    .padding(.top, self.sceneObserver.safeAreaTop)
+                    .padding(.top, self.appSceneObserver.safeHeaderHeight)
                     .padding(.bottom, Dimen.margin.thin)
                     InfinityScrollView(
                         viewModel: self.infinityScrollModel,
@@ -84,8 +87,13 @@ struct PageProfileModify: PageView {
                         }
                         FillButton(
                             text:  String.button.modify,
-                            isSelected: true
+                            isSelected: self.isComplete
                         ){_ in
+                            if !self.isComplete {
+                                self.appSceneObserver.event = .toast(String.alert.needInput)
+                                return 
+                            }
+                            
                             self.profile?.update(
                                 data: ModifyProfileData(
                                     nickName:self.inputName,
@@ -100,22 +108,22 @@ struct PageProfileModify: PageView {
                         }
                     }
                     .modifier(ContentHorizontalEdges())
-                    .padding(.bottom, self.safeAreaBottom + Dimen.margin.light)
+                    .padding(.bottom, self.bottomMargin + Dimen.margin.light)
                     
                 }
                 .modifier(PageFull())
                 .modifier(PageDraging(geometry: geometry, pageDragingModel: self.pageDragingModel))
             }//draging
+            .onReceive(self.appSceneObserver.$safeBottomHeight){ height in
+                withAnimation{ self.bottomMargin = height }
+            }
             .onReceive(self.pageObservable.$isAnimationComplete){ ani in
                 if ani {
+                    self.isUiReady = true
                     
                 }
             }
-            .onReceive(self.sceneObserver.$safeAreaBottom){ pos in
-                withAnimation{
-                    self.safeAreaBottom = pos
-                }
-            }
+            
             .onAppear{
                 guard let obj = self.pageObject  else { return }
                 guard let profile = obj.getParamValue(key: .data) as? Profile else { return }
@@ -153,6 +161,12 @@ struct PageProfileModify: PageView {
             .init(text: String.pageText.profileRegistRabiesVaccinated)
         ])
     @State var profile:Profile? = nil
+    
+    var isComplete:Bool {
+        if self.inputName.isEmpty {return false}
+        if self.inputSpecies.isEmpty {return false}
+        return true
+    }
    
 }
 

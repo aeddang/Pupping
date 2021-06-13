@@ -19,7 +19,6 @@ extension String {
         public static let close = "close".loaalized()
         public static let cancel = "cancel".loaalized()
         public static let retry = "retry".loaalized()
-        
         public static let mail = "mail".loaalized()
         public static let femail = "femail".loaalized()
         public static let puppingCoin = "puppingCoin".loaalized()
@@ -30,7 +29,6 @@ extension String {
         public static let day = "day".loaalized()
         public static let step = "step".loaalized()
         public static let of = "of".loaalized()
-        
         public static let kmPerH = "kmPerH".loaalized()
         public static let km = "km".loaalized()
         public static let m = "m".loaalized()
@@ -44,38 +42,37 @@ extension String {
         public static let shop = "gnbShop".loaalized()
         public static let my = "gnbMy".loaalized()
         public static let walk = "gnbWalk".loaalized()
-       
     }
     
     struct location {
         public static let notFound = "locationNotFound".loaalized()
     }
     
-    
     struct alert {
         public static var apns = "alertApns".loaalized()
-
         public static var api = "alertApi".loaalized()
         public static var apiErrorServer = "alertApiErrorServer".loaalized()
         public static var apiErrorClient = "alertApiErrorClient".loaalized()
         public static var networkError = "alertNetworkError".loaalized()
         public static var dataError = "alertDataError".loaalized()
-        
         public static var location = "alertLocation".loaalized()
         public static var locationSub = "alertLocationSub".loaalized()
         public static var locationBtn = "alertLocationBtn".loaalized()
-        
         public static var dragdown = "alertDragdown".loaalized()
         public static var needProfile = "alertNeedProfile".loaalized()
         public static var deleteProfile = "alertDeleteProfile".loaalized()
         public static var snsLoginError = "alertSnsLoginError".loaalized()
-        
         public static var currentPlayMission = "alertCurrentPlayMission".loaalized()
+        public static var currentPlay =  "alertCurrentPlay".loaalized()
+        public static var prevPlayWalk = "alertPrevPlayWalk".loaalized()
         public static var prevPlayMission = "alertPrevPlayMission".loaalized()
         public static var closePlayMission = "alertClosePlayMission".loaalized()
-        
+        public static var closePlayWalk = "alertClosePlayWalk".loaalized()
         public static var needProfileRegist = "alertNeedProfileRegist".loaalized()
         public static var selectProfile = "alertSelectProfile".loaalized()
+        public static var needInput = "alertNeedInput".loaalized()
+        public static var coinSwap = "alertCoinSwap".loaalized()
+        public static var pointEmpty = "alertPointEmpty".loaalized()
     }
     
     struct button {
@@ -90,6 +87,9 @@ extension String {
         public static let swapPupping = "btnSwapPupping".loaalized()
         public static let start = "btnStart".loaalized()
         public static let preview = "btnPreview".loaalized()
+        public static let stop = "btnStop".loaalized()
+        public static let pause = "btnPause".loaalized()
+        public static let resume = "btnResume".loaalized()
     }
     
     struct pageTitle {
@@ -110,10 +110,8 @@ extension String {
         public static let introText3_1 = "introText3_1".loaalized()
         public static let introText3_2 = "introText3_2".loaalized()
         public static let introComplete = "introComplete".loaalized()
-
         public static let loginText = "loginText".loaalized()
         public static let loginStart = "loginStart".loaalized()
-        
         public static let profileRegistImage = "profileRegistImage".loaalized()
         public static let profileRegistName = "profileRegistName".loaalized()
         public static let profileRegistNameTip = "profileRegistNameTip".loaalized()
@@ -123,14 +121,17 @@ extension String {
         public static let profileRegistHealth = "profileRegistHealth".loaalized()
         public static let profileRegistMicroFin = "profileRegistMicroFin".loaalized()
         public static let profileRegistMicroFinInfo = "profileRegistMicroFinInfo".loaalized()
-        public static let profileRegistMicroFinPlaceHolder = "profileRegistMicroFinPlaceHolder".loaalized()
+       
         public static let profileRegistNeutralized = "profileRegistNeutralized".loaalized()
         public static let profileRegistDistemperVaccinated = "profileRegistDistemperVaccinated".loaalized()
         public static let profileRegistHepatitisVaccinated = "profileRegistHepatitisVaccinated".loaalized()
         public static let profileRegistParovirusVaccinated = "profileRegistParovirusVaccinated".loaalized()
         public static let profileRegistRabiesVaccinated = "profileRegistRabiesVaccinated".loaalized()
         
-        public static let profileRegistPlaceHolder = "profileRegistPlaceHolder".loaalized()
+        public static let profileNamePlaceHolder = "profileNamePlaceHolder".loaalized()
+        public static let profileSpeciesPlaceHolder = "profileSpeciesPlaceHolder".loaalized()
+        public static let profileMicroFinPlaceHolder = "profileMicroFinPlaceHolder".loaalized()
+        
         public static let profileEmptyName = "profileEmptyName".loaalized()
         public static let profileEmptySpecies = "profileEmptySpecies".loaalized()
         public static let profileOption = "profileOption".loaalized()

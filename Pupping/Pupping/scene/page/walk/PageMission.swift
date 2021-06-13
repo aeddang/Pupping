@@ -16,6 +16,8 @@ extension PageMission {
     static let zoomCloseup:Float = 18.5
     static let mapMoveDuration:Double = 0.5
     static let forceMoveDelay:Double = 1.5
+    
+    static var isFollowMe:Bool = false
 }
 
 struct PageMission: PageView {
@@ -32,7 +34,7 @@ struct PageMission: PageView {
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var pageDragingModel:PageDragingModel = PageDragingModel()
     @ObservedObject var mapModel:PlayMapModel = PlayMapModel()
-    @ObservedObject var playMissionModel:PlayMissionModel = PlayMissionModel()
+    @ObservedObject var viewModel:PlayWalkModel = PlayWalkModel(type: .mission)
     
     @State var uiType:UiType = .normal
     @State var mission:Mission? = nil
@@ -63,36 +65,31 @@ struct PageMission: PageView {
                     .modifier(MatchParent())
                     .opacity(self.dragOpacity)
                     VStack(alignment: .trailing, spacing:Dimen.margin.thin){
-                        Button(action: {
-                            self.onClose()
-                        }) {
-                            Image(Asset.icon.close)
-                                .renderingMode(.template)
-                                .resizable()
-                                .scaledToFit()
-                                .foregroundColor(Color.app.greyDeep)
-                                .frame(width: Dimen.icon.thin,
-                                       height: Dimen.icon.thin)
-                                .padding(.leading, Dimen.margin.regular)
-                                .background(Color.transparent.clearUi)
+                        HStack(spacing:Dimen.margin.thin){
+                            DragOnOffButton(
+                                isOn: self.uiType == .normal
+                            ){
+                                self.pageDragingModel.uiEvent = .dragEnd(!self.isBottom)
+                            }
+                            Spacer()
+                            CloseButton(){
+                                self.onClose()
+                            }
                         }
-                        .padding(.top,
-                                 self.uiType == .normal
-                                    ? Dimen.margin.medium + self.sceneObserver.safeAreaTop
-                                    : Dimen.margin.regular)
-                        .padding(.trailing, Dimen.margin.regular)
+                        .padding(.horizontal, Dimen.margin.regular)
                         
                         if self.uiType == .simple {
                             PlaySummary(
-                                playMissionModel: self.playMissionModel
+                                viewModel: self.viewModel
                             )
                             .modifier(ContentHorizontalEdges())
+                            
                         }
                         VStack(spacing:Dimen.margin.thin){
                             if let mission = self.mission {
-                                MissionInfo(
+                                PlayMissionInfo(
+                                    viewModel:self.viewModel,
                                     data: mission,
-                                    isPlay:true,
                                     uiType:self.missionInfoType
                                 )
                                 .onTapGesture {
@@ -114,16 +111,16 @@ struct PageMission: PageView {
                         .opacity(self.dragOpacity)
                         .padding(.bottom,  self.sceneObserver.safeAreaBottom)
                     }
-                   
+                    .padding(.top, self.isBottom ? Dimen.margin.thin : self.appSceneObserver.safeHeaderHeight)
                     .padding(.bottom, self.isPlay ? Self.uiHeight : 0)
                     if self.isPlay {
                         PlayInfo(
-                            playMissionModel: self.playMissionModel,
+                            viewModel: self.viewModel,
                             profiles: self.withProfiles
                         )
                     }
                 }
-                .modifier(PageFull())
+                .modifier(PageFull(style:.white))
                 .modifier(PageDraging(geometry: geometry, pageDragingModel: self.pageDragingModel))
                 .modifier(BottomFunctionTab(
                             isEffect: self.uiType == .simple,
@@ -162,7 +159,7 @@ struct PageMission: PageView {
                 default : break
                 }
             }
-            .onReceive(self.playMissionModel.$event) { evt in
+            .onReceive(self.viewModel.$event) { evt in
                 guard let evt = evt  else { return }
                 switch evt {
                 case .accessDenied :
@@ -176,7 +173,7 @@ struct PageMission: PageView {
                 default : break 
                 }
             }
-            .onReceive(self.playMissionModel.$currentLocation){ loc in
+            .onReceive(self.viewModel.$currentLocation){ loc in
                 guard let me = loc else {return}
                 self.moveMe(loc: me)
             }
@@ -201,11 +198,14 @@ struct PageMission: PageView {
                 default : break
                 }
             }
-            .onReceive(self.playMissionModel.$event) { evt in
+            .onReceive(self.viewModel.$event) { evt in
                 guard let evt = evt  else { return }
                 switch evt {
+                case .completeStep(let step):
+                    self.mapModel.playEvent = .completeStep(step)
                 case .next(_):
                     self.playNext()
+                    
                 case .completed:
                     self.playCompleted()
                 default : break
@@ -216,8 +216,11 @@ struct PageMission: PageView {
                 self.mapModel.startLocation = self.missionManager.generator.finalLocation ?? CLLocation()
                 self.mapModel.uiEvent = .move(self.mapModel.startLocation)
                 self.mission = self.missionManager.currentMission
+                self.isFollowMe = Self.isFollowMe
             }
             .onDisappear{
+                Self.isFollowMe = self.isFollowMe
+                if self.mission?.isCompleted == true {return}
                 if self.missionManager.currentMission == self.mission {
                     self.missionManager.endMission()
                 }
@@ -242,18 +245,18 @@ struct PageMission: PageView {
             return
         }
         guard let mission = self.mission else { return }
-        self.playMissionModel.startMission(mission: mission, locationObserver: self.locationObserver)
+        self.viewModel.startMission(mission: mission, locationObserver: self.locationObserver)
         withAnimation{
             self.missionInfoType = .simple
         }
         
-        if let start = self.playMissionModel.startLocation {
+        if let start = self.viewModel.startLocation {
             self.mapModel.uiEvent = .move(start, zoom: Self.zoomCloseup, duration: Self.mapMoveDuration)
             self.forceMoveLock()
         }
     }
     private func playNext(){
-        if let location = self.playMissionModel.currentDestination?.location {
+        if let location = self.viewModel.currentDestination?.location {
             self.mapModel.uiEvent = .move(location, zoom: Self.zoomCloseup, duration: Self.mapMoveDuration)
             self.forceMoveLock()
         }
@@ -261,10 +264,10 @@ struct PageMission: PageView {
     
     private func playCompleted(){
         guard let mission = self.mission else { return }
-        mission.playTime = self.playMissionModel.playTime
-        mission.playDistence = self.playMissionModel.playDistence
-        self.pagePresenter.closePopup(self.pageObject?.id)
-        self.pagePresenter.openPopup(PageProvider.getPageObject(.missionCompleted))
+        mission.completed(playTime: self.viewModel.playTime, playDistence: self.viewModel.playDistence)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.pagePresenter.openPopup(PageProvider.getPageObject(.missionCompleted))
+        }
     }
     
     private func forceMoveLock(){
@@ -275,14 +278,7 @@ struct PageMission: PageView {
     }
     
     private func checkWithProfile(){
-        if self.dataProvider.user.profiles.isEmpty {
-            self.appSceneObserver.alert = .alert(nil, String.alert.closePlayMission, nil){
-                self.pagePresenter.openPopup(
-                    PageProvider.getPageObject(.profileRegist)
-                )
-            }
-            
-        } else if self.dataProvider.user.profiles.count == 1{
+        if self.dataProvider.user.profiles.count == 1{
             if let profile = self.dataProvider.user.profiles.first {
                 self.withProfiles.append(profile)
                 self.playStart()
@@ -294,9 +290,6 @@ struct PageMission: PageView {
         }
         
     }
-    
-    
-   
     
     @State var isBottom:Bool = false
     func onDragEndAction(isBottom: Bool, geometry:GeometryProxy) {
@@ -321,7 +314,7 @@ struct PageMission: PageView {
     private func updateBottomPos(){
         if !self.isBottom {return}
         let hei = Dimen.app.bottomTab + (self.appSceneObserver.useBottom ? Dimen.app.bottom : 0 )
-        if hei == self.currentPos {return}
+        //if hei == self.currentPos {return}
         self.currentPos = hei
         let offset = self.sceneObserver.screenSize.height - hei + self.sceneObserver.safeAreaBottom
         self.pageDragingModel.uiEvent = .setBodyOffset( offset )

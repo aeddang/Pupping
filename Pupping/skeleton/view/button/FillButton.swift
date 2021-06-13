@@ -78,11 +78,13 @@ struct FillButton: View, SelecterbleProtocol{
             self.action(self.index)
         }) {
             ZStack{
-                HStack(spacing:Dimen.margin.tiny){
+                HStack(spacing:Dimen.margin.thin){
                     if let icon = self.icon {
                         Image(icon)
-                        .renderingMode(.original).resizable()
-                        .scaledToFit()
+                            .renderingMode(.template)
+                            .resizable()
+                            .foregroundColor(self.isSelected ?  Color.app.white : Color.app.greyDeep)
+                            .scaledToFit()
                             .frame(height: self.iconSize)
                     }
                     Text(self.text)

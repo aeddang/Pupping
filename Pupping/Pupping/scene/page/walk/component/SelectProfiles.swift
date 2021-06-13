@@ -36,31 +36,20 @@ struct SelectProfiles: PageComponent {
                 ForEach(self.profileSets) { profileSet in
                     HStack(spacing: Dimen.margin.thin) {
                         ForEach(profileSet.datas) { profile in
-                            Image(uiImage: profile.image ??
-                                    UIImage(named: Asset.brand.logoLauncher)!)
-                                .renderingMode(.original)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: Dimen.profile.regular, height: Dimen.profile.regular)
-                                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                                .overlay(
-                                   Circle()
-                                    .stroke(
-                                        self.selectedProfiles.first(where: {$0.id == profile.id}) == nil
-                                            ? Color.transparent.clearUi
-                                            : Color.brand.primary ,
-                                        lineWidth: Dimen.stroke.regular)
-                                )
-                                .onTapGesture {
-                                    profile.isWith.toggle()
-                                    if profile.isWith {
-                                        self.selectedProfiles.append(profile)
-                                    } else {
-                                        if let find = self.selectedProfiles.firstIndex(of: profile) {
-                                            self.selectedProfiles.remove(at: find)
-                                        }
+                            SelectProfileItem(
+                                data: profile,
+                                isSelected: self.selectedProfiles.first(where: {$0.id == profile.id}) != nil
+                            )
+                            .onTapGesture {
+                                profile.isWith.toggle()
+                                if profile.isWith {
+                                    self.selectedProfiles.append(profile)
+                                } else {
+                                    if let find = self.selectedProfiles.firstIndex(of: profile) {
+                                        self.selectedProfiles.remove(at: find)
                                     }
                                 }
+                            }
                         }
                     }
                 }
@@ -108,6 +97,47 @@ struct SelectProfiles: PageComponent {
     }//body
     @State var profileSets:[ProfileDataSet] = []
     @State var selectedProfiles:[Profile] = []
+}
+
+struct SelectProfileItem: PageComponent {
+   
+    var data:Profile
+    var isSelected:Bool
+    var body: some View {
+        VStack(spacing: Dimen.margin.tinyExtra){
+            Image(uiImage: self.data.image ??
+                    UIImage(named: Asset.brand.logoLauncher)!)
+                .renderingMode(.original)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: Dimen.profile.regular, height: Dimen.profile.regular)
+                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                .overlay(
+                   Circle()
+                    .stroke(
+                        self.isSelected
+                            ? Color.brand.primary
+                            : Color.transparent.clearUi ,
+                        lineWidth: Dimen.stroke.regular)
+                )
+            HStack(spacing:Dimen.margin.micro ){
+                Text(self.data.nickName ?? "")
+                     .modifier(BoldTextStyle(
+                         size: Font.size.thinExtra,
+                         color: Color.app.greyDeep
+                     ))
+             
+                Text("lv" + self.data.lv.description)
+                     .modifier(BoldTextStyle(
+                         size: Font.size.thinExtra,
+                         color: Color.brand.primary
+                     ))
+             }
+        }
+        .onAppear{
+           
+        }
+    }//body
 }
 
 

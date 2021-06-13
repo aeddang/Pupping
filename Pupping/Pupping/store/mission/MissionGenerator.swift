@@ -109,13 +109,11 @@ class MissionGenerator:ObservableObject, PageProtocol{
                 created()
             }
         }
-        
         func created (){
             mission.build()
             self.event = .created(mission, id: self.currentId)
             self.executeQ()
         }
-        
     }
     
     private func lookUp(placeId:String, completionHandler: @escaping (GMSPlace) -> Void){

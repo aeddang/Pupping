@@ -19,10 +19,12 @@ struct InputCell: PageView {
     var info:String? = nil
     var isEditable:Bool = true
     var isSecure:Bool = false
-    @State private var inputHeight:CGFloat = Self.inputHeight
+   
     var actionTitle:String? = nil
     var action:(() -> Void)? = nil
     
+    @State private var inputHeight:CGFloat = Self.inputHeight
+    @State private var isInputLimited:Bool = false
     var body: some View {
         VStack(alignment: .center, spacing:Dimen.margin.mediumExtra){
             if let title = self.title {
@@ -31,8 +33,8 @@ struct InputCell: PageView {
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            if self.tip != nil{
-                Text(self.tip!)
+            if self.isInputLimited ,let tip = self.tip{
+                Text(tip)
                     .modifier(MediumTextStyle(
                         size: Font.size.thinExtra,
                                 color: Color.brand.thirdly))
@@ -72,8 +74,15 @@ struct InputCell: PageView {
                                     maxLength: self.inputLimited,
                                     textModifier: MediumTextStyle(size: Self.inputFontSize).textModifier,
                                     isfocus: self.isFocus,
+                                    inputLimited: {
+                                        if !self.isInputLimited {
+                                            withAnimation{ self.isInputLimited = true }
+                                        }
+                                    },
                                     inputChanged: { text in
-                                        //self.input = text
+                                        if self.isInputLimited {
+                                            withAnimation{ self.isInputLimited = false }
+                                        }
                                     },
                                     inputCopmpleted: { text in
                                         
@@ -88,7 +97,15 @@ struct InputCell: PageView {
                                     textModifier:MediumTextStyle(size: Self.inputFontSize).textModifier,
                                     usefocusAble: true,
                                     textAlignment: .center,
+                                    inputLimited: {
+                                        if !self.isInputLimited {
+                                            withAnimation{ self.isInputLimited = true }
+                                        }
+                                    },
                                     inputChanged: {text , size in
+                                        if self.isInputLimited {
+                                            withAnimation{ self.isInputLimited = false }
+                                        }
                                         self.inputHeight = min(size.height, (Self.inputHeight * CGFloat(self.lineLimited)))
                                     }
                                 )
@@ -127,7 +144,9 @@ struct InputCell: PageView {
                 .overlay(
                     RoundedRectangle(
                         cornerRadius: Dimen.radius.lightExtra, style: .circular)
-                        .stroke( self.isFocus ? Color.brand.thirdly : Color.app.greyLight ,
+                        .stroke( self.isFocus
+                                    ? ( self.isInputLimited ? Color.brand.thirdly : Color.brand.primary )
+                                    : Color.app.greyLight ,
                                  lineWidth: 1 )
                 )
                 .modifier(Shadow())

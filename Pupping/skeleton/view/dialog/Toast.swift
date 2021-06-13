@@ -29,17 +29,25 @@ struct Toast<Presenting>: View where Presenting: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             self.presenting()
-            VStack{
+            HStack(spacing:Dimen.margin.tiny){
+                Image(Asset.icon.footPrint)
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundColor(Color.app.white)
+                    .scaledToFit()
+                    .frame(width: Dimen.icon.light, height: Dimen.icon.light)
+                    .opacity(0.5)
                 Text(self.text)
                     .modifier(MediumTextStyle(size: Font.size.light, color: Color.app.white))
-                    .padding(.all, Dimen.margin.thin)
-                    .frame(minWidth: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/,  maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
             }
-            .background(Color.transparent.black70)
+            .padding(.all, Dimen.margin.tiny)
+            .frame(minWidth: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/,  maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
+            .background(Color.app.greyDeep.opacity(0.7))
             .padding(.bottom, self.safeAreaBottom)
             .offset(y:self.isShowing ? 0 : 100)
             .opacity(self.isShowing ? 1 : 0)
         }
+        
         .onReceive(self.sceneObserver.$safeAreaBottom){ pos in
             withAnimation{
                 self.safeAreaBottom = pos

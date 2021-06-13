@@ -63,16 +63,24 @@ final class PagePresenter:ObservableObject{
     
     func getBelowPage(page:PageObject)->PageObject?{
         if page.isPopup {
-            let find = PageSceneDelegate.instance?.popups.filter{!$0.isLayer}.firstIndex(of: page)
-            if let find = find , find > 0{
-                return PageSceneDelegate.instance?.popups[find - 1]
+            if page.isLayer {
+                guard let find = PageSceneDelegate.instance?.popups.filter({!$0.isLayer}).first else { return currentPage }
+                return find
+            } else {
+                guard let find = PageSceneDelegate.instance?.popups.filter({!$0.isLayer}).firstIndex(of: page)  else { return currentPage }
+                if find > 0{
+                    return PageSceneDelegate.instance?.popups[find - 1]
+                } 
+                return currentPage
             }
-            return currentPage
         } else {
             return nil
         }
     }
-    
+    func hasLayerPopup()->Bool{
+        let result = PageSceneDelegate.instance?.popups.first{ $0.isLayer }
+        return result !== nil
+    }
     func hasPopup(find:PageID)->Bool{
         let result = PageSceneDelegate.instance?.popups.first{ $0.pageID == find}
         return result !== nil

@@ -31,9 +31,9 @@ struct SelectImagePicker: PageComponent{
             ZStack(alignment: .center){
                 if self.selectedImage == nil {
                     Spacer()
-                        .frame(width: 123, height: 123)
-                        .background(Color.app.greyLight)
-                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                        .modifier(MatchParent())
+                        .background(Color.app.greyLightExtra)
+                       
                     Image( Asset.icon.photo )
                         .renderingMode(.original)
                         .resizable()
@@ -54,7 +54,6 @@ struct SelectImagePicker: PageComponent{
                     = .imgPicker(SceneRequest.imagePicker.rawValue + self.id)
             }
             .frame(width: 123, height: 123)
-            .background(Color.app.greyLight)
             .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
             Spacer()
         }
@@ -79,10 +78,11 @@ struct SelectImagePicker: PageComponent{
         }
         .onAppear(){
             self.selectedImage = data.selectedImage
+            /*
             if self.selectedImage == nil {
                 self.appSceneObserver.select
                     = .imgPicker(SceneRequest.imagePicker.rawValue + self.id)
-            }
+            }*/
             
         }
     }//body

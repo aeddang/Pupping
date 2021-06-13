@@ -35,7 +35,7 @@ class InputData:Identifiable{
         title: String,
         tip:String? = nil,
         info:String? = nil,
-        placeHolder:String = String.pageText.profileRegistPlaceHolder,
+        placeHolder:String = "",
         keyboardType:UIKeyboardType = .default,
         tabs:[SelectData] = [],
         checks:[RadioData] = [],
@@ -56,7 +56,7 @@ class InputData:Identifiable{
 
 struct PageProfileRegist: PageView {
     @EnvironmentObject var pagePresenter:PagePresenter
-    @EnvironmentObject var sceneObserver:PageSceneObserver
+   
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var dataProvider:DataProvider
     @EnvironmentObject var keyboardObserver:KeyboardObserver
@@ -64,7 +64,7 @@ struct PageProfileRegist: PageView {
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var pageDragingModel:PageDragingModel = PageDragingModel()
     
-    @State var safeAreaBottom:CGFloat = 0
+    @State var bottomMargin:CGFloat = 0
     var body: some View {
         GeometryReader { geometry in
             PageDragingBody(
@@ -84,7 +84,7 @@ struct PageProfileRegist: PageView {
                             }
                         }
                     }
-                    .padding(.top, self.sceneObserver.safeAreaTop)
+                    .padding(.top, self.appSceneObserver.safeHeaderHeight)
                     .padding(.bottom, Dimen.margin.thin)
                     VStack( spacing: 0 ){
                         
@@ -184,17 +184,23 @@ struct PageProfileRegist: PageView {
                                     :String.button.next,
                                 isSelected: self.isComplete
                             ){_ in
-                                self.update()
-                                self.next()
+                                if !self.update() {
+                                    self.appSceneObserver.event = .toast(String.alert.needInput)
+                                } else {
+                                    self.next()
+                                }
                             }
                         }
-                        .padding(.bottom, self.safeAreaBottom + Dimen.margin.light)
+                        .padding(.bottom, self.bottomMargin + Dimen.margin.light)
                     }
                     .modifier(ContentHorizontalEdges())
                 }
                 .modifier(PageFull())
                 .modifier(PageDraging(geometry: geometry, pageDragingModel: self.pageDragingModel))
             }//draging
+            .onReceive(self.appSceneObserver.$safeBottomHeight){ height in
+                withAnimation{ self.bottomMargin = height }
+            }
             .onReceive(self.pageObservable.$isAnimationComplete){ ani in
                 if ani {
                     self.setupInput()
@@ -206,11 +212,6 @@ struct PageProfileRegist: PageView {
                     self.isFocus = isOn
                 }
                 
-            }
-            .onReceive(self.sceneObserver.$safeAreaBottom){ pos in
-                withAnimation{
-                    self.safeAreaBottom = pos
-                }
             }
             .onAppear{
                 if let profile = self.dataProvider.user.currentRegistProfile {
@@ -248,11 +249,13 @@ struct PageProfileRegist: PageView {
         InputData(
             type:.text,
             title: String.pageText.profileRegistName,
-            tip:String.pageText.profileRegistNameTip),
+            tip:String.pageText.profileRegistNameTip,
+            placeHolder: String.pageText.profileNamePlaceHolder),
         InputData(
             type:.text,
             title: String.pageText.profileRegistSpecies,
-            tip:String.pageText.profileRegistNameTip),
+            tip:String.pageText.profileRegistNameTip,
+            placeHolder: String.pageText.profileSpeciesPlaceHolder),
         InputData(
             type:.date,
             title: String.pageText.profileRegistBirth),
@@ -273,7 +276,7 @@ struct PageProfileRegist: PageView {
             type:.text,
             title: String.pageText.profileRegistMicroFin,
             info:String.pageText.profileRegistMicroFinInfo,
-            placeHolder: String.pageText.profileRegistMicroFinPlaceHolder,
+            placeHolder: String.pageText.profileMicroFinPlaceHolder,
             isOption: true
             ),
         InputData(
@@ -287,22 +290,30 @@ struct PageProfileRegist: PageView {
                 .init(text: String.pageText.profileRegistRabiesVaccinated)
             ])
     ]
-    
-    private func update(){
-        if self.step >= self.steps.count { return }
+    @discardableResult
+    private func update() -> Bool {
+        if self.step >= self.steps.count { return false }
         switch self.step {
         case  0 :
-            self.selectedProfileImage = self.selectedImage
-            self.profile?.update(image:self.selectedImage)
-        case  1 : self.profile?.update(data: ModifyProfileData(nickName: self.input))
-        case  2 : self.profile?.update(data: ModifyProfileData(species: self.input))
-        case  3 : self.profile?.update(data: ModifyProfileData(birth: self.selectedDate))
+            guard let image = self.selectedImage else { return false }
+            self.selectedProfileImage = image
+            self.profile?.update(image:image)
+        case  1 :
+            if self.input.isEmpty  { return false }
+            self.profile?.update(data: ModifyProfileData(nickName: self.input))
+        case  2 :
+            if self.input.isEmpty  { return false }
+            self.profile?.update(data: ModifyProfileData(species: self.input))
+        case  3 :
+            guard let date = self.selectedDate else { return false }
+            self.profile?.update(data: ModifyProfileData(birth: date))
         case  4 :
             let gender:Gender = self.selectedIdx == 0 ? .mail : .femail
             self.profile?.update(data: ModifyProfileData(gender: gender))
-        case  5 : self.profile?.update(data: ModifyProfileData(microfin: self.input))
+        case  5 :
+            self.profile?.update(data: ModifyProfileData(microfin: self.input))
         case  6 :
-            guard let inputData = self.inputData else {return}
+            guard let inputData = self.inputData else {return false}
             self.profile?.update(data:
                             ModifyProfileData(
                                 neutralization: inputData.checks[0].isCheck,
@@ -313,6 +324,7 @@ struct PageProfileRegist: PageView {
             
         default : break
         }
+        return true
     }
     
     var isComplete:Bool {

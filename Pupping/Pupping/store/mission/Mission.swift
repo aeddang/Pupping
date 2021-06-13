@@ -20,6 +20,13 @@ enum MissionType:CaseIterable {
         case .always: return "Any Time Mission"
         }
     }
+    func color() -> Color{
+        switch self {
+        case .today: return Color.brand.primary
+        case .event: return Color.brand.thirdly
+        case .always: return Color.brand.secondary
+        }
+    }
     static func random() -> MissionType{
         return Self.allCases.map{$0}.randomElement()! 
     }
@@ -35,6 +42,7 @@ enum MissionPlayType:CaseIterable {
         case .endurance : return "지구력 기르기"
         }
     }
+   
     static func random() -> MissionPlayType{
         return Self.allCases.map{$0}.randomElement()!
     }
@@ -44,12 +52,30 @@ enum MissionLv:CaseIterable {
     case lv1, lv2, lv3, lv4
     func info() -> String{
         switch self {
-        case .lv1: return "쉬움"
-        case .lv2: return "보통"
-        case .lv3: return "어려움"
-        case .lv4: return "매우 어려움"
+        case .lv1: return "Easy"
+        case .lv2: return "Normal"
+        case .lv3: return "Difficult"
+        case .lv4: return "Very Difficult"
         }
     }
+    func icon() -> String{
+        switch self {
+        case .lv1: return "ic_easy"
+        case .lv2: return "ic_normal"
+        case .lv3: return "ic_hard"
+        case .lv4: return "ic_hard"
+        }
+    }
+    
+    func color() -> Color{
+        switch self {
+        case .lv1: return Color.brand.secondary
+        case .lv2: return Color.brand.primary
+        case .lv3: return Color.brand.thirdly
+        case .lv4: return Color.brand.thirdly
+        }
+    }
+    
     func point() -> Double{
         switch self {
         case .lv1: return 10
@@ -134,9 +160,9 @@ class Mission:PageProtocol, Identifiable, Equatable{
     private (set) var duration:Double = 0 //sec
     private (set) var speed:Double = 0 //meter per hour
     
-    
-    var playTime:Double = 0
-    var playDistence:Double = 0
+    private (set) var isCompleted:Bool = false
+    private (set) var playTime:Double = 0
+    private (set) var playDistence:Double = 0
     
     
     public static func == (l:Mission, r:Mission)-> Bool {
@@ -148,6 +174,13 @@ class Mission:PageProtocol, Identifiable, Equatable{
         self.playType = playType
         self.lv = lv
     }
+
+   
+    func completed(playTime:Double, playDistence:Double) {
+        self.playTime = playTime
+        self.playDistence = playDistence
+        self.isCompleted = true
+    }
     
     @discardableResult
     func add(start:GMSPlace) -> Mission {
@@ -158,19 +191,19 @@ class Mission:PageProtocol, Identifiable, Equatable{
     @discardableResult
     func add(destinations:[GMSPlace]) -> Mission {
         var pickList = destinations
+        var pickedList:[GMSPlace] = []
         let len = min(destinations.count,self.lv.locationCount())
         (0..<len).forEach{_ in
             if let pick = pickList.randomElement() {
                 if let idx =  pickList.firstIndex(where: {$0.placeID == pick.placeID}) {
                     pickList.remove(at: idx)
                 }
-                if  self.destination == nil {
-                    self.destination = pick
-                } else {
-                    self.waypoints.append(pick)
-                }
+                pickedList.append(pick)
             }
         }
+        pickedList.sort(by: {$0.coordinate.latitude > $1.coordinate.latitude})
+        self.destination = pickedList.last
+        self.waypoints = pickedList.dropLast()
         return self
     }
     

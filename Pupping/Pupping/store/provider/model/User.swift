@@ -97,6 +97,16 @@ class User:ObservableObject, PageProtocol{
         return self.profiles.first(where: {$0.id == id})
     }
     
+    func swapCoin() {
+        self.coin += self.point
+        self.point = 0
+        UserCoreData().update(
+            data: ModifyUserData(
+                point: self.point,
+                coin: self.coin)
+        )
+    }
+    
     func setData(_ data:UserEntity) {
         self.point = data.point
         self.mission = data.mission

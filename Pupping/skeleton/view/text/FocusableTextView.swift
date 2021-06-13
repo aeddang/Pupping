@@ -20,6 +20,7 @@ struct FocusableTextView: UIViewRepresentable {
     var textAlignment:NSTextAlignment = .left
     var limitedLine: Int = 1
     var limitedSize: Int = -1
+    var inputLimited: (() -> Void)? = nil
     var inputChange: ((_ text:String, _ size:CGSize) -> Void)? = nil
     var inputChanged: ((_ text:String, _ size:CGSize) -> Void)? = nil
     var inputCopmpleted: ((_ text:String) -> Void)? = nil
@@ -82,7 +83,10 @@ struct FocusableTextView: UIViewRepresentable {
                 let textRange = Range(range, in: currentText) {
                 let updatedText = currentText.replacingCharacters(in: textRange, with: text)
                 if self.parent.limitedSize != -1 {
-                    if updatedText.count > self.parent.limitedSize { return false }
+                    if updatedText.count > self.parent.limitedSize {
+                        parent.inputLimited?()
+                        return false
+                    }
                 }
                 self.parent.inputChange?(updatedText, textView.contentSize)
             }

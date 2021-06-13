@@ -12,31 +12,38 @@ import SwiftUI
 struct MyRewardsInfo : PageComponent {
     @EnvironmentObject var pagePresenter:PagePresenter
     @EnvironmentObject var dataProvider:DataProvider
+    @EnvironmentObject var appSceneObserver:AppSceneObserver
     @State var point:Double = 0
     @State var coin:Double = 0
-    @State var mission:Double = 0
+    
    
     var body: some View {
-        
-        VStack(alignment:.leading, spacing:Dimen.margin.regular){
+        VStack(alignment:.leading, spacing:Dimen.margin.light){
             Text(String.pageTitle.myRewards)
                 .modifier(ContentTitle())
-            HStack(spacing:Dimen.margin.thin){
+            HStack(spacing:Dimen.margin.lightExtra){
                 RewardsItem (
                     title: String.app.point,
                     icon: Asset.icon.point,
                     point: self.point,
-                    color: Color.brand.primary)
+                    color: Color.brand.primaryLight)
+                
+                Image(Asset.shape.spinner)
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundColor(self.isSwap ? Color.brand.primary : Color.app.greyDeep)
+                    .scaledToFit()
+                    .frame(width: Dimen.icon.regular, height: Dimen.icon.regular)
+                    .rotationEffect(.degrees(self.degrees) )
+                    .onTapGesture {
+                        self.swap()
+                    }
+                    
                 RewardsItem (
                     title: String.app.puppingCoin,
-                    icon: Asset.icon.pupping,
+                    icon: Asset.icon.coin,
                     point: self.coin,
-                    color: Color.brand.secondary)
-                RewardsItem (
-                    title: String.app.completeMission,
-                    icon: Asset.gnb.mission,
-                    point: self.mission,
-                    color: Color.app.grey)
+                    color: Color.brand.secondaryExtra)
             }
         }
         
@@ -46,9 +53,28 @@ struct MyRewardsInfo : PageComponent {
         .onReceive(self.dataProvider.user.$point){ point in
             self.point = point
         }
-        .onReceive(self.dataProvider.user.$mission){ mission in
-            self.mission = mission
+    }
+    
+    @State var degrees:Double = 0
+    @State var isSwap:Bool = false
+    func swap(){
+        if self.point == 0 {
+            self.appSceneObserver.event = .toast(String.alert.pointEmpty)
+            return
         }
+        
+        self.dataProvider.user.swapCoin()
+        withAnimation{
+            self.isSwap = true
+            self.degrees = self.degrees == 0 ? 360 : 0
+        }
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
+            DispatchQueue.main.async {
+                withAnimation {self.isSwap = false}
+                self.appSceneObserver.event = .toast(String.alert.coinSwap)
+            }
+        }
+        
     }
 }
 
@@ -60,25 +86,26 @@ struct RewardsItem : PageComponent {
     var color:Color
     
     var body: some View {
-        VStack(alignment:.leading,spacing:Dimen.margin.light){
-            HStack(alignment:.top, spacing:Dimen.margin.tiny){
+        VStack(alignment:.leading,spacing:Dimen.margin.thinExtra){
+            HStack(alignment:.top, spacing:Dimen.margin.thinExtra){
                 Image(self.icon)
                     .renderingMode(.original)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: Dimen.icon.regular, height: Dimen.icon.regular)
-                Text(self.title)
-                    .modifier(RegularTextStyle(size: Font.size.thinExtra, color: Color.app.grey))
-            }
-            .frame( height: 50 )
-            ZStack{
+                    .frame(width: Dimen.icon.mediumExtra, height: Dimen.icon.mediumExtra)
                 Text(self.point.formatted(style: .decimal))
-                    .modifier(RegularTextStyle(size: Font.size.mediumExtra, color: self.color))
+                    .modifier(BoldTextStyle(size: Font.size.mediumExtra, color: Color.app.white))
+                Spacer()
             }
-            .modifier(MatchHorizontal(height: Dimen.tab.light))
-            .background(self.color.opacity(0.2))
-            .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.lightExtra))
+            Text(self.title)
+                .modifier(RegularTextStyle(size: Font.size.thinExtra, color: Color.app.white))
+                .padding(.leading, Dimen.margin.thinExtra)
+            
         }
+        .padding(.all, Dimen.margin.thin)
+        .modifier(MatchHorizontal(height:86))
+        .background(color)
+        .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.thin))
     }
 }
 

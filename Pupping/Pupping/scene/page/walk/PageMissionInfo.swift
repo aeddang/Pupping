@@ -17,9 +17,10 @@ extension PageMissionInfo {
 }
 struct PageMissionInfo: PageView {
     @EnvironmentObject var pagePresenter:PagePresenter
-    @EnvironmentObject var sceneObserver:PageSceneObserver
+    
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var missionManager:MissionManager
+    @EnvironmentObject var dataProvider:DataProvider
     
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var pageDragingModel:PageDragingModel = PageDragingModel()
@@ -29,6 +30,8 @@ struct PageMissionInfo: PageView {
     @State var isUiReady:Bool = false
     @State var isFollowMe:Bool = false
     @State var isForceMove:Bool = false
+    
+    @State var bottomMargin:CGFloat = 0
     var body: some View {
         GeometryReader { geometry in
             PageDragingBody(
@@ -41,10 +44,10 @@ struct PageMissionInfo: PageView {
                             title: String.pageTitle.missionInfo,
                             isClose:true
                         )
-                        .padding(.top, self.sceneObserver.safeAreaTop)
+                        .padding(.top, self.appSceneObserver.safeHeaderHeight)
                         VStack(spacing:Dimen.margin.thin){
                             if let mission = self.mission {
-                                MissionInfo(data: mission)
+                                PlayMissionInfo(data: mission)
                             }
                             ZStack{
                                 PlayMap(
@@ -58,8 +61,15 @@ struct PageMissionInfo: PageView {
                             .modifier(Shadow())
                         }
                         .modifier(ContentHorizontalEdges())
+                        
+                        FillButton(
+                            text: String.button.start, isSelected:true){ _ in
+                            self.startMission()
+                            
+                        }
+                        .modifier(ContentHorizontalEdges())
                     }
-                    .padding(.bottom, Dimen.margin.regular + self.sceneObserver.safeAreaBottom)
+                    .padding(.bottom, self.bottomMargin)
                 }
                 .modifier(PageFull())
                 .modifier(PageDraging(geometry: geometry, pageDragingModel: self.pageDragingModel))
@@ -68,6 +78,9 @@ struct PageMissionInfo: PageView {
                 if ani {
                     self.prevInit()
                 }
+            }
+            .onReceive(self.appSceneObserver.$safeBottomHeight){ height in
+                withAnimation{ self.bottomMargin = height }
             }
             .onAppear{
                 self.mapModel.zoom = Self.zoomRatio
@@ -83,6 +96,44 @@ struct PageMissionInfo: PageView {
     private func prevInit(){
         guard let mission = self.mission else { return }
         self.mapModel.playEvent = .setupMission(mission)
+    }
+    
+    private func startMission(){
+        self.pagePresenter.closePopup(self.pageObject?.id)
+        guard let mission = self.mission else { return }
+        if self.missionManager.currentMission == mission {
+            self.appSceneObserver.event = .toast(String.alert.currentPlayMission)
+            return
+        }
+        if self.dataProvider.user.profiles.isEmpty {
+            self.appSceneObserver.alert = .alert(nil, String.alert.needProfileRegist, nil){
+                self.pagePresenter.openPopup(
+                    PageProvider.getPageObject(.profileRegist)
+                )
+            }
+            return
+        }
+        if self.missionManager.currentMission != nil {
+            self.appSceneObserver.alert = .confirm(nil, String.alert.prevPlayMission){ ac in
+                if ac {
+                    self.missionManager.endMission()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        self.missionManager.startMission(mission)
+                        self.pagePresenter.openPopup(
+                            PageProvider.getPageObject(.mission)
+                                .addParam(key: UUID().uuidString, value:  "")
+                        )
+                    }
+                    
+                }
+            }
+        } else {
+            self.missionManager.startMission(mission)
+            self.pagePresenter.openPopup(
+                PageProvider.getPageObject(.mission)
+                    .addParam(key: UUID().uuidString, value:  "")
+            )
+        }
     }
 }
 

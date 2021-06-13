@@ -19,17 +19,28 @@ struct PlaySummary : PageComponent {
     @EnvironmentObject var dataProvider:DataProvider
     @EnvironmentObject var locationObserver:LocationObserver
     
-    @ObservedObject var playMissionModel:PlayMissionModel = PlayMissionModel()
+    @ObservedObject var viewModel:PlayWalkModel = PlayWalkModel()
    
+    var profiles:[Profile] = []
+    
     @State var playTime:String = ""
     @State var playDistence:String = ""
     @State var progress:Float = 0
-    
+    @State var currentStatus:PlayMissionStatus = .stop
    
     var body: some View {
         VStack(spacing:Dimen.margin.thin) {
-            
-            HStack{
+            HStack(spacing:Dimen.margin.thin){
+                if self.viewModel.type == .walk && self.currentStatus != .initate {
+                    ImageButton(
+                        isSelected:self.currentStatus == .play,
+                        defaultImage :Asset.icon.pause,
+                        activeImage: Asset.icon.resume,
+                        defaultColor: Color.app.grey
+                        ){ _ in
+                        self.viewModel.toggleWalk()
+                    }
+                }
                 Text(self.playDistence)
                     .modifier(BoldTextStyle(
                         size: Font.size.bold,
@@ -43,22 +54,28 @@ struct PlaySummary : PageComponent {
                         color: Color.app.greyDeep
                     ))
             }
-            ProgressSlider(
-                progress: self.progress,
-                useGesture: false,
-                progressHeight: Dimen.line.medium)
-                .frame(height:Dimen.line.medium)
+            if self.viewModel.type == .mission {
+                ProgressSlider(
+                    progress: self.progress,
+                    useGesture: false,
+                    progressHeight: Dimen.line.medium)
+                    .frame(height:Dimen.line.medium)
+            }
             Spacer().modifier(MatchHorizontal(height: 0))
             
+            
         }
-        .onReceive(self.playMissionModel.$playTime) { time in
+        .onReceive(self.viewModel.$playTime) { time in
             self.playTime = time.secToMinString()
         }
-        .onReceive(self.playMissionModel.$playDistence) { distence in
+        .onReceive(self.viewModel.$playDistence) { distence in
             self.playDistence = distence.toTruncateDecimal(n:1) + String.app.m
         }
-        .onReceive(self.playMissionModel.$currentProgress) { progress in
+        .onReceive(self.viewModel.$currentProgress) { progress in
             self.progress = progress
+        }
+        .onReceive(self.viewModel.$status) { status in
+            self.currentStatus = status
         }
         .onAppear(){
            

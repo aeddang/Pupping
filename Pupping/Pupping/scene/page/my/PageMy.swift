@@ -11,41 +11,55 @@ import Combine
 
 struct PageMy: PageView {
     @EnvironmentObject var pagePresenter:PagePresenter
-    @EnvironmentObject var sceneObserver:PageSceneObserver
+    @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var appObserver:AppObserver
     @EnvironmentObject var dataProvider:DataProvider
     
     @ObservedObject var pageObservable:PageObservable = PageObservable()
-    @ObservedObject var infinityScrollModel:InfinityScrollModel = InfinityScrollModel()
-    
+    @ObservedObject var profileScrollModel:InfinityScrollModel = InfinityScrollModel()
+   
+    @State var bottomMargin:CGFloat = 0
+    @State var isUiReady:Bool = false
     var body: some View {
-        VStack(spacing: 0){
+        VStack(alignment: .leading, spacing:0){
             MyRewardsInfo()
-                .modifier(ContentEdges())
-                .padding(.top, self.sceneObserver.safeAreaTop)
-                
-            InfinityScrollView(
-                viewModel: self.infinityScrollModel,
-                isRecycle:false,
-                useTracking:true)
-            {
-                VStack(alignment: .leading, spacing:0){
-                    Text(String.pageTitle.myPats)
-                        .modifier(ContentTitle())
-                        .modifier(ListRowInset(
-                                    marginHorizontal:Dimen.margin.light,
-                                    spacing: Dimen.margin.regular))
-                    
-                    ForEach(self.profiles) { profile in
-                        ProfileInfo(profile: profile, axio:.horizontal, isModifyAble:true )
-                            .modifier(ListRowInset(
-                                        marginHorizontal:Dimen.margin.light,
-                                        spacing: Dimen.margin.regular))
-                    }
+                .modifier(ContentHorizontalEdges())
+                .padding(.top, self.appSceneObserver.safeHeaderHeight)
+            HStack{
+                Text(String.pageTitle.myPats)
+                    .modifier(ContentTitle())
+                Spacer()
+                Button(action: {
+                    self.pagePresenter.openPopup(
+                        PageProvider.getPageObject(.profileRegist)
+                    )
+        
+                }) {
+                    Image(Asset.icon.addOn)
+                        .renderingMode(.original)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: Dimen.icon.regular,
+                               height: Dimen.icon.regular)
                 }
-                .padding(.bottom, Dimen.app.bottomTab)
             }
-            .padding(.bottom, self.sceneObserver.safeAreaBottom + Dimen.app.bottom)
+            .modifier(ContentHorizontalEdges())
+            .padding(.top, Dimen.margin.mediumUltra)
+            ProfileList(
+                viewModel:self.profileScrollModel,
+                datas: self.profiles)
+                
+            Spacer().modifier(MatchParent())
+        }
+        .padding(.top, self.appSceneObserver.safeHeaderHeight + Dimen.margin.regular)
+        //.padding(.bottom, self.bottomMargin)
+        .onReceive(self.appSceneObserver.$safeBottomHeight){ height in
+            withAnimation{ self.bottomMargin = height }
+        }
+        .onReceive(self.pageObservable.$isAnimationComplete){ ani in
+            if ani {
+                self.isUiReady = true
+            }
         }
         .onReceive(self.dataProvider.user.$profiles){ profiles in
             if profiles.isEmpty {
@@ -53,7 +67,6 @@ struct PageMy: PageView {
             } else {
                 self.profiles = profiles
             }
-            self.profiles.append(Profile().empty())
             
         }
         

@@ -16,17 +16,20 @@ struct PageSelecterble : SelecterbleProtocol{
     var on:String = ""
     var off:String = ""
     var text:String = ""
+    var isPopup:Bool = false
 }
 
 struct BottomTab: PageComponent{
     @EnvironmentObject var pagePresenter:PagePresenter
     @EnvironmentObject var dataProvider:DataProvider
     @EnvironmentObject var sceneObserver:PageSceneObserver
+    @EnvironmentObject var appSceneObserver:AppSceneObserver
     @State var pages:[PageSelecterble] = []
    
     @State var currentPageIdx:Int? = nil
     var body: some View {
-        ZStack{
+        VStack{
+            Spacer().modifier(LineHorizontal()) 
             HStack( alignment: .center, spacing:0 ){
                 ForEach(self.pages, id: \.key) { gnb in
                     ImageButton(
@@ -35,10 +38,19 @@ struct BottomTab: PageComponent{
                         activeImage:gnb.on,
                         text: gnb.text
                     ){ _ in
-                        self.pagePresenter.changePage(
-                            PageProvider
-                                .getPageObject(gnb.id)
-                        )
+                        if gnb.isPopup {
+                            if self.pagePresenter.hasLayerPopup() {
+                                self.appSceneObserver.event = .toast(String.alert.currentPlay)
+                                return
+                            }
+                            self.pagePresenter.openPopup(
+                                PageProvider.getPageObject(gnb.id)
+                            )
+                        } else {
+                            self.pagePresenter.changePage(
+                                PageProvider.getPageObject(gnb.id)
+                            )
+                        }
                     }
                     .modifier(MatchParent())
                 }
@@ -47,15 +59,17 @@ struct BottomTab: PageComponent{
         }
         .modifier(MatchHorizontal(height: self.sceneObserver.safeAreaBottom + Dimen.app.bottom))
         .background(Color.brand.bg)
-        .onReceive (self.pagePresenter.$currentPage) { page in
+        .onReceive (self.pagePresenter.$currentTopPage) { page in
+            
             self.currentPageIdx = page?.pageIDX
         }
         .onAppear(){
             pages = [
                 PageSelecterble(
-                    id: .board,
-                    idx: PageProvider.getPageIdx(.board),
-                    on: Asset.gnb.walk, off: Asset.gnb.walk, text: String.gnb.walk),
+                    id: .walk,
+                    idx: PageProvider.getPageIdx(.walk),
+                    on: Asset.gnb.walk, off: Asset.gnb.walk, text: String.gnb.walk,
+                    isPopup : true),
                 
                 PageSelecterble(
                     id: .home,

@@ -26,8 +26,8 @@ extension Asset{
    
     struct brand {
         public static let logoLauncher =  "launcher"
-        public static let logoSplash =  "imgSplashLogo"
-        public static let logoWhite =  "icHalfLogoBtv"
+        public static let logoWhite =  "logo_text"
+        public static let logoPupping =  "logo_dog"
     }
     
     struct gnb {
@@ -45,6 +45,7 @@ extension Asset{
         public static var dropDown = "dropDown"
         public static let setting = "ic_setting"
         public static let add = "ic_add"
+        public static let addOn = "ic_addOn"
         public static let modify = "ic_modify"
         public static let close = "ic_close"
         public static let back = "ic_back"
@@ -54,15 +55,36 @@ extension Asset{
         public static let flag = "ic_flag"
         public static let footPrint =  "ic_footPrint"
         public static let location = "ic_location"
-        public static let pupping = "ic_pupping"
+        public static let coin = "ic_coin"
         public static let point = "ic_point"
-        public static let destination = "ic_destination"
-        
+         
         public static let delete = "ic_delete"
         public static let hidden = "ic_hidden"
         public static let next = "ic_next"
         public static let photo = "ic_photo"
         public static let fixMap = "ic_fixMap"
+        
+        public static let stop = "ic_stop"
+        public static let pause = "ic_pause"
+        public static let resume = "ic_resume"
+        
+        public static let time = "ic_time"
+        public static let speed = "ic_speed"
+        public static let distence = "ic_distence"
+        
+        public static let destinationHeader  = "ic_destinationHeader"
+        public static let wayPointHeader  = "ic_wayPointHeader"
+        public static let destinationHeaderOn  = "ic_destinationHeaderOn"
+        public static let wayPointHeaderOn  = "ic_wayPointHeaderOn"
+    }
+    
+    struct map {
+        public static let me = "ic_me"
+        public static let destination = "ic_destination"
+        public static let destinationOn = "ic_destinationOn"
+        public static let wayPoint = "ic_wayPoint"
+        public static let wayPointOn = "ic_wayPointOn"
+        public static let startPoint = "ic_startPoint"
     }
     
     struct shape {

@@ -12,8 +12,58 @@ import Combine
 import GoogleMaps
 import struct Kingfisher.KFImage
 extension MissionInfo {
-    static let pointBoxSize:CGFloat = 60
+    static let pointBoxSize:CGFloat = 82
 }
+struct UnitInfo : View{
+    let icon:String
+    let text:String
+    var color:Color? = Color.app.grey
+    var body: some View {
+        HStack(spacing:Dimen.margin.micro){
+            if let color = self.color {
+                Image(icon)
+                    .renderingMode(.template)
+                    .resizable()
+                    .foregroundColor(color)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: Dimen.icon.micro, height: Dimen.icon.micro)
+            } else {
+                Image(icon)
+                    .renderingMode(.original)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: Dimen.icon.micro, height: Dimen.icon.micro)
+            }
+            Text(text)
+                .modifier(LightTextStyle(
+                    size: Font.size.tinyExtra,
+                    color: self.color ?? Color.app.white
+                ))
+        }
+    }
+}
+
+struct WayPointInfo : View{
+    let icon:String
+    let text:String
+    var color:Color = Color.app.grey
+    var body: some View {
+        HStack(spacing:Dimen.margin.thinExtra){
+            Image(icon)
+                .renderingMode(.template)
+                .resizable()
+                .foregroundColor(color)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: Dimen.icon.tiny, height: Dimen.icon.tiny)
+            Text(text)
+                .modifier(RegularTextStyle(
+                    size: Font.size.thinExtra,
+                    color: self.color
+                ))
+        }
+    }
+}
+
 
 struct MissionInfo : PageComponent {
     enum UiType{
@@ -23,95 +73,83 @@ struct MissionInfo : PageComponent {
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var dataProvider:DataProvider
     let data:Mission
-    var isPlay:Bool = false
+    
     var uiType:UiType = .normal
     var body: some View {
         ZStack(alignment: .topTrailing){
-            if isPlay {
-                VStack(spacing:Dimen.margin.micro) {
-                    Image(Asset.icon.point)
-                        .renderingMode(.original)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: Dimen.icon.regular, height: Dimen.icon.regular)
-                    Text("20")
-                        .modifier(MediumTextStyle(
-                            size: Font.size.tinyExtra,
-                            color: Color.app.grey
-                        ))
-                }
-                .frame(width: Self.pointBoxSize, height: Self.pointBoxSize)
-                .background(Color.app.greyLightExtra)
-                .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.thin))
-        
+            HStack(spacing:Dimen.margin.thinExtra) {
+                Image(Asset.icon.point)
+                    .renderingMode(.original)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: Dimen.icon.mediumExtra, height: Dimen.icon.mediumExtra)
+                Text(self.data.lv.point().toInt().description)
+                    .modifier(MediumTextStyle(
+                        size: Font.size.tinyExtra,
+                        color: Color.app.grey
+                    ))
             }
+            .padding(.all, Dimen.margin.tiny)
+            .frame(width: Self.pointBoxSize)
+            .background(Color.app.white)
+            .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.medium))
+            .overlay(
+                RoundedRectangle(cornerRadius: Dimen.radius.regularExtra)
+                    .stroke(Color.app.greyLight, lineWidth: Dimen.stroke.light)
+            )
+            
             VStack(alignment: .leading, spacing:0){
                 HStack(spacing:Dimen.margin.thin){
                     Image(Asset.icon.flag)
                         .renderingMode(.template)
                         .resizable()
-                        .foregroundColor(data.type == .today ? Color.brand.primary : Color.app.greyDeep)
+                        .foregroundColor(Color.app.greyDeep)
                         .aspectRatio(contentMode: .fit)
                         .frame(width: Dimen.icon.tiny, height: Dimen.icon.tiny)
                     Text(data.type.info())
                         .modifier(BoldTextStyle(
                             size: Font.size.light,
-                            color: Color.brand.primary
+                            color: Color.app.greyDeep
                         ))
                 }
-                .padding(.trailing, self.isPlay ? Self.pointBoxSize : 0)
+                .padding(.trailing, Self.pointBoxSize )
+                UnitInfo(icon: data.lv.icon(), text: data.lv.info(), color: data.lv.color())
+                    .padding(.top, Dimen.margin.micro)
+                
                 if self.uiType == .normal {
-                    VStack(alignment: .leading, spacing:Dimen.margin.tinyExtra){
-                        Text(data.description)
-                            .modifier(RegularTextStyle(
-                                size: Font.size.thin,
-                                color: Color.app.grey
-                            ))
-                            .padding(.trailing, self.isPlay ? Self.pointBoxSize : 0)
+                    VStack(alignment: .leading, spacing:Dimen.margin.light){
+                        if let destination = data.destination {
+                            VStack(alignment: .leading, spacing:0){
+                                ForEach( Array(data.waypoints.enumerated()), id: \.offset){idx,  point in
+                                    WayPointInfo(icon: Asset.icon.wayPointHeader, text: point.name ?? "", color: Color.app.grey)
+                                    ZStack{
+                                        Spacer()
+                                            .frame(width: 1 , height: 14)
+                                            .background(
+                                                idx == data.waypoints.count-1 ? Color.brand.primary : Color.app.grey)
+                                            
+                                    }
+                                    .frame(width: 1 , height: 10)
+                                    .padding(.leading, floor(Dimen.icon.tiny/2)-1)
+                                }
+                                WayPointInfo(icon: Asset.icon.destinationHeader, text: destination.name ?? "", color: Color.brand.primary)
+                                
+                                
+                            }
+                        }
                         HStack(spacing:Dimen.margin.tiny){
-                            Text(data.lv.info())
-                                .modifier(LightTextStyle(
-                                    size: Font.size.tiny,
-                                    color: data.lv == .lv3 || data.lv == .lv4
-                                        ? Color.brand.thirdly : Color.brand.fourth
-                                ))
-                            Circle()
-                                .frame(width: Dimen.circle.thin, height: Dimen.circle.thin)
-                                .background(Color.app.grey)
-                            Text(data.viewDuration)
-                                .modifier(LightTextStyle(
-                                    size: Font.size.tiny,
-                                    color: Color.app.grey
-                                ))
-                            Circle()
-                                .frame(width: Dimen.circle.thin, height: Dimen.circle.thin)
-                                .background(Color.app.grey)
-                            
-                            Text(data.viewSpeed)
-                                .modifier(LightTextStyle(
-                                    size: Font.size.tiny,
-                                    color: Color.app.grey
-                                ))
-                            Circle()
-                                .frame(width: Dimen.circle.thin, height: Dimen.circle.thin)
-                                .background(Color.app.grey)
-                            
-                            Text(data.viewDistence)
-                                .modifier(LightTextStyle(
-                                    size: Font.size.tiny,
-                                    color: Color.app.greyDeep
-                                ))
-                            
+                            UnitInfo(icon: Asset.icon.time, text: data.viewDuration)
+                            UnitInfo(icon: Asset.icon.speed, text: data.viewSpeed)
+                            UnitInfo(icon: Asset.icon.distence, text: data.viewDistence)
                         }
                     }
-                    .padding(.top, Dimen.margin.tiny)
+                    .padding(.top, Dimen.margin.light)
                 } else {
                     Text(data.summary)
                         .modifier(RegularTextStyle(
                             size: Font.size.thin,
                             color: Color.app.grey
                         ))
-                        .padding(.trailing, self.isPlay ? Self.pointBoxSize : 0)
                         .padding(.top, Dimen.margin.tiny)
                 }
                 Spacer().modifier(MatchHorizontal(height: 0))

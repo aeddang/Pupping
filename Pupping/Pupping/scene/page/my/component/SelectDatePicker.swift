@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
+
 struct SelectDatePicker: PageComponent{
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     
@@ -37,9 +38,12 @@ struct SelectDatePicker: PageComponent{
                 in:dateClosedRange,
                 displayedComponents: [.date]
             )
+            .labelsHidden()
+            .exChangeTextColor(Color.brand.primary)
             .datePickerStyle(WheelDatePickerStyle())
+            
             .modifier(MatchParent())
-            .padding(.trailing, 15)
+            
         }
         .onReceive( [self.selectedDate].publisher ) { value in
             self.action(value)

@@ -54,12 +54,12 @@ struct PageMissionCompleted: PageView {
     }//body
    
     private func onClose(){
-        self.pagePresenter.closePopup(self.pageObject?.id)
         if let mission = self.mission {
             self.dataProvider.user.missionCompleted(mission)
         }
         self.missionManager.completedMission()
         self.missionManager.endMission()
+        self.pagePresenter.closeAllPopup()
     }
 }
 

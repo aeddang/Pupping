@@ -12,12 +12,13 @@ import SwiftUI
 struct Dimen{
     struct margin {
         public static let heavy:CGFloat = 75//
-        public static let medium:CGFloat = 30
+        public static let mediumUltra:CGFloat = 40
+        public static let medium:CGFloat = 30 
         public static let mediumExtra:CGFloat = 27//
         public static let regular:CGFloat = 20//
         public static let light:CGFloat = 17//
         public static let lightExtra:CGFloat = 15//
-        public static let thin:CGFloat = 10//
+        public static let thin:CGFloat = 12//
         public static let thinExtra:CGFloat = 8//
         public static let tiny:CGFloat = 6
         public static let tinyExtra:CGFloat = 4
@@ -34,6 +35,7 @@ struct Dimen{
         public static let light:CGFloat = 22//
         public static let lightExtra:CGFloat = 20//
         public static let thin:CGFloat = 18//
+        public static let thinExtra:CGFloat = 16//
         public static let tiny:CGFloat = 14//
         public static let micro:CGFloat = 11//
     }
@@ -71,10 +73,12 @@ struct Dimen{
         public static let heavy:CGFloat = 32//
         public static let medium:CGFloat = 24//
         public static let regular:CGFloat = 20//
+        public static let regularExtra:CGFloat = 18//
         public static let light:CGFloat = 16//
         public static let lightExtra:CGFloat = 14//
         public static let thin:CGFloat = 12//
         public static let tiny:CGFloat = 8//
+        public static let micro:CGFloat = 4//
     }
     
     struct circle {
@@ -84,6 +88,7 @@ struct Dimen{
     struct bar {
         public static let medium:CGFloat = 20
         public static let regular:CGFloat = 7
+        public static let light:CGFloat = 4 //*
     }
     
     struct line {
@@ -99,7 +104,7 @@ struct Dimen{
         public static let heavy:CGFloat =  5
         public static let medium:CGFloat =  3
         public static let regular:CGFloat = 2
-        public static let light:CGFloat = 1
+        public static let light:CGFloat = 1//
     }
     
     struct app {

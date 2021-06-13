@@ -70,7 +70,7 @@ struct ProfileInfo : PageComponent {
                                     size: Font.size.mediumExtra,
                                     color: self.profile.isEmpty ? Color.app.greyLight : Color.app.greyDeep
                                 ))
-                            if !self.profile.isEmpty {
+                            if !self.profile.isEmpty && !self.isModifyAble {
                                 Text(self.lv)
                                     .modifier(BoldTextStyle(
                                         size: Font.size.thinExtra,

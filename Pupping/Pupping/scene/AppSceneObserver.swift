@@ -35,6 +35,8 @@ class AppSceneObserver:ObservableObject{
     @Published var safeHeaderHeight:CGFloat = 0
     @Published var headerHeight:CGFloat = 0
     
+    @Published var safeBottomHeight:CGFloat = 0
+    
     @Published var loadingInfo:[String]? = nil
     @Published var alert:SceneAlert? = nil
     @Published var alertResult:SceneAlertResult? = nil {didSet{ if alertResult != nil { alertResult = nil} }}

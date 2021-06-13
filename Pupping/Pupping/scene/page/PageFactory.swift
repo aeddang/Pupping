@@ -13,6 +13,7 @@ extension PageID{
     static let intro:PageID = "intro"
     static let login:PageID = "login"
     static let home:PageID = "home"
+    static let walk:PageID = "walk"
     static let mission:PageID = "mission"
     static let missionInfo:PageID = "missionInfo"
     static let missionCompleted:PageID = "missionCompleteds"
@@ -49,7 +50,7 @@ struct PageProvider {
     
     static func getType(_ pageID:PageID)-> PageAnimationType{
         switch pageID {
-        case  .mission ,.missionInfo : return .vertical
+        case  .mission ,.missionInfo, .walk: return .vertical
         case  .missionCompleted, .selectProfile : return .opacity
         default : return  .horizontal
         }
@@ -57,7 +58,7 @@ struct PageProvider {
     
     static func isTop(_ pageID:PageID)-> Bool{
         switch pageID{
-        case .mission, .selectProfile: return true
+        case .mission, .selectProfile, .walk, .missionCompleted: return true
         default : return  false
         }
     }
@@ -143,6 +144,7 @@ struct PageFactory{
         case .my : return PageMy()
         case .profileRegist: return PageProfileRegist()
         case .profileModify: return PageProfileModify()
+        case .walk : return PageWalk()
         case .mission : return PageMission()
         case .missionInfo : return PageMissionInfo()
         case .missionCompleted : return PageMissionCompleted()
@@ -176,7 +178,7 @@ struct PageSceneModel: PageModel {
         }
     }
     func getCloseExceptions() -> [PageID]? {
-        return [.mission]
+        return [.mission, .walk]
     }
     
     func isHistoryPage(_ pageObject:PageObject ) -> Bool {
@@ -194,8 +196,8 @@ struct PageSceneModel: PageModel {
     
     static func needKeyboard(_ pageObject:PageObject) -> Bool{
         switch pageObject.pageID {
-        case .profileRegist , .profileModify: return true
-        default : return false
+       // case .profileRegist , .profileModify: return true
+        default : return true
         }
     }
     

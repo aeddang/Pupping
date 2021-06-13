@@ -139,7 +139,8 @@ enum PageDragingUIEvent {
          drag(GeometryProxy, DragGesture.Value),
          draged(GeometryProxy, DragGesture.Value),
          dragCancel,
-         setBodyOffset(CGFloat)
+         setBodyOffset(CGFloat),
+         dragEnd(Bool)
 }
 enum PageDragingEvent {
     case dragInit, drag(CGFloat, Double), draged(Bool,CGFloat)
@@ -265,6 +266,7 @@ struct PageDragingBody<Content>: PageDragingView  where Content: View{
                     }
                     if self.viewModel.status != .drag { return }
                     self.onDragCancel()
+                case .dragEnd(let isBottom) : self.onDragEndAction(isBottom: isBottom, offset: 0)
                 case .setBodyOffset(let pos) :
                     withAnimation{
                         self.bodyOffset = pos

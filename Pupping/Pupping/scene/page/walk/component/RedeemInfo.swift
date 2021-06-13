@@ -71,8 +71,8 @@ struct RedeemInfo: PageComponent {
                 .padding(.horizontal, Dimen.margin.light)
                 .padding(.vertical, Dimen.margin.light)
                 .background(Color.app.white)
-                .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.heavy))
-                .padding(.horizontal, Dimen.margin.regular)
+                .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.thin))
+                .padding(.horizontal, Dimen.margin.light)
                 .padding(.vertical, Dimen.margin.regular)
             }
             .frame(width: 273, height:324)

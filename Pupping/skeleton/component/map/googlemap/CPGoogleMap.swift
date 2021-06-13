@@ -54,6 +54,9 @@ extension CPGoogleMap: UIViewControllerRepresentable, PageProtocol {
 
 open class CustomGoogleMapController: UIViewController {
     @ObservedObject var viewModel:MapModel
+    
+    private var markers:[String: GMSMarker] = [:]
+    
     init(viewModel:MapModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -79,8 +82,8 @@ open class CustomGoogleMapController: UIViewController {
         // Creates a marker in the center of the map.
     }
     
-    fileprivate func me(_ marker:GMSMarker){
-        marker.map = mapView
+    fileprivate func me(_ marker:MapMarker ){
+        self.addMarker(marker)
         //ComponentLog.d("me " + loc.debugDescription , tag: "CPGoogleMap")
     }
     fileprivate func move(_ loc:CLLocation, zoom:Float? = nil, duration:Double? = nil){
@@ -100,13 +103,21 @@ open class CustomGoogleMapController: UIViewController {
        
     }
     
-    fileprivate func addMarker(_ marker:GMSMarker){
-        marker.map = mapView
+    fileprivate func addMarker(_ marker:MapMarker ){
+        if let prevMarker = self.markers[marker.id] {
+            prevMarker.icon = marker.marker.icon
+            prevMarker.title = marker.marker.title
+            prevMarker.snippet = marker.marker.snippet
+            prevMarker.position = marker.marker.position
+        } else {
+            self.markers[marker.id] = marker.marker
+            marker.marker.map = mapView
+        }
         //ComponentLog.d("addMarker " + (marker.title ?? "") , tag: "CPGoogleMap")
     }
-    fileprivate func addMarker(_ markers:[GMSMarker]){
+    fileprivate func addMarker(_ markers:[MapMarker]){
         markers.forEach{
-            $0.map = mapView
+            self.addMarker($0)
         }
        // ComponentLog.d("addMarkers " + markers.count.description , tag: "CPGoogleMap")
     }

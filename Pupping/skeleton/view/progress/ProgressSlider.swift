@@ -53,6 +53,7 @@ struct ProgressSlider: PageView {
             }
             .modifier(MatchParent())
             .background(Color.transparent.clearUi)
+            
             .highPriorityGesture(DragGesture(minimumDistance: 0)
                 .onChanged({ value in
                     if !useGesture { return }

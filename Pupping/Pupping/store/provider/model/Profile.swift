@@ -27,6 +27,10 @@ struct ModifyPlayData {
     let lv:Int
     let exp:Double
 }
+extension Profile {
+    static let expRange:Double = 100
+}
+
 
 class Profile:ObservableObject, PageProtocol, Identifiable, Equatable {
     private(set) var id:String = UUID().uuidString
@@ -38,6 +42,8 @@ class Profile:ObservableObject, PageProtocol, Identifiable, Equatable {
     
     @Published private(set) var exp:Double = 0
     @Published private(set) var lv:Int = 1
+    @Published private(set) var prevExp:Double = 0
+    @Published private(set) var nextExp:Double = 0
     private(set) var microfin:String? = nil
     private(set) var neutralization:Bool? = nil
     private(set) var distemper:Bool? = nil
@@ -66,6 +72,7 @@ class Profile:ObservableObject, PageProtocol, Identifiable, Equatable {
         self.gender = Gender.getGender(Int(data.gender))
         self.birth = data.birth
         self.lv = Int(data.lv)
+        self.updatedLv()
         self.exp = Double(data.exp)
         self.microfin = data.microfin
         if let imgData = data.image { self.image =  UIImage(data: imgData) }
@@ -110,11 +117,21 @@ class Profile:ObservableObject, PageProtocol, Identifiable, Equatable {
     @discardableResult
     func update(exp:Double) -> Profile{
         self.exp += exp
-        let willLv = Int(floor(self.exp / 100) + 1)
-        if willLv != self.lv {
-            self.lv = willLv
-        }
+        self.updatedExp()
         ProfileCoreData().update(id: self.id, data: ModifyPlayData(lv: self.lv, exp: self.exp))
         return self
+    }
+    
+    private func updatedExp(){
+        let willLv = Int(floor(self.exp / Self.expRange) + 1)
+        if willLv != self.lv {
+            self.lv = willLv
+            self.updatedLv()
+        }
+        
+    }
+    private func updatedLv(){
+        self.prevExp = Double(self.lv - 1) * Self.expRange
+        self.nextExp = Double(self.lv) * Self.expRange
     }
 }

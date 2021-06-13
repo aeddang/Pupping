@@ -99,7 +99,7 @@ struct LineHorizontal: ViewModifier {
         return content
             .frame(minWidth: 0, maxWidth: .infinity - (margin * 2.0) , minHeight: height, maxHeight: height)
             .offset(x:margin)
-            .background(self.color).opacity(0.1)
+            .background(self.color).opacity(0.4)
             
             
     }
@@ -111,7 +111,7 @@ struct LineVertical: ViewModifier {
         return content
             .frame(minWidth: width, maxWidth: width , minHeight:0, maxHeight: .infinity - (margin * 2.0))
             .offset(y:margin)
-            .background(Color.app.greyLight).opacity(0.1)
+            .background(Color.app.greyLight).opacity(0.4)
             
             
     }
@@ -147,10 +147,11 @@ struct ShadowTop: ViewModifier {
 
 struct ContentTab: ViewModifier {
     var margin:CGFloat = Dimen.margin.regular
+    var bgColor:Color = Color.app.white
     func body(content: Content) -> some View {
         return content
             .padding(.all, margin)
-            .background(Color.app.white)
+            .background(bgColor)
             .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.light))
             .modifier(Shadow())
     }
@@ -170,6 +171,6 @@ struct BottomFunctionTab: ViewModifier {
                     Rectangle().modifier(MatchHorizontal(height: Dimen.radius.regular))
                 }
             )
-            .modifier(ShadowTop(opacity: isEffect ? 0.12 : 0))
+            .modifier(ShadowTop(opacity: isEffect ? 0.45 : 0))
     }
 }

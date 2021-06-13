@@ -14,6 +14,7 @@ struct AppLayout: PageComponent{
     @EnvironmentObject var repository:Repository
     @EnvironmentObject var dataProvider:DataProvider
     @EnvironmentObject var appObserver:AppObserver
+    @EnvironmentObject var sceneObserver:PageSceneObserver
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var keyboardObserver:KeyboardObserver
     @ObservedObject var pageObservable:PageObservable = PageObservable()
@@ -145,9 +146,13 @@ struct AppLayout: PageComponent{
                 self.keyboardObserver.start()
             }else{
                 self.keyboardObserver.cancel()
-               
             }
+            self.updateSafeArea()
         }
+        .onReceive (self.sceneObserver.$isUpdated) { _ in
+            self.updateSafeArea()
+        }
+        
         .onReceive (self.appObserver.$page) { iwg in
             if !self.isInit { return }
             self.appObserverMove(iwg)
@@ -229,9 +234,6 @@ struct AppLayout: PageComponent{
         */
     }
     
-    
-    
-    
     @discardableResult
     func appObserverMove(_ iwg:IwillGo? = nil) -> Bool {
         guard let page = iwg?.page else { return false }
@@ -243,6 +245,15 @@ struct AppLayout: PageComponent{
         }
         self.appObserver.reset()
         return !page.isPopup
+    }
+    
+    private func updateSafeArea(){
+        var bottom = self.appSceneObserver.useBottom ? Dimen.app.bottom : 0
+        if self.sceneObserver.safeAreaBottom < Dimen.app.bottomTab {
+            bottom += self.pagePresenter.hasLayerPopup() ? Dimen.app.bottomTab : 0
+        }
+        self.appSceneObserver.safeBottomHeight = bottom + self.sceneObserver.safeAreaBottom
+        self.appSceneObserver.safeHeaderHeight = self.sceneObserver.safeAreaTop
     }
     
 }

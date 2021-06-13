@@ -172,7 +172,7 @@ struct SwipperView : View , PageProtocol, Swipper {
     
     @State var autoResetSubscription:AnyCancellable?
     func autoReset() {
-       // self.autoResetSubscription = self.creatResetTimer()
+        self.autoResetSubscription = self.creatResetTimer()
     }
 }
 

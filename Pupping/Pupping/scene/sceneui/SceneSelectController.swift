@@ -70,7 +70,7 @@ struct SceneSelectController: PageComponent{
         let imgSelect:[String] = [
             String.button.album,
             String.button.camera,
-            String.button.delete
+            String.app.cancel
         ]
         self.setupSelect(data:(key,imgSelect), idx: imgSelect.count-1)
     }
