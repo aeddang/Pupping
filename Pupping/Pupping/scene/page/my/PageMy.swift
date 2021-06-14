@@ -12,6 +12,7 @@ import Combine
 struct PageMy: PageView {
     @EnvironmentObject var pagePresenter:PagePresenter
     @EnvironmentObject var appSceneObserver:AppSceneObserver
+    @EnvironmentObject var sceneObserver:PageSceneObserver
     @EnvironmentObject var appObserver:AppObserver
     @EnvironmentObject var dataProvider:DataProvider
     
@@ -22,11 +23,17 @@ struct PageMy: PageView {
     @State var isUiReady:Bool = false
     var body: some View {
         VStack(alignment: .leading, spacing:0){
+            PageTab(
+                title: String.pageTitle.my,
+                isBack: false,
+                isClose: false,
+                isSetting: true)
+                .padding(.top, self.sceneObserver.safeAreaTop)
             MyRewardsInfo()
                 .modifier(ContentHorizontalEdges())
-                .padding(.top, self.appSceneObserver.safeHeaderHeight)
+                .padding(.top, Dimen.margin.mediumExtra)
             HStack{
-                Text(String.pageTitle.myPats)
+                Text(String.pageTitle.myDogs)
                     .modifier(ContentTitle())
                 Spacer()
                 Button(action: {
@@ -39,19 +46,36 @@ struct PageMy: PageView {
                         .renderingMode(.original)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: Dimen.icon.regular,
-                               height: Dimen.icon.regular)
+                        .frame(width: Dimen.icon.mediumLight,
+                               height: Dimen.icon.mediumLight)
                 }
             }
             .modifier(ContentHorizontalEdges())
             .padding(.top, Dimen.margin.mediumUltra)
-            ProfileList(
-                viewModel:self.profileScrollModel,
-                datas: self.profiles)
+            if !self.profiles.isEmpty {
+                ProfileList(
+                    viewModel:self.profileScrollModel,
+                    datas: self.profiles)
+            } else {
+                ZStack{
+                    Image(Asset.image.profileEmptyContent)
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 274, height: 170)
+                }
+                .modifier(MatchHorizontal(height: 199))
+                .background(Color.app.whiteDeepExtra)
+                .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.light))
+                .modifier(ContentHorizontalEdges())
+                
+                .padding(.top, Dimen.margin.light)
+                
+            }
+           
                 
             Spacer().modifier(MatchParent())
         }
-        .padding(.top, self.appSceneObserver.safeHeaderHeight + Dimen.margin.regular)
         //.padding(.bottom, self.bottomMargin)
         .onReceive(self.appSceneObserver.$safeBottomHeight){ height in
             withAnimation{ self.bottomMargin = height }

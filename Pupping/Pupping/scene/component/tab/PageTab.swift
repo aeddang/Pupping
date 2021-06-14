@@ -13,6 +13,7 @@ import SwiftUI
 struct PageTab: PageComponent{
     @EnvironmentObject var pagePresenter:PagePresenter
     var title:String? = nil
+    var profile:String? = nil
     var isBack:Bool = false
     var isClose:Bool = false
     var isSetting:Bool = false
@@ -20,16 +21,7 @@ struct PageTab: PageComponent{
    
     var body: some View {
         ZStack(alignment: .leading){
-            if self.title != nil {
-                Text(self.title!)
-                    .modifier(PageTitle())
-                    .lineLimit(1)
-                    .modifier(ContentHorizontalEdges())
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 1)
-                    .padding(.horizontal, Dimen.icon.regular)
-            }
-            HStack{
+            HStack(spacing:Dimen.margin.thin){
                 if self.isBack {
                     Button(action: {
                         if let confirm = self.confirm {
@@ -47,6 +39,12 @@ struct PageTab: PageComponent{
                             .frame(width: Dimen.icon.regularExtra,
                                    height: Dimen.icon.regularExtra)
                     }
+                }
+                if self.title != nil {
+                    Text(self.title!)
+                        .modifier(PageTitle())
+                        .lineLimit(1)
+            
                 }
                 Spacer()
                 if self.isClose {
@@ -67,6 +65,15 @@ struct PageTab: PageComponent{
                                    height: Dimen.icon.thin)
                     }
                 }
+                if let profile = self.profile{
+                    Image(profile)
+                        .renderingMode(.original)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: Dimen.icon.regular,
+                               height: Dimen.icon.regular)
+                        .clipShape(Circle())
+                }
                 if self.isSetting {
                     Button(action: {
                         
@@ -75,9 +82,9 @@ struct PageTab: PageComponent{
                             .renderingMode(.template)
                             .resizable()
                             .scaledToFit()
-                            .foregroundColor(Color.app.greyDeep)
-                            .frame(width: Dimen.icon.regularExtra,
-                                   height: Dimen.icon.regularExtra)
+                            .foregroundColor(Color.app.grey)
+                            .frame(width: Dimen.icon.regular,
+                                   height: Dimen.icon.regular)
                     }
                 }
             }

@@ -59,15 +59,22 @@ struct PageProfileModify: PageView {
                                     title: String.pageText.profileRegistName,
                                     input: self.$inputName,
                                     isFocus: self.currentModifyType == .name,
-                                    placeHolder: String.pageText.profileEmptyName,
+                                    placeHolder: String.pageText.profileNamePlaceHolder,
                                     keyboardType: .default
                                 )
                                 InputCell(
-                                    title:String.pageText.profileRegistSpecies,
+                                    title:self.inputName + String.pageText.profileRegistSpecies,
                                     input: self.$inputSpecies,
                                     isFocus: self.currentModifyType == .species,
-                                    placeHolder: String.pageText.profileEmptySpecies,
+                                    placeHolder: String.pageText.profileSpeciesPlaceHolder,
                                     keyboardType: .default
+                                )
+                                InputCell(
+                                    title:self.inputName + String.pageText.profileRegistMicroFin,
+                                    input: self.$inputMicrofin,
+                                    isFocus: self.currentModifyType == .species,
+                                    placeHolder: String.pageText.profileMicroFinPlaceHolder,
+                                    keyboardType: .numberPad
                                 )
                                 SelectRadio(
                                     data: self.healthData,
@@ -98,6 +105,7 @@ struct PageProfileModify: PageView {
                                 data: ModifyProfileData(
                                     nickName:self.inputName,
                                     species: self.inputSpecies,
+                                    microfin: self.inputMicrofin,
                                     neutralization: self.healthData.checks[0].isCheck,
                                     distemper: self.healthData.checks[1].isCheck,
                                     hepatitis: self.healthData.checks[2].isCheck,
@@ -130,6 +138,7 @@ struct PageProfileModify: PageView {
                 self.profile = profile
                 self.inputName = profile.nickName ?? ""
                 self.inputSpecies = profile.species ?? ""
+                self.inputMicrofin = profile.microfin ?? ""
                 self.isReady = true
                 
                 self.healthData.checks[0].isCheck = profile.neutralization ?? false
@@ -150,6 +159,7 @@ struct PageProfileModify: PageView {
     @State var currentModifyType:ModifyType = .none
     @State var inputName:String = ""
     @State var inputSpecies:String = ""
+    @State var inputMicrofin:String = ""
     @State var healthData:InputData = InputData(
         type:.radio,
         title: String.pageText.profileRegistHealth,
@@ -165,6 +175,7 @@ struct PageProfileModify: PageView {
     var isComplete:Bool {
         if self.inputName.isEmpty {return false}
         if self.inputSpecies.isEmpty {return false}
+        
         return true
     }
    

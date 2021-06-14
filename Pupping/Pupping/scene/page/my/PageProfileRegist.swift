@@ -127,26 +127,34 @@ struct PageProfileRegist: PageView {
                         
                         if let inputData = self.inputData {
                             if inputData.type == .select{
-                                SelectTab(data: inputData )
+                                SelectTab(
+                                    name:self.currentName,
+                                    data: inputData )
                                 { idx in
                                     self.selectedIdx = idx
                                 }
                             } else if inputData.type == .radio{
-                                SelectRadio( data: inputData )
+                                SelectRadio(
+                                    name:self.currentName,
+                                    data: inputData )
                                 
                             } else if inputData.type == .date{
-                                SelectDatePicker( data: inputData )
+                                SelectDatePicker(
+                                    name:self.currentName,
+                                    data: inputData )
                                 { date in
                                     self.selectedDate = date
                                 }
                             } else if inputData.type == .image{
-                                SelectImagePicker( id:self.profile?.id ?? "", data: inputData )
+                                SelectImagePicker(
+                                    name:self.currentName,
+                                    id:self.profile?.id ?? "", data: inputData )
                                 { image in
                                     self.selectedImage = image
                                 }
                             }else {
                                 InputCell(
-                                    title: inputData.title,
+                                    title: self.currentName + inputData.title,
                                     input: self.$input,
                                     inputLimited: inputData.inputMax,
                                     isFocus: self.isFocus,
@@ -228,7 +236,7 @@ struct PageProfileRegist: PageView {
 
     }//body
     
-   
+    @State var currentName:String = ""
     @State var isFocus:Bool = false
     @State var input:String = ""
     @State var inputData:InputData? = nil
@@ -244,13 +252,13 @@ struct PageProfileRegist: PageView {
     
     let steps: [InputData] = [
         InputData(
-            type:.image,
-            title: String.pageText.profileRegistImage),
-        InputData(
             type:.text,
             title: String.pageText.profileRegistName,
             tip:String.pageText.profileRegistNameTip,
             placeHolder: String.pageText.profileNamePlaceHolder),
+        InputData(
+            type:.image,
+            title: String.pageText.profileRegistImage),
         InputData(
             type:.text,
             title: String.pageText.profileRegistSpecies,
@@ -277,6 +285,7 @@ struct PageProfileRegist: PageView {
             title: String.pageText.profileRegistMicroFin,
             info:String.pageText.profileRegistMicroFinInfo,
             placeHolder: String.pageText.profileMicroFinPlaceHolder,
+            keyboardType: .numberPad,
             isOption: true
             ),
         InputData(
@@ -295,12 +304,14 @@ struct PageProfileRegist: PageView {
         if self.step >= self.steps.count { return false }
         switch self.step {
         case  0 :
+            if self.input.isEmpty  { return false }
+            self.currentName = self.input
+            self.profile?.update(data: ModifyProfileData(nickName: self.input))
+            
+        case  1 :
             guard let image = self.selectedImage else { return false }
             self.selectedProfileImage = image
             self.profile?.update(image:image)
-        case  1 :
-            if self.input.isEmpty  { return false }
-            self.profile?.update(data: ModifyProfileData(nickName: self.input))
         case  2 :
             if self.input.isEmpty  { return false }
             self.profile?.update(data: ModifyProfileData(species: self.input))

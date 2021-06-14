@@ -27,9 +27,23 @@ struct ProfileList: PageComponent{
             isRecycle: true,
             useTracking: false
         ){
-            
-            ForEach(self.datas) { data in
-                ProfileListItem(profile: data )
+            if !self.datas.isEmpty {
+                ForEach(self.datas) { data in
+                    ProfileListItem(profile: data )
+                        .onTapGesture {
+
+                            self.pagePresenter.openPopup(
+                                PageProvider.getPageObject(.profile)
+                                    .addParam(key: .data, value: data)
+                            )
+                        }
+                }
+            } else {
+                Image(Asset.image.profileEmpty)
+                    .renderingMode(.original)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 294, height: 199)
             }
         }
         
@@ -78,7 +92,7 @@ struct ProfileListItem: PageView {
                             age: self.age,
                             species: self.species,
                             gender: self.gender,
-                            isModifyAble: true)
+                            isModifyAble: false)
                     }
                 }
                 VStack(spacing: Dimen.margin.micro){
@@ -98,39 +112,12 @@ struct ProfileListItem: PageView {
                     ProgressSlider(progress: self.progressExp, useGesture: false, progressHeight: Dimen.bar.light, thumbSize: 0)
                         .frame(height: Dimen.bar.light)
                         .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.micro))
-                    HStack{
-                        Text(self.prevExp)
-                            .modifier(LightTextStyle(
-                                size: Font.size.thinExtra,
-                                color: Color.app.greyLight
-                            ))
-                        Spacer()
-                        Text(self.nextExp)
-                            .modifier(LightTextStyle(
-                                size: Font.size.thinExtra,
-                                color: Color.app.greyLight
-                            ))
-                    }
+                    
                 }
                 .padding(.horizontal, Dimen.margin.thin)
                
             }
-            .padding(.top, Dimen.margin.regular)
-            Button(action: {
-                self.appSceneObserver.alert =
-                    .confirm(nil,  String.alert.deleteProfile){ isOk in
-                        if !isOk {return}
-                        self.dataProvider.user.deleteProfile(id: self.profile.id)
-                }
-    
-            }) {
-                Image(Asset.icon.delete)
-                    .renderingMode(.original)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: Dimen.icon.regular,
-                           height: Dimen.icon.regular)
-            }
+            
         }
         .modifier(ContentTab())
         .frame(width: 294)

@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   Pupping
 
@@ -7,20 +7,20 @@
 */
 
 "appName" = "Pupping";
-"corfirm" = "Corfirm";
-"cancel" = "Cancel";
-"retry" = "Retry";
-"close" = "Close";
+"confirm" = "확인했어요";
+"cancel" = "취소할래요";
+"retry" = "재시도";
+"close" = "닫기";
 
-"mail" = "mail";
-"femail" = "femail";
+"male" = "남아";
+"female" = "여아";
 
-"puppingCoin" = "Pupping";
-"point" = "Point";
-"completeMission" = "Mission";
-"year" = "YY";
-"month" = "MM";
-"day" = "DD";
+"puppingCoin" = "퍼핑 코인";
+"point" = "포인트";
+"completeMission" = "미션";
+"year" = "년";
+"month" = "월";
+"day" = "일";
 "step" = "step";
 "of" = "of";
 
@@ -28,80 +28,81 @@
 "km" = "km";
 "m" = "m";
 "min" = "분";
-"redeem" = "Redeem";
+"redeem" = "보상";
 
 /*
   Button
 */
-"btnView" = "View";
-"btnAlbum" = "Album";
-"btnCamera" = "Camera";
-"btnDelete" = "Delete";
-"btnNext" = "Next";
-"btnPrev" = "Back";
-"btnComplete" = "Complete";
-"btnModify" = "Modify";
-"btnSwapPupping" = "Swap to PUPPING";
-"btnStart" = "Start";
-"btnPreview" = "Preview";
+"btnView" = "보기";
+"btnAlbum" = "앨범";
+"btnCamera" = "카메라";
+"btnDelete" = "삭제하기";
+"btnNext" = "다음으로";
+"btnPrev" = "뒤로";
+"btnComplete" = "완료하기";
+"btnModify" = "수정하기";
+"btnSwapPupping" = "퍼핑 코인으로 전환하기";
+"btnStart" = "시작하기";
+"btnPreview" = "미리보기";
 
-"btnStop" = "Finish";
-"btnPause" = "Stop";
-"btnResume" = "Walk";
+"btnStop" = "끝내기";
+"btnPause" = "멈추기";
+"btnResume" = "재개하기";
 
 /*
   Alert
 */
-"alertApns" = "notification";
-"alertApi" = "notification";
-"alertApiErrorServer" = "Connection is being delayed. Please try again after a while.";
-"alertApiErrorClient" = "Please check the network connection status and try again.";
-"alertNetworkError" = "The network connection is not smooth.";
-"alertDataError" = "No data.";
+"alertApns" = "알림이 있어요";
+"alertApi" = "알림이 있어요";
+"alertApiErrorServer" = "인터넷이 끊어졌어요. 잠시 후 다시 시도해주세요.";
+"alertApiErrorClient" = "인터넷 연결을 확인한 후 다시 시도해주세요.";
+"alertNetworkError" = "인터넷 연결이 불안정해요.";
+"alertDataError" = "아직 데이터가 없어요.";
 
-"alertLocation" = "Please allow location access";
-"alertLocationSub" = "According to Apple's policy, you must allow location access to check the user's location to use it.";
-"alertLocationBtn" = "go to grant permission";
+"alertLocation" = "위치 탐색을 허용해주세요.";
+"alertLocationSub" = "위치 탐색을 허용해야 산책 코스를 탐지할 수 있어요.";
+"alertLocationBtn" = "권한 허용하러 가기";
 
-"alertDragdown" = "Pull to close page";
+"alertDragdown" = "당겨서 페이지 닫기";
 
-"alertNeedProfile" = "Please add a pet";
-"alertDeleteProfile" = "All related information will be deleted together. Are you sure you want to delete your pet?";
+"alertNeedProfile" = "강아지 등록하기";
+"alertDeleteProfile" = "강아지와 관련된 모든 데이터가 사라져요. 정말 프로필을 삭제하실건가요?";
 
-"alertSnsLoginError" = "After login. Available.";
+"alertSnsLoginError" = "로그인 에러가 발생했어요.";
 
-"alertCurrentPlayMission" = "현재 수행중인 미션입니다.";
-"alertCurrentPlay" = "현재 수행중인 미션을 종료후 진행해주세요.";
-"alertPrevPlayMission" = "수행중인 미션이 있습니다.\n종료하고 새로운 미션을 시작하겠습니까?";
-"alertPrevPlayWalk" = "산책을 종료하고 새로운 미션을 시작하겠습니까?";
-"alertClosePlayMission" = "미션을 종료하시겠습니까?\n저장되지 않은 정보는 모두 지워집니다.";
-"alertClosePlayWalk" = "산책을 종료하시겠습니까?";
-"alertNeedProfileRegist" = "함께할 강아지가 없습니다?\n강아지 등록 후 이용해주세요.";
+"alertCurrentPlayMission" = "현재 수행 중인 미션이에요.";
+"alertCurrentPlay" = "현재 수행 중인 미션을 먼저 종료해주세요.";
+"alertPrevPlayMission" = "현재 수행중인 미션이 있어요. 종료하고 새로운 미션을 시작할까요?";
+"alertPrevPlayWalk" = "산책을 종료하고 미션을 시작할까요?";
+"alertClosePlayMission" = "미션을 종료할까요? 저장되지 않은 정보는 모두 지워집니다.";
+"alertClosePlayWalk" = "산책을 종료하시겠어요?";
+"alertNeedProfileRegist" = "함께할 강아지가 없어요. 강아지를 등록한 후 이용해주세요.";
 "alertSelectProfile" = "함께할 강아지를 선택해주세요";
 
-"alertNeedInput" = "필수 항목을 입력 해 주세요";
-"alertCoinSwap" = "코인이 충전됬습니다.";
-"alertPointEmpty" = "포인트가. 부족합니다.";
+"alertNeedInput" = "필수 항목을 입력해주세요.";
+"alertCoinSwap" = "코인이 충전됐어요.";
+"alertPointEmpty" = "포인트가 부족해요.";
 /*
   Gnb
 */
-"gnbMission" = "Mission";
-"gnbBoard" = "Board";
-"gnbShop" = "Shop";
-"gnbMy" = "My";
-"gnbWalk" = "Walk";
+"gnbMission" = "미션";
+"gnbBoard" = "커뮤니티";
+"gnbShop" = "마켓";
+"gnbMy" = "마이페이지";
+"gnbWalk" = "산책";
 
 /*
   Location
 */
-"locationNotFound" = "Where Are You?";
+"locationNotFound" = "위치를 받아올 수 없어요.";
 
 /*
   PartTitle
 */
+"titleMy" = "MY";
 "titleEditProfile" = "Modify Profile";
 "titleMyRewards" = "My Reward";
-"titleMyPats" = "My Pats";
+"titleMyDogs" = "My Dogs";
 "titleCommingSoon" = "comming soon";
 "titleMission" = "Mission Play";
 "titleMissionInfo" = "Mission Preview";
@@ -125,16 +126,16 @@ PageLogin
 
 
 /*
- PageProfileRegist
+ PageProfile
 */
-"profileRegistImage" = "Violet’s profile picture";
+"profileRegistImage" = "’s profile picture";
 "profileRegistName" = "What is the name\nof your dog?";
 "profileRegistNameTip" = "-Max. 15 characters\n-NO special letters";
-"profileRegistSpecies" = "Violet’s breed";
-"profileRegistBirth" = "Violet’s birthday";
-"profileRegistGender" = "Violet’s sex";
-"profileRegistHealth" = "Violet’s health & immunization";
-"profileRegistMicroFin" = "Violet’s animal ID or a microchip number";
+"profileRegistSpecies" = "’s breed";
+"profileRegistBirth" = "’s birthday";
+"profileRegistGender" = "’s sex";
+"profileRegistHealth" = "’s health & immunization";
+"profileRegistMicroFin" = "’s animal ID or a microchip number";
 "profileRegistMicroFinInfo" = "An animal ID is consisted of 15 digits.\nTake your pet to be scanned at the local vet,\nrescue centre or dog wardens service.";
 
 "profileRegistNeutralized" = "Neutralized";
@@ -153,6 +154,10 @@ PageLogin
 "profileNamePlaceHolder" = "Name here";
 "profileSpeciesPlaceHolder" = "ex. Maltese";
 "profileMicroFinPlaceHolder" = "ex.123456789012345";
+
+"profileWalkHistory" = "Walk History";
+"profileMissionHistory" = "Mission History";
+"profileHealthCare" = "Health Care";
 
 /*
  PageMission

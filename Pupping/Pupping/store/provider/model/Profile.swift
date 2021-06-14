@@ -39,17 +39,17 @@ class Profile:ObservableObject, PageProtocol, Identifiable, Equatable {
     @Published private(set) var species:String? = nil
     @Published private(set) var gender:Gender? = nil
     @Published private(set) var birth:Date? = nil
-    
     @Published private(set) var exp:Double = 0
     @Published private(set) var lv:Int = 1
     @Published private(set) var prevExp:Double = 0
     @Published private(set) var nextExp:Double = 0
-    private(set) var microfin:String? = nil
-    private(set) var neutralization:Bool? = nil
-    private(set) var distemper:Bool? = nil
-    private(set) var hepatitis:Bool? = nil
-    private(set) var parovirus:Bool? = nil
-    private(set) var rabies:Bool? = nil
+    @Published private(set) var neutralization:Bool? = nil
+    @Published private(set) var distemper:Bool? = nil
+    @Published private(set) var hepatitis:Bool? = nil
+    @Published private(set) var parovirus:Bool? = nil
+    @Published private(set) var rabies:Bool? = nil
+    
+    @Published private(set) var microfin:String? = nil
     private(set) var isEmpty:Bool = false
     var isWith:Bool = true
     
@@ -96,6 +96,7 @@ class Profile:ObservableObject, PageProtocol, Identifiable, Equatable {
         if let value = data.nickName { self.nickName = value }
         if let value = data.species { self.species = value }
         if let value = data.gender { self.gender = value }
+        if let value = data.microfin { self.microfin = value }
         if let value = data.birth { self.birth = value }
         if let value = data.neutralization { self.neutralization = value }
         if let value = data.distemper { self.distemper = value }

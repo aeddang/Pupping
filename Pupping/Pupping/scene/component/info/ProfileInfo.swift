@@ -28,7 +28,7 @@ struct ProfileInfo : PageComponent {
     var body: some View {
         ZStack{
             if self.axio == .vertical {
-                VStack(spacing:Dimen.margin.light){
+                VStack(spacing:Dimen.margin.thinExtra){
                     ProfileImage(
                         id : self.profile.id,
                         image: self.image,
@@ -230,7 +230,7 @@ struct ProfileInfoDescription:PageView{
                     .frame(width: Dimen.circle.thin, height: Dimen.circle.thin)
                     .background(Color.app.grey)
                 Text(age)
-                    .modifier(BoldTextStyle(
+                    .modifier(SemiBoldTextStyle(
                         size: Font.size.thinExtra,
                         color: Color.app.grey
                     ))
@@ -241,7 +241,7 @@ struct ProfileInfoDescription:PageView{
                     .frame(width: Dimen.circle.thin, height: Dimen.circle.thin)
                     .background(Color.app.grey)
                 Text(species)
-                    .modifier(BoldTextStyle(
+                    .modifier(SemiBoldTextStyle(
                         size: Font.size.thinExtra,
                         color: Color.app.grey
                     ))

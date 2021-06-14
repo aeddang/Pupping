@@ -159,20 +159,7 @@ struct PageMission: PageView {
                 default : break
                 }
             }
-            .onReceive(self.viewModel.$event) { evt in
-                guard let evt = evt  else { return }
-                switch evt {
-                case .accessDenied :
-                    self.appSceneObserver.alert = .requestLocation{ retry in
-                        if retry { AppUtil.goLocationSettings() }
-                    }
-                case .start :
-                    withAnimation{
-                        self.isPlay = true
-                    }
-                default : break 
-                }
-            }
+            
             .onReceive(self.viewModel.$currentLocation){ loc in
                 guard let me = loc else {return}
                 self.moveMe(loc: me)
@@ -201,6 +188,14 @@ struct PageMission: PageView {
             .onReceive(self.viewModel.$event) { evt in
                 guard let evt = evt  else { return }
                 switch evt {
+                case .accessDenied :
+                    self.appSceneObserver.alert = .requestLocation{ retry in
+                        if retry { AppUtil.goLocationSettings() }
+                    }
+                case .start :
+                    withAnimation{
+                        self.isPlay = true
+                    }
                 case .completeStep(let step):
                     self.mapModel.playEvent = .completeStep(step)
                 case .next(_):

@@ -198,6 +198,8 @@
 		318F5934266345DF0054FA34 /* MissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318F5933266345DF0054FA34 /* MissionManager.swift */; };
 		318F593626636AED0054FA34 /* MissionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318F593526636AED0054FA34 /* MissionInfo.swift */; };
 		3190E6272675AF40000CBCB9 /* ProfileList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3190E6262675AF40000CBCB9 /* ProfileList.swift */; };
+		3190E6292676E9C0000CBCB9 /* PageProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3190E6282676E9C0000CBCB9 /* PageProfile.swift */; };
+		3190E62B2676EA96000CBCB9 /* ProfileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3190E62A2676EA96000CBCB9 /* ProfileDetail.swift */; };
 		319A7DB4265A6BF100FD2CF9 /* PageBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A7DB3265A6BF100FD2CF9 /* PageBoard.swift */; };
 		319A7DB6265A6C9500FD2CF9 /* PageShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A7DB5265A6C9500FD2CF9 /* PageShop.swift */; };
 		319A7DB8265A6E1700FD2CF9 /* PageProfileModify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A7DB7265A6E1700FD2CF9 /* PageProfileModify.swift */; };
@@ -439,6 +441,8 @@
 		318F5933266345DF0054FA34 /* MissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionManager.swift; sourceTree = "<group>"; };
 		318F593526636AED0054FA34 /* MissionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionInfo.swift; sourceTree = "<group>"; };
 		3190E6262675AF40000CBCB9 /* ProfileList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileList.swift; sourceTree = "<group>"; };
+		3190E6282676E9C0000CBCB9 /* PageProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageProfile.swift; sourceTree = "<group>"; };
+		3190E62A2676EA96000CBCB9 /* ProfileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetail.swift; sourceTree = "<group>"; };
 		319A7DB3265A6BF100FD2CF9 /* PageBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageBoard.swift; sourceTree = "<group>"; };
 		319A7DB5265A6C9500FD2CF9 /* PageShop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageShop.swift; sourceTree = "<group>"; };
 		319A7DB7265A6E1700FD2CF9 /* PageProfileModify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageProfileModify.swift; sourceTree = "<group>"; };
@@ -1151,6 +1155,7 @@
 		31807D542654DAF300531063 /* info */ = {
 			isa = PBXGroup;
 			children = (
+				3190E62A2676EA96000CBCB9 /* ProfileDetail.swift */,
 				31807D522654DAE300531063 /* ProfileInfo.swift */,
 				31807D5D265625A000531063 /* LocationInfo.swift */,
 				31807D7E2659F57700531063 /* MyRewardsInfo.swift */,
@@ -1191,6 +1196,7 @@
 				31807D6C2658C36A00531063 /* component */,
 				31807D65265885EB00531063 /* PageProfileRegist.swift */,
 				319A7DB7265A6E1700FD2CF9 /* PageProfileModify.swift */,
+				3190E6282676E9C0000CBCB9 /* PageProfile.swift */,
 				31807D772659F14900531063 /* PageMy.swift */,
 			);
 			path = my;
@@ -1708,6 +1714,7 @@
 				316C46F9265392D300A8D7F5 /* PageContentController.swift in Sources */,
 				316C478B2653D3A300A8D7F5 /* ApiConst.swift in Sources */,
 				316C46EE265392D300A8D7F5 /* StrokeRectButton.swift in Sources */,
+				3190E6292676E9C0000CBCB9 /* PageProfile.swift in Sources */,
 				316C46EC265392D300A8D7F5 /* SortButton.swift in Sources */,
 				316C47CE2653D3A300A8D7F5 /* DataProvider.swift in Sources */,
 				318D102A266CB17100B66977 /* PageWalk.swift in Sources */,
@@ -1723,6 +1730,7 @@
 				316C46DB265392D300A8D7F5 /* ReflashSpinner.swift in Sources */,
 				316C46CD265392D300A8D7F5 /* CustomAVPlayer.swift in Sources */,
 				316C470B265392D300A8D7F5 /* DynamicLinkManager.swift in Sources */,
+				3190E62B2676EA96000CBCB9 /* ProfileDetail.swift in Sources */,
 				316C470D265392D300A8D7F5 /* IndexMap.swift in Sources */,
 				318D1018266ADF6B00B66977 /* PlayWalkModel.swift in Sources */,
 				31807D562654ED2800531063 /* User.swift in Sources */,
@@ -2019,7 +2027,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -2075,7 +2083,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MARKETING_VERSION = 1.0012;
+				MARKETING_VERSION = 1.0018;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2093,7 +2101,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -2150,7 +2158,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MARKETING_VERSION = 1.0012;
+				MARKETING_VERSION = 1.0018;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ironraft.Pupping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

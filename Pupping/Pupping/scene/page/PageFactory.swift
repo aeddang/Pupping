@@ -22,7 +22,7 @@ extension PageID{
     static let board:PageID = "board"
     static let shop:PageID = "shop"
     static let my:PageID = "my"
-   
+    static let profile:PageID = "profile"
     static let profileRegist:PageID = "profileRegist"
     static let profileModify:PageID = "profileModify"
 }
@@ -142,6 +142,7 @@ struct PageFactory{
         case .board : return PageBoard()
         case .shop : return PageShop()
         case .my : return PageMy()
+        case .profile: return PageProfile()
         case .profileRegist: return PageProfileRegist()
         case .profileModify: return PageProfileModify()
         case .walk : return PageWalk()

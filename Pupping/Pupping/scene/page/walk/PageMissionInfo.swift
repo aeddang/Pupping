@@ -99,8 +99,11 @@ struct PageMissionInfo: PageView {
     }
     
     private func startMission(){
-        self.pagePresenter.closePopup(self.pageObject?.id)
+        
         guard let mission = self.mission else { return }
+        
+        
+    
         if self.missionManager.currentMission == mission {
             self.appSceneObserver.event = .toast(String.alert.currentPlayMission)
             return
@@ -113,27 +116,39 @@ struct PageMissionInfo: PageView {
             }
             return
         }
-        if self.missionManager.currentMission != nil {
-            self.appSceneObserver.alert = .confirm(nil, String.alert.prevPlayMission){ ac in
-                if ac {
-                    self.missionManager.endMission()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        self.missionManager.startMission(mission)
-                        self.pagePresenter.openPopup(
-                            PageProvider.getPageObject(.mission)
-                                .addParam(key: UUID().uuidString, value:  "")
-                        )
+        if self.pagePresenter.hasLayerPopup() {
+            if self.missionManager.currentMission != nil {
+                self.appSceneObserver.alert = .confirm(nil, String.alert.prevPlayMission){ ac in
+                    if ac {
+                        self.missionManager.endMission()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            self.startMission(mission:mission)
+                        }
+                        
                     }
-                    
+                }
+            } else {
+                self.appSceneObserver.alert = .confirm(nil, String.alert.prevPlayWalk){ ac in
+                    if ac {
+                        self.pagePresenter.closePopup(pageId: .walk)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            self.startMission(mission:mission)
+                        }
+                    }
                 }
             }
-        } else {
-            self.missionManager.startMission(mission)
-            self.pagePresenter.openPopup(
-                PageProvider.getPageObject(.mission)
-                    .addParam(key: UUID().uuidString, value:  "")
-            )
+        }else {
+            self.startMission(mission:mission)
         }
+    }
+    
+    private func startMission(mission:Mission){
+        self.pagePresenter.closePopup(self.pageObject?.id)
+        self.missionManager.startMission(mission)
+        self.pagePresenter.openPopup(
+            PageProvider.getPageObject(.mission)
+                .addParam(key: UUID().uuidString, value:  "")
+        )
     }
 }
 

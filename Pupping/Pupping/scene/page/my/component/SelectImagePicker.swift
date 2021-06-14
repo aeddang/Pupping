@@ -14,7 +14,7 @@ struct SelectImagePicker: PageComponent{
     @EnvironmentObject var appSceneObserver:AppSceneObserver
    
     @ObservedObject var pageObservable:PageObservable = PageObservable()
-    
+    var name:String = ""
     var id:String
     var data:InputData
     @State var selectedImage:UIImage? = nil
@@ -23,7 +23,7 @@ struct SelectImagePicker: PageComponent{
     var body: some View {
         VStack (alignment: .center, spacing: 0){
             if let title = self.data.title {
-                Text(title)
+                Text(self.name + title)
                     .modifier(SemiBoldTextStyle(size: Font.size.medium, color: Color.app.greyDeep))
                     .multilineTextAlignment(.center)
             }

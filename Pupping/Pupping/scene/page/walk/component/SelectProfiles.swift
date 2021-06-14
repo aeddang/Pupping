@@ -55,7 +55,7 @@ struct SelectProfiles: PageComponent {
                 }
             }
             FillButton(
-                text: String.app.corfirm,
+                text: String.app.confirm,
                 isSelected:!self.selectedProfiles.isEmpty
                 ){ _ in
                 if self.selectedProfiles.isEmpty {return}

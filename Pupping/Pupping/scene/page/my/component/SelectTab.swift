@@ -19,7 +19,7 @@ struct SelectData: Identifiable {
 struct SelectTab: PageComponent{
 
     @ObservedObject var pageObservable:PageObservable = PageObservable()
-    
+    var name:String = ""
     var data:InputData
     @State var selectedIdx:Int = -1
     let action: (_ idx:Int) -> Void
@@ -27,7 +27,7 @@ struct SelectTab: PageComponent{
     var body: some View {
         VStack (alignment: .center, spacing: 0){
             if let title = self.data.title {
-                Text(title)
+                Text(self.name + title)
                     .modifier(SemiBoldTextStyle(size: Font.size.medium, color: Color.app.greyDeep))
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)

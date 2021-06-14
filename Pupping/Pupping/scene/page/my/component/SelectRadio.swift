@@ -25,6 +25,7 @@ class RadioData: Identifiable {
 struct SelectRadio: PageComponent{
 
     @ObservedObject var pageObservable:PageObservable = PageObservable()
+    var name:String = ""
     var data:InputData
     var margin:CGFloat? = nil
     @State var selected:[RadioData] = []
@@ -32,7 +33,7 @@ struct SelectRadio: PageComponent{
     var body: some View {
         VStack (alignment: .center, spacing: self.margin ?? 0){
             if let title = self.data.title {
-                Text(title)
+                Text(self.name + title)
                     .modifier(SemiBoldTextStyle(size: Font.size.medium, color: Color.app.greyDeep))
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)

@@ -138,7 +138,7 @@ struct InputCell: PageView {
                     }
                 }
                 .padding(.all, Dimen.margin.thin)
-                .modifier(MatchHorizontal(height: Dimen.tab.regular))
+                .modifier(MatchHorizontal(height: Dimen.tab.medium))
                 .background(Color.app.white)
                 .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.lightExtra))
                 .overlay(

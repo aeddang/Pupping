@@ -17,8 +17,8 @@ struct LocationInfo : PageComponent {
     @EnvironmentObject var locationObserver:LocationObserver
  
     @State var location:String? = nil
-    @State var temperature:String? = "24"
-    @State var weather:String? = "흐림"
+    @State var temperature:String? = "24°"
+    @State var weather:String? = "Sunny"
      
     var body: some View {
         HStack(spacing:Dimen.margin.light){

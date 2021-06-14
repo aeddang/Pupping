@@ -21,7 +21,7 @@ struct PageHome: PageView {
     @State var reloadDegree:Double = 0
     @State var reloadDegreeMax:Double = Double(InfinityScrollModel.PULL_COMPLETED_RANGE)
     @State var bottomMargin:CGFloat = 0
-    
+    @State var isUiReady:Bool = false
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .topLeading){
@@ -41,7 +41,7 @@ struct PageHome: PageView {
                         )
                         .modifier(MatchHorizontal(height: 150))
                         LocationInfo()
-                        if let missions = self.missions {
+                        if self.isUiReady, let missions = self.missions  {
                             ForEach(missions){ mission in
                                 MissionInfo(data:mission)
                                 .onTapGesture {
@@ -95,6 +95,11 @@ struct PageHome: PageView {
             .onReceive(self.missionManager.$isMissionsUpdated) { isUpdated in
                 if isUpdated {
                     self.onMissionUpdated()
+                    if !self.isUiReady {
+                        withAnimation{
+                            self.isUiReady = true
+                        }
+                    }
                 }
             }
         }//geo
@@ -106,6 +111,9 @@ struct PageHome: PageView {
                     self.missionManager.generateMission()
                 } else {
                     self.onMissionUpdated()
+                    withAnimation{
+                        self.isUiReady = true
+                    }
                 }
             }
         }

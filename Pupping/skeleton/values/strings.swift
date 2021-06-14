@@ -15,7 +15,7 @@ extension String {
     
     struct app {
         public static let appName = "appName".loaalized()
-        public static let corfirm = "corfirm".loaalized()
+        public static let confirm = "confirm".loaalized()
         public static let close = "close".loaalized()
         public static let cancel = "cancel".loaalized()
         public static let retry = "retry".loaalized()
@@ -93,9 +93,10 @@ extension String {
     }
     
     struct pageTitle {
+        public static let my = "titleMy".loaalized()
         public static let editProfile = "titleEditProfile".loaalized()
         public static let myRewards = "titleMyRewards".loaalized()
-        public static let myPats = "titleMyPats".loaalized()
+        public static let myDogs = "titleMyDogs".loaalized()
         public static let commingSoon = "titleCommingSoon".loaalized()
         public static let mission = "titleMission".loaalized()
         public static let missionInfo = "titleMissionInfo".loaalized()
@@ -137,6 +138,9 @@ extension String {
         public static let profileOption = "profileOption".loaalized()
         public static let profileCheckAll = "profileCheckAll".loaalized()
         public static let profileCancelConfirm = "profileCancelConfirm".loaalized()
+        public static let profileWalkHistory = "profileWalkHistory".loaalized()
+        public static let profileMissionHistory = "profileMissionHistory".loaalized()
+        public static let profileHealthCare = "profileHealthCare".loaalized()
         public static let missionCompleted = "missionCompleted".loaalized()
         public static let missionCompletedText = "missionCompletedText".loaalized()
         

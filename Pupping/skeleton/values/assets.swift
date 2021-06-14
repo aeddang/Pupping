@@ -47,6 +47,7 @@ extension Asset{
         public static let add = "ic_add"
         public static let addOn = "ic_addOn"
         public static let modify = "ic_modify"
+        public static let trash = "ic_trash"
         public static let close = "ic_close"
         public static let back = "ic_back"
         public static let mail = "ic_mail"
@@ -67,7 +68,7 @@ extension Asset{
         public static let stop = "ic_stop"
         public static let pause = "ic_pause"
         public static let resume = "ic_resume"
-        
+        public static let calendar = "ic_calendar"
         public static let time = "ic_time"
         public static let speed = "ic_speed"
         public static let distence = "ic_distence"
@@ -111,6 +112,8 @@ extension Asset{
         public static let man = "man"
         public static let woman = "woman"
         public static let present = "present"
+        public static let profileEmpty = "profileEmpty"
+        public static let profileEmptyContent = "profileEmptyContent"
     }
     
     struct source {

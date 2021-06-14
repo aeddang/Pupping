@@ -99,13 +99,13 @@ struct MissionInfo : PageComponent {
             )
             
             VStack(alignment: .leading, spacing:0){
-                HStack(spacing:Dimen.margin.thin){
+                HStack(spacing:Dimen.margin.micro){
                     Image(Asset.icon.flag)
                         .renderingMode(.template)
                         .resizable()
                         .foregroundColor(Color.app.greyDeep)
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: Dimen.icon.tiny, height: Dimen.icon.tiny)
+                        .frame(width: Dimen.icon.thin, height: Dimen.icon.thin)
                     Text(data.type.info())
                         .modifier(BoldTextStyle(
                             size: Font.size.light,

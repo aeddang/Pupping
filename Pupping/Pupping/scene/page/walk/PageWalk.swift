@@ -150,6 +150,8 @@ struct PageWalk: PageView {
                     withAnimation{
                         self.isPlay = true
                     }
+                case .completed:
+                    self.playCompleted()
                 default : break
                 }
             }
@@ -209,7 +211,7 @@ struct PageWalk: PageView {
     
     
     private func playCompleted(){
-        self.pagePresenter.closePopup(self.pageObject?.id)
+        self.onClose()
         
     }
     

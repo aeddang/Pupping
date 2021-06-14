@@ -74,6 +74,9 @@ struct RedeemInfo: PageComponent {
                 .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.thin))
                 .padding(.horizontal, Dimen.margin.light)
                 .padding(.vertical, Dimen.margin.regular)
+                .onTapGesture {
+                    self.close?()
+                }
             }
             .frame(width: 273, height:324)
             .background(Color.brand.primary)
