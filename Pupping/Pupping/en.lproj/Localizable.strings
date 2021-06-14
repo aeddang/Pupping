@@ -69,18 +69,18 @@
 
 "alertSnsLoginError" = "After login. Available.";
 
-"alertCurrentPlayMission" = "현재 수행중인 미션입니다.";
-"alertCurrentPlay" = "현재 수행중인 미션을 종료후 진행해주세요.";
-"alertPrevPlayMission" = "수행중인 미션이 있습니다.\n종료하고 새로운 미션을 시작하겠습니까?";
-"alertPrevPlayWalk" = "산책을 종료하고 새로운 미션을 시작하겠습니까?";
-"alertClosePlayMission" = "미션을 종료하시겠습니까?\n저장되지 않은 정보는 모두 지워집니다.";
-"alertClosePlayWalk" = "산책을 종료하시겠습니까?";
-"alertNeedProfileRegist" = "함께할 강아지가 없습니다?\n강아지 등록 후 이용해주세요.";
-"alertSelectProfile" = "함께할 강아지를 선택해주세요";
+"alertCurrentPlayMission" = "This mission is currently being performed.";
+"alertCurrentPlay" = "Please proceed after completing the current mission.";
+"alertPrevPlayMission" = "Mission in progress.\nAre you sure you want to quit and start a new mission?";
+"alertPrevPlayWalk" = "End your walk and start a new mission?";
+"alertClosePlayMission" = "Do you want to end the mission?\nAll unsaved information will be erased.";
+"alertClosePlayWalk" = "Are you sure you want to end your walk?";
+"alertNeedProfileRegist" = "Don't have a dog with you?\nPlease register your dog before using it.";
+"alertSelectProfile" = "Please select a dog to accompany";
 
-"alertNeedInput" = "필수 항목을 입력 해 주세요";
-"alertCoinSwap" = "코인이 충전됬습니다.";
-"alertPointEmpty" = "포인트가. 부족합니다.";
+"alertNeedInput" = "Please fill in the required fields";
+"alertCoinSwap" = "Coins are charged.";
+"alertPointEmpty" = "Point Not enough.";
 /*
   Gnb
 */
@@ -99,12 +99,12 @@
   PartTitle
 */
 "titleMy" = "MY";
-"titleEditProfile" = "Modify Profile";
-"titleMyRewards" = "My Reward";
+"titleEditProfile" = "Edit Profile";
+"titleMyRewards" = "My Rewards";
 "titleMyDogs" = "My Dogs";
 "titleCommingSoon" = "comming soon";
-"titleMission" = "Mission Play";
-"titleMissionInfo" = "Mission Preview";
+"titleMission" = "Start Mission";
+"titleMissionInfo" = "Preview Mission";
 
 /*
 PageIntro

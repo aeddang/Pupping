@@ -99,68 +99,72 @@
 /*
   PartTitle
 */
-"titleMy" = "MY";
-"titleEditProfile" = "Modify Profile";
-"titleMyRewards" = "My Reward";
-"titleMyDogs" = "My Dogs";
-"titleCommingSoon" = "comming soon";
-"titleMission" = "Mission Play";
-"titleMissionInfo" = "Mission Preview";
+"titleMy" = "마이페이지";
+"titleEditProfile" = "프로필 수정하기";
+"titleMyRewards" = "내 리워드";
+"titleMyDogs" = "내 반려견";
+"titleCommingSoon" = "아직 준비 중인 기능이에요!";
+"titleMission" = "미션 시작";
+"titleMissionInfo" = "미션 미리보기";
 
 /*
 PageIntro
 */
-"introText1_1" = "Walking your dog is\nthe best present\nyou can give.";
-"introText1_2" = "We cannot emphasize enough\nhow walking is important for a\ndog’s health and happiness.";
-"introText2_1" = "Walk with Pupping\nand gain encrypted\ncoins for your dog.";
-"introText2_2" = "We cannot emphasize enough\nhow walking is important for a\ndog’s health and happiness.";
-"introText3_1" = "...and friends in your town\nto walk together :)";
-"introText3_2" = "Who knows? Maybe you\ncan find a new best friend\nto talk about dogs!";
-"introComplete" = "Let’s explore!";
+"introText1_1" = "산책은 반려견에게 줄 수 있는 최고의 선물이에요.";
+"introText1_2" = "반려견에게 건강과 행복을 가져다 주는 첫걸음,";
+"introText2_1" = "퍼핑과 함께하고 반려견에게 암호화폐를 선물하세요.";
+"introText2_2" = "반려견에게 건강과 행복을 가져다 주는 첫걸음,";
+"introText3_1" = "동네 친구들과 함께 하면 더 즐거운 산책이 될거예요!";
+"introText3_2" = "동네 친구들과 함께 하면 더 즐거운 산책이 될거예요!";
+"introComplete" = "시작하기";
+
 
 /*
 PageLogin
 */
-"loginText" = "Let’s walk\nour dogs together!";
-"loginStart" = "Let’s Start!";
+"loginText" = "퍼핑과 함께 산책해요!";
+"loginStart" = "시작하기";
+
 
 
 /*
  PageProfile
 */
-"profileRegistImage" = "’s profile picture";
-"profileRegistName" = "What is the name\nof your dog?";
-"profileRegistNameTip" = "-Max. 15 characters\n-NO special letters";
-"profileRegistSpecies" = "’s breed";
-"profileRegistBirth" = "’s birthday";
-"profileRegistGender" = "’s sex";
-"profileRegistHealth" = "’s health & immunization";
-"profileRegistMicroFin" = "’s animal ID or a microchip number";
-"profileRegistMicroFinInfo" = "An animal ID is consisted of 15 digits.\nTake your pet to be scanned at the local vet,\nrescue centre or dog wardens service.";
-
-"profileRegistNeutralized" = "Neutralized";
-"profileRegistDistemperVaccinated" = "Distemper Vaccinated";
-"profileRegistHepatitisVaccinated" = "Hepatitis Vaccinated";
-"profileRegistParovirusVaccinated" = "Parovirus Vaccinated";
-"profileRegistRabiesVaccinated" = "Rabies Vaccinated";
+"profileRegistImage" = "프로필 사진";
+"profileRegistName" = "반려견의 이름을 알려주세요.";
+"profileRegistNameTip" = "-최대 15자\n-특수문자는 입력할 수 없어요.";
+"profileRegistSpecies" = "의 종을 알려주세요.";
+"profileRegistBirth" = "의 생일을 알려주세요.";
+"profileRegistGender" = "의 성별을 알려주세요.";
+"profileRegistHealth" = "의 건강상태를 알려주세요.";
+"profileRegistMicroFin" = "의 동물등록번호를 알려주세요.";
+"profileRegistMicroFinInfo" = "동물등록번호는 15자리 숫자로 구성되어 있어요. 번호는 가까운 동물병원에서 체크할 수 있어요.";
 
 
-"profileCancelConfirm" = "If you cancel the registration, the information being created will be lost. Do you want to cancel?";
+"profileRegistNeutralized" = "중성화";
+"profileRegistDistemperVaccinated" = "디스템퍼 예방접종";
+"profileRegistHepatitisVaccinated" = "간염 예방접종";
+"profileRegistParovirusVaccinated" = "프로바이러스 예방접종";
+"profileRegistRabiesVaccinated" = "광견병 예방접종";
+
+
+"profileCancelConfirm" = "지금 중단하면 입력 중이던 정보가 사라져요. 정말 중단 하실건가요?";
 "profileEmptyName" = "animal";
 "profileEmptySpecies" = "animal";
-"profileOption" = "Skip for now";
-"profileCheckAll" = "Check ALL options.";
+"profileOption" = "건너뛰기";
+"profileCheckAll" = "모두 선택";
 
-"profileNamePlaceHolder" = "Name here";
-"profileSpeciesPlaceHolder" = "ex. Maltese";
+"profileNamePlaceHolder" = "ex. 초코";
+"profileSpeciesPlaceHolder" = "ex. 말티즈";
 "profileMicroFinPlaceHolder" = "ex.123456789012345";
 
-"profileWalkHistory" = "Walk History";
-"profileMissionHistory" = "Mission History";
-"profileHealthCare" = "Health Care";
+
+"profileWalkHistory" = "산책 기록";
+"profileMissionHistory" = "미션 기록";
+"profileHealthCare" = "건강 관리";
 
 /*
  PageMission
 */
-"missionCompleted" = "Mission Complete!";
-"missionCompletedText" = "Walk your dog for %s mins.";
+"missionCompleted" = "미션 완료!";
+"missionCompletedText" = "반려견과 %s분 산책하기";
