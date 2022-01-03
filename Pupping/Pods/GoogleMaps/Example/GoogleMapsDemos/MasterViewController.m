@@ -15,7 +15,6 @@
 
 #import "GoogleMapsDemos/MasterViewController.h"
 
-#import "GoogleMapsDemos/DemoAppDelegate.h"
 #import "GoogleMapsDemos/Samples/Samples.h"
 #import <GoogleMaps/GoogleMaps.h>
 
@@ -38,12 +37,12 @@ typedef NSMutableArray<NSArray<NSDictionary<NSString *, NSObject *> *> *> DemoSa
 
   self.tableView.autoresizingMask =
       UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  self.tableView.accessibilityIdentifier = @"SamplesTableView";
 
   _demoSections = [Samples loadSections];
   _demos = [Samples loadDemos];
 
 }
-
 
 #pragma mark - UITableViewController
 

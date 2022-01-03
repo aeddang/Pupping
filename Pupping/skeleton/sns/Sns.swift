@@ -17,15 +17,23 @@ protocol Sns {
 }
 
 enum SnsType{
-    case apple
+    case apple, fb
     func apiCode() -> String {
         switch self {
-            case .apple: return "apple"
+            case .apple: return "Apple"
+            case .fb: return "Facebook"
+        }
+    }
+    var logo:String {
+        switch self {
+            case .apple: return "logo_apple"
+            case .fb: return "logo_fb"
         }
     }
     static func getType(code:String?) -> SnsType? {
         switch code?.lowercased() {
         case "apple": return .apple
+        case "facebook": return .fb
         default : return nil
         }
     }

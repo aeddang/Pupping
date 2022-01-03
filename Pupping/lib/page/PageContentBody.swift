@@ -53,13 +53,13 @@ struct PageContentBody: PageView  {
                 .offset(
                     x: self.offsetX ,
                     y: self.offsetY)
-           
-            Spacer().modifier(MatchParent()).background(Color.transparent.black70)
-                .opacity(self.dragOpacity)
-                .onTapGesture {
-                    self.pageChanger.goBack()
-                }
-            
+            if !self.isTop {
+                Spacer().modifier(MatchParent()).background(Color.transparent.black70)
+                    .opacity(self.dragOpacity)
+                    .onTapGesture {
+                       //self.pageChanger.goBack()
+                    }
+            }
             
         }
         .opacity(self.opacity)
@@ -67,7 +67,7 @@ struct PageContentBody: PageView  {
         .onReceive(self.pageChanger.$currentTopPage){ page in
             guard let page = page else { return }
             if !self.isReady  {return}
-            //PageLog.log("currentTopPage",tag:self.pageID)
+            
             self.topPageType = page.animationType
             guard let pageObject = self.pageObject else { return }
             if pageObject.zIndex != 0 { return }
@@ -75,25 +75,25 @@ struct PageContentBody: PageView  {
             if self.offsetX != 0 || self.offsetY != 0 { return }
             
             if pageObject == page {
-                self.isTop = true
-                self.isBelow = false
-                withAnimation{
-                   
+                withAnimation(.easeIn(duration: 0.2)){
+                    self.isTop = true
+                    self.isBelow = false
                     self.pageOffsetX = 0.0
                     self.pageOffsetY = 0.0
                     self.dragOpacity = 0
                 }
                 
             } else {
-                self.isTop = false
                 
                 let below = self.pageChanger.getBelowPage(page: page)
-                self.isBelow = below == pageObject
-                withAnimation{
+                
+                withAnimation(.easeIn(duration: 0.2)){
+                    self.isTop = false
+                    self.isBelow = below == pageObject
                     self.dragOpacity = 1
                 }
                 if !self.useBelowPageMove {return}
-                withAnimation{
+                withAnimation(.easeIn(duration: 0.2)){
                     switch self.topPageType {
                     case .horizontal :
                         self.pageOffsetX = Self.pageMoveAmount
@@ -103,7 +103,7 @@ struct PageContentBody: PageView  {
                         self.pageOffsetY = -Self.pageMoveAmount
                         self.pageOffsetX = 0
                     
-                    default : do{}
+                    default : break
                     }
                 }
                 
@@ -111,11 +111,9 @@ struct PageContentBody: PageView  {
             
         }
         .onReceive(self.pageChanger.$dragOpercity){ opacity in
-            
             if !self.isReady  {return}
             if !self.isBelow {return}
             if self.isTop {return}
-            
             self.dragOpacity = opacity
             if !self.useBelowPageMove {return}
             //PageLog.log("pagePosition " + self.opacity.description + " " + self.pageID ,tag:self.pageID)
@@ -123,7 +121,7 @@ struct PageContentBody: PageView  {
             switch self.topPageType {
             case .horizontal :  self.pageOffsetX = amount
             case .vertical :  self.pageOffsetY = -amount
-            default : do{}
+            default :break
             }
         }
         
@@ -135,7 +133,7 @@ struct PageContentBody: PageView  {
                 self.offsetY = pos.y
             }else{
                 if self.pageObject?.isAnimation == true {
-                    withAnimation{
+                    withAnimation(.easeOut(duration: 0.2)){
                         self.offsetX = pos.x
                         self.offsetY = pos.y
                     }

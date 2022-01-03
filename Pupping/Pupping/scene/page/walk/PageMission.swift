@@ -48,6 +48,7 @@ struct PageMission: PageView {
     var body: some View {
         GeometryReader { geometry in
             PageDragingBody(
+                pageObservable: self.pageObservable,
                 viewModel:self.pageDragingModel,
                 axis:.vertical,
                 dragingEndAction : { isBottom in
@@ -169,7 +170,7 @@ struct PageMission: PageView {
                     self.playInit()
                 }
             }
-            .onReceive(self.dataProvider.user.$profiles){ profiles in
+            .onReceive(self.dataProvider.user.$pets){ profiles in
                 if !self.isInit { return }
                 if profiles.isEmpty {return}
                 if self.isPlay {return}
@@ -179,7 +180,7 @@ struct PageMission: PageView {
                 guard let evt = evt else {return}
                 switch evt.type {
                 case .datas :
-                    guard let selected = evt.data as? [Profile] else { return }
+                    guard let selected = evt.data as? [PetProfile] else { return }
                     self.withProfiles = selected
                     self.playStart()
                 default : break
@@ -224,7 +225,7 @@ struct PageMission: PageView {
     }//body
     @State var isInit:Bool = false
     @State var isPlay:Bool = false
-    @State var withProfiles:[Profile] = []
+    @State var withProfiles:[PetProfile] = []
     private func playInit(){
         guard let mission = self.mission else { return }
         self.mapModel.playEvent = .setupMission(mission)
@@ -261,7 +262,10 @@ struct PageMission: PageView {
         guard let mission = self.mission else { return }
         mission.completed(playTime: self.viewModel.playTime, playDistence: self.viewModel.playDistence)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.pagePresenter.openPopup(PageProvider.getPageObject(.missionCompleted))
+            self.pagePresenter.openPopup(
+                PageProvider.getPageObject(.missionCompleted)
+                    .addParam(key: .datas, value: self.withProfiles)
+            )
         }
     }
     
@@ -273,8 +277,8 @@ struct PageMission: PageView {
     }
     
     private func checkWithProfile(){
-        if self.dataProvider.user.profiles.count == 1{
-            if let profile = self.dataProvider.user.profiles.first {
+        if self.dataProvider.user.pets.count == 1{
+            if let profile = self.dataProvider.user.pets.first {
                 self.withProfiles.append(profile)
                 self.playStart()
             }

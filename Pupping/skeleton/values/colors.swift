@@ -44,6 +44,8 @@ extension Color {
         public static let white =  Color.white
         public static let whiteDeep =  Color.init(red: 249/255, green: 249/255, blue: 250/255)
         public static let whiteDeepExtra =  Color.init(red: 241/255, green: 242/255, blue: 245/255)
+        
+        public static let blueFB = Color.init(red: 53/255, green: 120/255, blue: 229/255)
     }
     
     struct transparent {

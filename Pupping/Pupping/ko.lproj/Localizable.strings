@@ -30,6 +30,10 @@
 "min" = "분";
 "redeem" = "보상";
 
+"filter" = "filter";
+"near" = "주변";
+
+
 /*
   Button
 */
@@ -52,8 +56,8 @@
 /*
   Alert
 */
-"alertApns" = "알림이 있어요";
-"alertApi" = "알림이 있어요";
+"alertApns" = "Pupping 알림";
+"alertApi" = "Pupping 알림";
 "alertApiErrorServer" = "인터넷이 끊어졌어요. 잠시 후 다시 시도해주세요.";
 "alertApiErrorClient" = "인터넷 연결을 확인한 후 다시 시도해주세요.";
 "alertNetworkError" = "인터넷 연결이 불안정해요.";
@@ -69,15 +73,18 @@
 "alertDeleteProfile" = "강아지와 관련된 모든 데이터가 사라져요. 정말 프로필을 삭제하실건가요?";
 
 "alertSnsLoginError" = "로그인 에러가 발생했어요.";
-
 "alertCurrentPlayMission" = "현재 수행 중인 미션이에요.";
 "alertCurrentPlay" = "현재 수행 중인 미션을 먼저 종료해주세요.";
 "alertPrevPlayMission" = "현재 수행중인 미션이 있어요. 종료하고 새로운 미션을 시작할까요?";
 "alertPrevPlayWalk" = "산책을 종료하고 미션을 시작할까요?";
 "alertClosePlayMission" = "미션을 종료할까요? 저장되지 않은 정보는 모두 지워집니다.";
-"alertClosePlayWalk" = "산책을 종료하시겠어요?";
+"alertClosePlayWalk" = "산책을 종료하시겠어요?\n%sm 이상 상책하셔야 보상을 받을수 있습니다.";
 "alertNeedProfileRegist" = "함께할 강아지가 없어요. 강아지를 등록한 후 이용해주세요.";
 "alertSelectProfile" = "함께할 강아지를 선택해주세요";
+
+"alertCompletedNeedPicture" = "반려견과 함깨한 사진이 필요합니다.";
+"alertCompletedNeedPictureError" = "반려견과 사용자가 함께 찍힌 사진이 필요합니다. 다시 시도해주세요.";
+"alertCompletedExitConfirm" = "미션 보상을 받지 않고 나가면 수행한 미션기록이 저장되지 않습니다. 나가나요?";
 
 "alertNeedInput" = "필수 항목을 입력해주세요.";
 "alertCoinSwap" = "코인이 충전됐어요.";
@@ -88,6 +95,7 @@
 "gnbMission" = "미션";
 "gnbBoard" = "커뮤니티";
 "gnbShop" = "마켓";
+"gnbExplore" = "탐색";
 "gnbMy" = "마이페이지";
 "gnbWalk" = "산책";
 
@@ -100,6 +108,7 @@
   PartTitle
 */
 "titleMy" = "마이페이지";
+"titleExplore" = "탐색";
 "titleEditProfile" = "프로필 수정하기";
 "titleMyRewards" = "내 리워드";
 "titleMyDogs" = "내 반려견";
@@ -130,6 +139,7 @@ PageLogin
 /*
  PageProfile
 */
+"profileRegistNickName" = "닉네임을 알려주세요.";
 "profileRegistImage" = "프로필 사진";
 "profileRegistName" = "반려견의 이름을 알려주세요.";
 "profileRegistNameTip" = "-최대 15자\n-특수문자는 입력할 수 없어요.";
@@ -154,6 +164,7 @@ PageLogin
 "profileOption" = "건너뛰기";
 "profileCheckAll" = "모두 선택";
 
+"profileNickNamePlaceHolder" = "ex. 초코 집사";
 "profileNamePlaceHolder" = "ex. 초코";
 "profileSpeciesPlaceHolder" = "ex. 말티즈";
 "profileMicroFinPlaceHolder" = "ex.123456789012345";
@@ -168,3 +179,10 @@ PageLogin
 */
 "missionCompleted" = "미션 완료!";
 "missionCompletedText" = "반려견과 %s분 산책하기";
+"missionCompletedSaved" = "미션 정보가 저장되었습니다.";
+/*
+ PageWalk
+*/
+"walkCompleted" = "산책 완료!";
+"walkCompletedText" = "반려견과 %s분 산책하기";
+"walkCompletedSaved" = "산책 정보가 저장되었습니다.";

@@ -11,10 +11,14 @@ target 'Pupping' do
   pod 'Firebase/DynamicLinks'
   pod 'Firebase/Crashlytics'
   pod 'ReachabilitySwift'
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
   pod 'Kingfisher'
   pod 'TrueTime'
   pod 'GoogleMaps'
   pod 'GooglePlaces'
+  pod 'FBSDKLoginKit'
   
   target 'PuppingTests' do
     inherit! :search_paths

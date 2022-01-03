@@ -92,12 +92,12 @@ struct SelectTab_Previews: PreviewProvider {
                     tabs:[
                         .init(
                             idx: 0,
-                            image: Asset.icon.mail,
-                            text: String.app.mail, color: Color.brand.fourthExtra),
+                            image: Asset.icon.male,
+                            text: String.app.male, color: Color.brand.fourthExtra),
                         .init(
                             idx: 0,
-                            image: Asset.icon.femail,
-                            text: String.app.femail, color: Color.brand.primary)
+                            image: Asset.icon.female, 
+                            text: String.app.female, color: Color.brand.primary)
                     ])
             ){ _ in
                 

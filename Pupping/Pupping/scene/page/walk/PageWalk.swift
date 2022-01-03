@@ -16,6 +16,8 @@ extension PageWalk {
     static let zoomCloseup:Float = 18.5
     static let mapMoveDuration:Double = 0.5
     static let forceMoveDelay:Double = 1.5
+    
+    static let limitedDistence:Double = 1
 }
 
 struct PageWalk: PageView {
@@ -40,10 +42,11 @@ struct PageWalk: PageView {
     @State var dragOpacity:Double = 1
     @State var isFollowMe:Bool = true
     @State var isForceMove:Bool = false
-   
+    @State var walk:Walk = Walk()
     var body: some View {
         GeometryReader { geometry in
             PageDragingBody(
+                pageObservable: self.pageObservable,
                 viewModel:self.pageDragingModel,
                 axis:.vertical,
                 dragingEndAction : { isBottom in
@@ -164,7 +167,7 @@ struct PageWalk: PageView {
                     self.isInit = true
                 }
             }
-            .onReceive(self.dataProvider.user.$profiles){ profiles in
+            .onReceive(self.dataProvider.user.$pets){ profiles in
                 if !self.isInit { return }
                 if profiles.isEmpty {return}
                 if self.isPlay {return}
@@ -174,7 +177,7 @@ struct PageWalk: PageView {
                 guard let evt = evt else {return}
                 switch evt.type {
                 case .datas :
-                    guard let selected = evt.data as? [Profile] else { return }
+                    guard let selected = evt.data as? [PetProfile] else { return }
                     self.withProfiles = selected
                     self.playStart()
                 default : break
@@ -195,10 +198,13 @@ struct PageWalk: PageView {
    
     @State var isInit:Bool = false
     @State var isPlay:Bool = false
-    @State var withProfiles:[Profile] = []
+    @State var withProfiles:[PetProfile] = []
    
     private func moveMe(loc:CLLocation){
         self.mapModel.playEvent = .me(loc)
+        if self.walk.locations.isEmpty {
+            self.walk.locations.append(loc)
+        }
     }
     
     private func playStart(){
@@ -217,8 +223,8 @@ struct PageWalk: PageView {
     
     
     private func checkWithProfile(){
-        if self.dataProvider.user.profiles.count == 1{
-            if let profile = self.dataProvider.user.profiles.first {
+        if self.dataProvider.user.pets.count == 1{
+            if let profile = self.dataProvider.user.pets.first {
                 self.withProfiles.append(profile)
                 self.playStart()
             }
@@ -261,9 +267,21 @@ struct PageWalk: PageView {
     }
     
     private func onClose(){
-        self.appSceneObserver.alert = .confirm(nil, String.alert.closePlayWalk){ ac in
+        self.appSceneObserver.alert = .confirm(nil, String.alert.closePlayWalk.replace(Self.limitedDistence.description)){ ac in
             if ac {
-                self.pagePresenter.closePopup(self.pageObject?.id)
+                if self.viewModel.playDistence > Self.limitedDistence {
+                    self.walk.playDistence = self.viewModel.playDistence
+                    self.walk.playTime = self.viewModel.playTime
+                    if let loc = self.viewModel.currentLocation { self.walk.locations.append(loc) }
+                    self.pagePresenter.openPopup(
+                        PageProvider.getPageObject(.walkCompleted)
+                            .addParam(key: .data, value: self.walk)
+                            .addParam(key: .datas, value: self.withProfiles)
+                    )
+                } else {
+                    self.pagePresenter.closePopup(self.pageObject?.id)
+                }
+                
             }
         }
     }

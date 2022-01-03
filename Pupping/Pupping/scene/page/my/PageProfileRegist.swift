@@ -9,6 +9,9 @@ import Foundation
 import SwiftUI
 import Combine
 
+enum ProfileType:String{
+    case user, pet
+}
 enum InputDataType:String{
     case text, select, date, image, radio
 }
@@ -65,9 +68,11 @@ struct PageProfileRegist: PageView {
     @ObservedObject var pageDragingModel:PageDragingModel = PageDragingModel()
     
     @State var bottomMargin:CGFloat = 0
+    @State var type:ProfileType = .pet
     var body: some View {
         GeometryReader { geometry in
             PageDragingBody(
+                pageObservable: self.pageObservable,
                 viewModel:self.pageDragingModel,
                 axis:.horizontal
             ) {
@@ -222,15 +227,94 @@ struct PageProfileRegist: PageView {
                 
             }
             .onAppear{
-                if let profile = self.dataProvider.user.currentRegistProfile {
-                    self.profile = profile
-                } else {
-                    self.profile = self.dataProvider.user.registProfile()
+                if let obj = self.pageObject {
+                    if let type = obj.getParamValue(key: .type) as? ProfileType {
+                        self.type = type
+                    }
                 }
+                switch self.type {
+                case .user :
+                    self.userProfile = UserProfile()
+                    self.steps = [
+                        InputData(
+                            type:.text,
+                            title: String.pageText.profileRegistNickName,
+                            tip:String.pageText.profileRegistNameTip,
+                            placeHolder: String.pageText.profileNickNamePlaceHolder)
+                    ]
+                case .pet :
+                    if let profile = self.dataProvider.user.currentPet {
+                        self.profile = profile
+                    } else {
+                        self.profile = PetProfile(isMyPet: true)
+                    }
+                    self.steps = [
+                        InputData(
+                            type:.text,
+                            title: String.pageText.profileRegistName,
+                            tip:String.pageText.profileRegistNameTip,
+                            placeHolder: String.pageText.profileNamePlaceHolder),
+                        InputData(
+                            type:.image,
+                            title: String.pageText.profileRegistImage),
+                        InputData(
+                            type:.text,
+                            title: String.pageText.profileRegistSpecies,
+                            tip:String.pageText.profileRegistNameTip,
+                            placeHolder: String.pageText.profileSpeciesPlaceHolder),
+                        InputData(
+                            type:.date,
+                            title: String.pageText.profileRegistBirth),
+                        InputData(
+                            type:.select,
+                            title: String.pageText.profileRegistGender,
+                            tabs: [
+                                .init(
+                                    idx: 0,
+                                    image: Asset.icon.male,
+                                    text: String.app.male, color: Color.brand.fourthExtra),
+                                .init(
+                                    idx: 1,
+                                    image: Asset.icon.female,
+                                    text: String.app.female, color: Color.brand.primary)
+                            ]),
+                        InputData(
+                            type:.text,
+                            title: String.pageText.profileRegistMicroFin,
+                            info:String.pageText.profileRegistMicroFinInfo,
+                            placeHolder: String.pageText.profileMicroFinPlaceHolder,
+                            keyboardType: .numberPad,
+                            isOption: true
+                            ),
+                        InputData(
+                            type:.radio,
+                            title: String.pageText.profileRegistHealth,
+                            checks:[
+                                .init(text: String.pageText.profileRegistNeutralized),
+                                .init(text: String.pageText.profileRegistDistemperVaccinated),
+                                .init(text: String.pageText.profileRegistHepatitisVaccinated),
+                                .init(text: String.pageText.profileRegistParovirusVaccinated),
+                                .init(text: String.pageText.profileRegistRabiesVaccinated)
+                            ])
+                    ]
+                }
+                
+                
             }
             .onDisappear{
                
             }
+            /*
+            .onReceive(self.dataProvider.$result){ res in
+                guard let res = res else { return }
+                if !res.id.hasPrefix(self.tag) {return}
+                switch res.type {
+                case .updateUser, .registPet:
+                    self.pagePresenter.closePopup(self.pageObject?.id)
+                default : break
+                }
+            }
+             */
             
         }//geo
 
@@ -245,60 +329,14 @@ struct PageProfileRegist: PageView {
     @State var selectedImage:UIImage? = nil
     @State var selectedProfileImage:UIImage? = nil
     @State var step:Int  = 0
-    @State var profile:Profile? = nil
     
+    @State var profile:PetProfile? = nil
+    @State var userProfile:UserProfile? = nil
     @State var leading:CGFloat = 0
     @State var trailing:CGFloat = 0
     
-    let steps: [InputData] = [
-        InputData(
-            type:.text,
-            title: String.pageText.profileRegistName,
-            tip:String.pageText.profileRegistNameTip,
-            placeHolder: String.pageText.profileNamePlaceHolder),
-        InputData(
-            type:.image,
-            title: String.pageText.profileRegistImage),
-        InputData(
-            type:.text,
-            title: String.pageText.profileRegistSpecies,
-            tip:String.pageText.profileRegistNameTip,
-            placeHolder: String.pageText.profileSpeciesPlaceHolder),
-        InputData(
-            type:.date,
-            title: String.pageText.profileRegistBirth),
-        InputData(
-            type:.select,
-            title: String.pageText.profileRegistGender,
-            tabs: [
-                .init(
-                    idx: 0,
-                    image: Asset.icon.mail,
-                    text: String.app.mail, color: Color.brand.fourthExtra),
-                .init(
-                    idx: 1,
-                    image: Asset.icon.femail,
-                    text: String.app.femail, color: Color.brand.primary)
-            ]),
-        InputData(
-            type:.text,
-            title: String.pageText.profileRegistMicroFin,
-            info:String.pageText.profileRegistMicroFinInfo,
-            placeHolder: String.pageText.profileMicroFinPlaceHolder,
-            keyboardType: .numberPad,
-            isOption: true
-            ),
-        InputData(
-            type:.radio,
-            title: String.pageText.profileRegistHealth,
-            checks:[
-                .init(text: String.pageText.profileRegistNeutralized),
-                .init(text: String.pageText.profileRegistDistemperVaccinated),
-                .init(text: String.pageText.profileRegistHepatitisVaccinated),
-                .init(text: String.pageText.profileRegistParovirusVaccinated),
-                .init(text: String.pageText.profileRegistRabiesVaccinated)
-            ])
-    ]
+    @State var steps: [InputData] = []
+     
     @discardableResult
     private func update() -> Bool {
         if self.step >= self.steps.count { return false }
@@ -306,27 +344,27 @@ struct PageProfileRegist: PageView {
         case  0 :
             if self.input.isEmpty  { return false }
             self.currentName = self.input
-            self.profile?.update(data: ModifyProfileData(nickName: self.input))
-            
+            self.profile?.update(data: ModifyPetProfileData(nickName: self.input))
+            self.userProfile?.update(data: ModifyUserProfileData( nickName: self.input))
         case  1 :
             guard let image = self.selectedImage else { return false }
             self.selectedProfileImage = image
             self.profile?.update(image:image)
         case  2 :
             if self.input.isEmpty  { return false }
-            self.profile?.update(data: ModifyProfileData(species: self.input))
+            self.profile?.update(data: ModifyPetProfileData(species: self.input))
         case  3 :
             guard let date = self.selectedDate else { return false }
-            self.profile?.update(data: ModifyProfileData(birth: date))
+            self.profile?.update(data: ModifyPetProfileData(birth: date))
         case  4 :
-            let gender:Gender = self.selectedIdx == 0 ? .mail : .femail
-            self.profile?.update(data: ModifyProfileData(gender: gender))
+            let gender:Gender = self.selectedIdx == 0 ? .male : .female
+            self.profile?.update(data: ModifyPetProfileData(gender: gender))
         case  5 :
-            self.profile?.update(data: ModifyProfileData(microfin: self.input))
+            self.profile?.update(data: ModifyPetProfileData(microfin: self.input))
         case  6 :
             guard let inputData = self.inputData else {return false}
             self.profile?.update(data:
-                            ModifyProfileData(
+                            ModifyPetProfileData(
                                 neutralization: inputData.checks[0].isCheck,
                                 distemper: inputData.checks[1].isCheck,
                                 hepatitis: inputData.checks[2].isCheck,
@@ -432,8 +470,17 @@ struct PageProfileRegist: PageView {
         }
     }
     private func setupCompleted(){
-        self.dataProvider.user.registComplete()
+        guard let user = self.dataProvider.user.snsUser else { return }
+        switch self.type {
+        case .user :
+            self.dataProvider.requestData(q: .init(id:self.tag, type: .updateUser( user, .init( nickName: self.userProfile?.nickName))))
+            
+        case .pet :
+            guard let profile = self.profile else { return }
+            self.dataProvider.requestData(q: .init(id:self.tag, type: .registPet(user, profile)))
+        }
         self.pagePresenter.closePopup(self.pageObject?.id)
+        
         
     }
 }

@@ -14,45 +14,65 @@ struct PlayProfileInfo : PageComponent {
     @EnvironmentObject var pagePresenter:PagePresenter
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var dataProvider:DataProvider
-    @ObservedObject var profile:Profile
-   
+    var data:PetProfile
+    /*
+    @ObservedObject var data:PetProfile
     @State var image:UIImage? = nil
+    @State var imagePath:String? = nil
     @State var name:String? = nil
     @State var lv:String = ""
     @State var exp:String = ""
+    */
     var body: some View {
         HStack(spacing:Dimen.margin.micro){
-            Image(uiImage: self.image ??
-                    UIImage(named:Asset.brand.logoLauncher)!)
-                .renderingMode(.original)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: Dimen.profile.thin, height: Dimen.profile.thin)
-                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                .padding(.horizontal, Dimen.margin.tiny)
+            ZStack{
+                if let img = self.data.image {
+                    Image(uiImage: img)
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .modifier(MatchParent())
+                } else if let path = self.data.imagePath {
+                    ImageView(url: path,
+                        contentMode: .fill,
+                        noImg: Asset.brand.logoLauncher)
+                        .modifier(MatchParent())
+                } else {
+                    Image( uiImage: UIImage(named: Asset.brand.logoLauncher)! )
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .modifier(MatchParent())
+                }
+            }
+            .frame(width: Dimen.profile.thin, height: Dimen.profile.thin)
+            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            .padding(.horizontal, Dimen.margin.tiny)
             
             VStack(alignment: .leading, spacing:0){
-                Text(self.name ?? "")
+                Text(self.data.nickName ?? "")
                      .modifier(BoldTextStyle(
                          size: Font.size.tinyExtra,
                          color: Color.app.greyDeep
                      ))
                     .lineLimit(1)
-                Text(self.lv)
+                Text("Lv." + self.data.lv.description)
                     .modifier(BoldTextStyle(
                         size: Font.size.micro,
                         color: Color.brand.primary
                     ))
                     .lineLimit(1)
                 
-                Text(self.exp)
+                Text(self.data.exp.description)
                     .modifier(LightTextStyle(
                         size: Font.size.micro,
                         color: Color.app.greyLight
                     ))
                     .lineLimit(1)
             }
+            .frame(width: Dimen.profile.thin)
         }
+        /*
         .onReceive(self.appSceneObserver.$pickImage) { pick in
             guard let pick = pick else {return}
             if pick.id?.hasSuffix(self.profile.id) != true {return}
@@ -61,12 +81,12 @@ struct PlayProfileInfo : PageComponent {
                 DispatchQueue.global(qos:.background).async {
                     let uiImage = img.normalized().centerCrop().resize(to: CGSize(width: 240,height: 240))
                     DispatchQueue.main.async {
-                        self.profile.update(image: uiImage)
                         self.pagePresenter.isLoading = false
+                        self.dataProvider.requestData(q: .init(type: .updatePetImage(petId: self.profile.petId, uiImage)))
                     }
                 }
             } else {
-                self.profile.update(image: nil)
+                //self.profile.update(image: nil)
             }
         }
 
@@ -78,11 +98,12 @@ struct PlayProfileInfo : PageComponent {
         }
         .onReceive(self.profile.$image) { img in
             self.image = img
+            
         }
         .onReceive(self.profile.$nickName) { name in
             self.name = name?.isEmpty == false ? name : String.pageText.profileEmptyName
         }
-        
+        */
     }
 }
 
@@ -93,10 +114,10 @@ struct PlayProfileInfo_Previews: PreviewProvider {
     static var previews: some View {
         Form{
             PlayProfileInfo(
-                profile: Profile(
+                data: PetProfile(
                     nickName: "dalja",
                     species: "biggle",
-                    gender: .femail,
+                    gender: .female,
                     birth: Date())
             )
             .environmentObject(DataProvider())

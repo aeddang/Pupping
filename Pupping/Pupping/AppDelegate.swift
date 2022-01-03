@@ -11,6 +11,8 @@ import CoreData
 import Firebase
 import GooglePlaces
 import GoogleMaps
+import FBSDKCoreKit
+
 class AppObserver: ObservableObject, PageProtocol {
     @Published fileprivate(set) var page:IwillGo? = nil
     @Published fileprivate(set) var pushToken:String? = nil
@@ -106,13 +108,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PageProtocol {
         application.registerForRemoteNotifications()
         Self.appURLSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
         let launchedURL = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL
+        
+        //[FB]
+        ApplicationDelegate.shared.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
+        
         return AppDelegate.appObserver.handleDynamicLink(launchedURL)
         
         
     }
     
+
     
     func application( _ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
+        //[FB]
+        ApplicationDelegate.shared.application(
+            app,
+            open: url,
+            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+            annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+        )
         //[DL]
         let dynamicLink = application(app, open: url,
                      sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,

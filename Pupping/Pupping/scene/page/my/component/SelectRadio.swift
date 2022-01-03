@@ -95,10 +95,10 @@ struct SelectRadio_Previews: PreviewProvider {
                     checks:[
                         .init(
                             isCheck: true,
-                            text: String.app.mail),
+                            text: String.app.male),
                         .init(
                             isCheck: true,
-                            text: String.app.femail)
+                            text: String.app.female)
                     ])
             )
             .environmentObject(PagePresenter())

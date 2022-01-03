@@ -27,11 +27,16 @@ struct PageMy: PageView {
                 title: String.pageTitle.my,
                 isBack: false,
                 isClose: false,
-                isSetting: true)
+                isSetting: false)
                 .padding(.top, self.sceneObserver.safeAreaTop)
-            MyRewardsInfo()
-                .modifier(ContentHorizontalEdges())
-                .padding(.top, Dimen.margin.mediumExtra)
+            
+            UserProfileInfo(
+                profile: self.dataProvider.user.currentProfile,
+                isModifyAble: true
+            )
+            .modifier(ContentHorizontalEdges())
+            .padding(.top, Dimen.margin.mediumUltra)
+            
             HStack{
                 Text(String.pageTitle.myDogs)
                     .modifier(ContentTitle())
@@ -53,7 +58,7 @@ struct PageMy: PageView {
             .modifier(ContentHorizontalEdges())
             .padding(.top, Dimen.margin.mediumUltra)
             if !self.profiles.isEmpty {
-                ProfileList(
+                PetList(
                     viewModel:self.profileScrollModel,
                     datas: self.profiles)
             } else {
@@ -72,8 +77,6 @@ struct PageMy: PageView {
                 .padding(.top, Dimen.margin.light)
                 
             }
-           
-                
             Spacer().modifier(MatchParent())
         }
         //.padding(.bottom, self.bottomMargin)
@@ -83,23 +86,25 @@ struct PageMy: PageView {
         .onReceive(self.pageObservable.$isAnimationComplete){ ani in
             if ani {
                 self.isUiReady = true
+                if let snsUser = self.dataProvider.user.snsUser {
+                    self.dataProvider.requestData(q: .init(type: .getUser(snsUser)))
+                    self.dataProvider.requestData(q: .init(type: .getPets(snsUser)))
+                }
             }
         }
-        .onReceive(self.dataProvider.user.$profiles){ profiles in
+        .onReceive(self.dataProvider.user.$pets){ profiles in
             if profiles.isEmpty {
                 self.profiles = []
             } else {
                 self.profiles = profiles
             }
-            
         }
-        
         .modifier(PageFull())
         .onAppear{
-           
+            
         }
     }//body
-    @State var profiles:[Profile] = []
+    @State var profiles:[PetProfile] = []
    
 }
 

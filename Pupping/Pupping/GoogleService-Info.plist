@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>586205630588-5u6p6pq5oeqvmis5tr4vdbgr00vtn5a1.apps.googleusercontent.com</string>
+	<string>995723781166-hfhj5pnmfhglrkanponjkapgna4vuhuj.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.586205630588-5u6p6pq5oeqvmis5tr4vdbgr00vtn5a1</string>
+	<string>com.googleusercontent.apps.995723781166-hfhj5pnmfhglrkanponjkapgna4vuhuj</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDIbOUwo4FWSwlLUhSH3HQjJtV4E7buMnw</string>
+	<string>AIzaSyAN3NpTOjJoinEQtLNvpnBwMQEuJ9xsG10</string>
 	<key>GCM_SENDER_ID</key>
-	<string>586205630588</string>
+	<string>995723781166</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.ironraft.Pupping</string>
 	<key>PROJECT_ID</key>
-	<string>puppingtest</string>
+	<string>pupping-bero</string>
 	<key>STORAGE_BUCKET</key>
-	<string>puppingtest.appspot.com</string>
+	<string>pupping-bero.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:586205630588:ios:6e84acb22ae6dd6a11f9f9</string>
+	<string>1:995723781166:ios:27feeb8fe63bf473da2bbf</string>
 </dict>
 </plist>

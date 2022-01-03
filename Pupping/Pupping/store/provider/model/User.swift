@@ -9,32 +9,45 @@ import Foundation
 import SwiftUI
 import UIKit
 enum Gender {
-    case mail, femail
+    case male, female
     func getIcon() -> String {
         switch self {
-        case .mail : return Asset.icon.mail
-        case .femail : return Asset.icon.femail
+        case .male : return Asset.icon.male
+        case .female : return Asset.icon.female
         }
     }
     
     func getTitle() -> String {
         switch self {
-        case .mail : return String.app.mail
-        case .femail : return String.app.femail
+        case .male : return String.app.male
+        case .female : return String.app.female
         }
     }
     
     func coreDataKey() -> Int {
         switch self {
-        case .mail : return 1
-        case .femail : return 2
+        case .male : return 1
+        case .female : return 2
+        }
+    }
+    func apiDataKey() -> String {
+        switch self {
+        case .male : return "Male"
+        case .female : return "Female"
         }
     }
     
     static func getGender(_ value:Int) -> Gender?{
         switch value{
-        case 1 : return .mail
-        case 2 : return .femail
+        case 1 : return .male
+        case 2 : return .female
+        default : return nil
+        }
+    }
+    static func getGender(_ value:String?) -> Gender?{
+        switch value{
+        case "Male" : return .male
+        case "Female" : return .female
         default : return nil
         }
     }
@@ -46,55 +59,55 @@ struct ModifyUserData {
     var coin:Double?
 }
 
-class User:ObservableObject, PageProtocol{
-    
-    @Published private(set) var profiles:[Profile] = []
+class User:ObservableObject, PageProtocol, Identifiable{
+    private(set) var id:String = UUID().uuidString
+    @Published private(set) var pets:[PetProfile] = []
     @Published private(set) var point:Double = 0
     @Published private(set) var coin:Double = 0
     @Published private(set) var mission:Double = 0
-    private(set) var currentRegistProfile:Profile? = nil
+    private(set) var currentProfile:UserProfile = UserProfile()
+    private(set) var currentPet:PetProfile? = nil
     private(set) var snsUser:SnsUser? = nil
     
-    func setProfiles() {
-        DispatchQueue.main.async {
-            self.profiles = ProfileCoreData().getAllProfiles()
-        }
-    }
     func registUser(user:SnsUser){
         self.snsUser = user
+    }
+    func clearUser(){
+        self.snsUser = nil
     }
     func registUser(id:String?, token:String?, code:String?){
         DataLog.d("id " + (id ?? ""), tag: self.tag)
         DataLog.d("token " + (token ?? ""), tag: self.tag)
         DataLog.d("code " + (code ?? ""), tag: self.tag)
         guard let id = id, let token = token , let type = SnsType.getType(code: code) else {return}
-        
         DataLog.d("user init " + (code ?? ""), tag: self.tag)
         self.snsUser = SnsUser(snsType: type, snsID: id, snsToken: token)
     }
     
-    @discardableResult
-    func registProfile() -> Profile {
-        let profile = Profile()
-        self.currentRegistProfile = profile
-        return profile
+    func setData(data:UserData){
+        self.point = data.point ?? 0
+        self.currentProfile.setData(data: data)
     }
-    func deleteProfile(id:String) {
-        guard let find = self.profiles.firstIndex(where: {$0.id == id}) else {
-            return
-        }
-        self.profiles.remove(at: find)
-        ProfileCoreData().remove(id: id)
-    }
-    func registComplete()  {
-        guard let profile = self.currentRegistProfile else {return}
-        ProfileCoreData().add(profile: profile)
-        self.profiles.append(profile)
-        self.currentRegistProfile = nil
+    func setData(data:[PetData]){
+        self.pets = data.map{ PetProfile(data: $0, isMyPet: true)}
     }
     
-    func getProfile(_ id :String) -> Profile? {
-        return self.profiles.first(where: {$0.id == id})
+    func deletePet(petId:Int) {
+        guard let find = self.pets.firstIndex(where: {$0.petId == petId}) else {
+            return
+        }
+        self.pets.remove(at: find)
+    }
+    
+    func registPetComplete(profile:PetProfile)  {
+        self.pets.append(profile)
+        if self.currentPet == nil {
+            self.currentPet = profile
+        }
+    }
+    
+    func getPet(_ id :String) -> PetProfile? {
+        return self.pets.first(where: {$0.id == id})
     }
     
     func swapCoin() {
@@ -113,16 +126,15 @@ class User:ObservableObject, PageProtocol{
         self.coin = data.coin
     }
      
-    func addProfile(_ profile:Profile) {
-        profiles.append(profile)
-        ProfileCoreData().add(profile: profile)
+    func addPet(_ profile:PetProfile) {
+        pets.append(profile)
     }
     
     func missionCompleted(_ mission:Mission) {
         let point =  mission.lv.point()
         self.point += point
         self.mission += 1
-        self.profiles.filter{$0.isWith}.forEach{
+        self.pets.filter{$0.isWith}.forEach{
             $0.update(exp: point)
         }
         UserCoreData().update(
@@ -130,6 +142,13 @@ class User:ObservableObject, PageProtocol{
                 point: self.point,
                 mission: self.mission)
         )
+    }
+    
+    
+    func setDummy() -> User {
+        self.currentProfile.setDummy()
+        self.pets = [PetProfile().setDummy(),PetProfile().setDummy(),PetProfile().setDummy(),PetProfile().setDummy(),PetProfile().setDummy()]
+        return self
     }
 }
 

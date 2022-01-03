@@ -23,22 +23,32 @@ protocol NetworkRoute:PageProtocol {
     var path: String { get }
     var method: HTTPMethod { get set }
     var headers: [String: String]? { get set }
+    var overrideHeaders: [String: String]? { get set }
     var query: [String: String]? { get set }
     var body: [String: Any]? { get set }
     var bodys: [Any]? { get set }
+    var postData: Data? { get set }
+    var jsonString: String? { get set }
     var contentType:String? { get set }
+    var withAllowedCharacters:CharacterSet? { get set }
     func onRequestIntercepter(request:URLRequest)
 }
 
 extension NetworkRoute {
     var headers: [String : String]?  { get{nil} set{headers=nil} }
+    var overrideHeaders: [String : String]?  { get{nil} set{overrideHeaders=nil} }
     var query: [String: String]?  { get{nil} set{query=nil} }
     var body: [String: Any]?  { get{nil} set{body=nil} }
     var bodys: [Any]?  { get{nil} set{bodys=nil} }
+    var postData: Data? { get{nil} set{postData=nil} }
     var contentType:String? { get{nil} set{contentType = nil} }
-    
+    var jsonString:String? { get{nil} set{jsonString = nil} }
+    var withAllowedCharacters:CharacterSet? { get{.urlQueryAllowed} set{withAllowedCharacters = .urlQueryAllowed} }
     func create(for enviroment:NetworkEnvironment) -> URLRequest {
-        let path = getURL(enviroment).addingPercentEncoding( withAllowedCharacters: .urlQueryAllowed)
+        let path = withAllowedCharacters == nil
+            ? getURL(enviroment)
+            : getURL(enviroment).addingPercentEncoding( withAllowedCharacters: withAllowedCharacters!)
+        
         var request = URLRequest(url: URL(string:path!)!)
         if let type = contentType { request.addValue(type, forHTTPHeaderField: "Content-type") }
         else {  request.addValue("application/json", forHTTPHeaderField: "Content-type") }
@@ -46,7 +56,7 @@ extension NetworkRoute {
         request.httpMethod = method.rawValue.uppercased()
         request.httpBody = getBody()
 
-        self.onRequestIntercepter(request: request)
+        //self.onRequestIntercepter(request: request)
         DataLog.d("request : " + request.debugDescription , tag:self.tag)
         return request
     }
@@ -60,7 +70,7 @@ extension NetworkRoute {
         request.allHTTPHeaderFields = headers
         request.httpMethod = method.rawValue.uppercased()
         request.httpBody = Data()
-        self.onRequestIntercepter(request: request)
+        //self.onRequestIntercepter(request: request)
         let formData = MultipartFormData(request: request, encoding:encoding)
         constructingBlock(formData)
         formData.finalize()
@@ -108,8 +118,16 @@ extension NetworkRoute {
     
     private func getBody() -> Data?{
         if method == .get {return nil}
+        if let params = postData {
+            return params
+        }
         if let params = bodys {
             return try? JSONSerialization.data(withJSONObject:params)
+        }
+        if let params = jsonString {
+            DataLog.d("jsonString : " + params, tag: self.tag)
+            let data = params.data(using: .utf8)
+            return data
         }
         
         guard let param = body else { return nil }
@@ -148,6 +166,11 @@ extension Network {
     func fetch<T: Decodable>(route: NetworkRoute) -> AnyPublisher<T, Error> {
         var request:URLRequest = route.create(for: enviroment)
         request = self.onRequestIntercepter(request: request)
+        if let override =  route.overrideHeaders {
+            override.forEach{ set in
+                request.setValue(set.value, forHTTPHeaderField: set.key)
+            }
+        }
         self.debug(request: request)
         return self.sharedSession
             .dataTaskPublisher(for: request)
@@ -178,9 +201,14 @@ extension Network {
                             multipartFormData constructingBlock: @escaping (_ formData: MultipartFormData) -> Void
     ) -> AnyPublisher<T, Error> {
         var request:URLRequest = route.create(for: enviroment, multipartFormData: constructingBlock, encoding: encoding)
-        self.debug(request: request)
-        self.debug(data: request.httpBody)
         request = self.onRequestIntercepter(request: request)
+        if let override =  route.overrideHeaders {
+            override.forEach{ set in
+                request.setValue(set.value, forHTTPHeaderField: set.key)
+            }
+        }
+        self.debug(request: request)
+    
         return self.sharedSession
             .dataTaskPublisher(for: request)
             .tryCompactMap { result in
@@ -202,11 +230,17 @@ extension Network {
             }
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
+        
     }
     
     func fetch(route: NetworkRoute) -> AnyPublisher<[String : Any], Error> {
         var request:URLRequest = route.create(for: enviroment)
         request = self.onRequestIntercepter(request: request)
+        if let override =  route.overrideHeaders {
+            override.forEach{ set in
+                request.setValue(set.value, forHTTPHeaderField: set.key)
+            }
+        }
         return self.sharedSession
             .dataTaskPublisher(for: request)
             .tryCompactMap { result in
@@ -222,23 +256,23 @@ extension Network {
     }
     
     private func debug(request:URLRequest){
-        #if DEBUG
+        //#if DEBUG
         guard let headers = request.allHTTPHeaderFields else { return }
         let str = headers.reduce("headers :"){
             $0 + "\n" + $1.key + " : " + $1.value
         }
         DataLog.d(str, tag: self.tag)
-        #endif
+        //#endif
     }
     private func debug(data:Data?){
-        #if DEBUG
+        //#if DEBUG
             guard let data = data else {
                  DataLog.d("no data", tag: self.tag)
                 return
             }
             let str = String(decoding: data, as: UTF8.self)
             DataLog.d(str, tag: self.tag)
-        #endif
+        //#endif
     }
 }
 
@@ -261,11 +295,12 @@ class MultipartFormData {
 
         request.httpBody?.append("--\(boundary)\r\n".data(using: encoding)!)
         request.httpBody?.append("Content-Disposition: form-data; name=\"\(name)\"\r\n\r\n".data(using: encoding)!)
-        request.httpBody?.append( value.data(using: encoding)!)
-        request.httpBody?.append("\r\n".data(using: encoding)!)
+        //request.httpBody?.append("Content-Type: text/plain\r\n\r\n".data(using: encoding)!)
+        request.httpBody?.append( "\(value)\r\n".data(using: .utf8)!)
+        //request.httpBody?.append("\r\n".data(using: encoding)!)
         
-        let str = String(decoding: request.httpBody!, as: UTF8.self)
-        DataLog.d(str)
+       // let str = String(decoding: request.httpBody!, as: UTF8.self)
+        //DataLog.d(str)
     }
     
     

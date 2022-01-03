@@ -3,12 +3,12 @@ import Foundation
 import SwiftUI
 struct SortButton: View{
     var text:String
-    var isFocus:Bool = false
+    var isSelected:Bool = false
     var isFill:Bool = false
     var textModifier:TextModifier = TextModifier(
         family: Font.family.regular,
-        size: Font.size.light,
-        color: Color.app.white
+        size: Font.size.tiny,
+        color: Color.app.grey
     )
     var icon:String? = nil
     let action: () -> Void
@@ -21,28 +21,36 @@ struct SortButton: View{
                 HStack(spacing:Dimen.margin.thin){
                     if let icon = self.icon {
                         Image(icon)
-                        .renderingMode(.original).resizable()
-                        .scaledToFit()
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(self.isSelected ? Color.brand.primary : Color.app.greyLight)
                             .frame(width: Dimen.icon.tiny, height: Dimen.icon.tiny)
                     }
                     
                     Text(self.text)
-                    .font(.custom(textModifier.family, size: textModifier.size))
-                    .foregroundColor(textModifier.color)
+                        .font(.custom(textModifier.family, size: textModifier.size))
+                        .foregroundColor(textModifier.color)
                     if self.isFill {
                         Spacer().modifier(MatchParent())
                     }
                     Image(Asset.icon.sort)
-                            .renderingMode(.original).resizable()
+                            .renderingMode(.template)
+                            .resizable()
                             .scaledToFit()
+                            .foregroundColor(self.isSelected ? Color.brand.primary : Color.app.greyLight)
+                            .rotationEffect(.degrees(180))
                             .frame(width: Dimen.icon.micro, height: Dimen.icon.micro)
                 }
                 .padding(.horizontal, Dimen.margin.thin)
             }
-            .frame(height:Dimen.button.light)
-            .background(self.isFocus ? Color.brand.primary : Color.app.grey)
-            .clipShape(
-                RoundedRectangle(cornerRadius: Dimen.radius.light))
+            .frame(height:Dimen.button.thin)
+            .background(Color.transparent.clearUi)
+            .overlay(
+                RoundedRectangle(cornerRadius: Dimen.radius.light)
+                    .stroke(self.isSelected ? Color.brand.primary : Color.app.greyLight  ,
+                            lineWidth: Dimen.stroke.light )
+            )
             
         }
     }
@@ -53,9 +61,9 @@ struct SortButtonButton_Previews: PreviewProvider {
     static var previews: some View {
         Form{
             SortButton(
-                text: "test",
-                isFocus: true,
-                icon: Asset.icon.flag
+                text: "testsdsds",
+                isSelected: true,
+                icon: Asset.icon.filter
             )
             {
                 

@@ -88,6 +88,7 @@ struct PageContentController: View{
                 ForEach(self.pageControllerObservable.popups, id: \.id) { popup in popup.contentBody }
                 self.pageControllerObservable.overlayView?.contentBody
             }
+            .background( Color.brand.bg )
             .onAppear(){
                 sceneObserver.update(geometry: geometry)
             }
@@ -96,7 +97,7 @@ struct PageContentController: View{
             }
             .edgesIgnoringSafeArea(.all)
             .statusBar(hidden: self.isFullScreen)
-            .background(backgroundBody)
+            
             .onReceive(self.keyboardObserver.$isOn){ _ in
                 delaySafeAreaUpdate(geometry: geometry)
             }
@@ -109,6 +110,9 @@ struct PageContentController: View{
             .onReceive(self.pagePresenter.$isFullScreen){ isFullScreen in
                 self.isFullScreen = isFullScreen
             }
+            .onReceive(self.pagePresenter.$currentTopPage){ page in
+                guard let page = page else {return}
+            }
         }
     }
     
@@ -116,7 +120,7 @@ struct PageContentController: View{
     func delaySafeAreaUpdate(geometry:GeometryProxy) {
         self.safeAreaUpdateSubscription?.cancel()
         self.safeAreaUpdateSubscription = Timer.publish(
-            every: 0.01, on: .current, in: .common)
+            every: 0.02, on: .current, in: .common)
             .autoconnect()
             .sink() {_ in
                 self.safeAreaUpdateSubscription?.cancel()
@@ -146,12 +150,14 @@ struct PageContentController: View{
     }
     
     func addPopup(_ page:PageViewProtocol){
-        pageControllerObservable.popups.append(page)
-        pageControllerObservable.popups.sort{$0.zIndex < $1.zIndex} 
-        pageControllerObservable.pages.forEach({ $0.pageAdded( page.pageObject )})
-        pageControllerObservable.popups.forEach({ $0.pageAdded( page.pageObject )})
-        pageControllerObservable.overlayView?.pageAdded(page.pageObject)
-        pageControllerObservable.updatePageIndex()
+        DispatchQueue.main.async {
+            pageControllerObservable.popups.append(page)
+            pageControllerObservable.popups.sort{$0.zIndex < $1.zIndex} 
+            pageControllerObservable.pages.forEach({ $0.pageAdded( page.pageObject )})
+            pageControllerObservable.popups.forEach({ $0.pageAdded( page.pageObject )})
+            pageControllerObservable.overlayView?.pageAdded(page.pageObject)
+            pageControllerObservable.updatePageIndex()
+        }
     }
     
     func getPopup(_ key:String) -> PageViewProtocol? {
@@ -161,25 +167,39 @@ struct PageContentController: View{
     
     func removePopup(_ key:String){
         guard let findIdx = pageControllerObservable.popups.firstIndex(where: { $0.id == key }) else { return }
-        let pop = pageControllerObservable.popups.remove(at: findIdx)
-        pageControllerObservable.pages.forEach({ $0.pageRemoved( pop.pageObject )})
-        pageControllerObservable.popups.forEach({ $0.pageRemoved( pop.pageObject )})
-        pageControllerObservable.overlayView?.pageRemoved( pop.pageObject )
-        pageControllerObservable.updatePageIndex()
+        DispatchQueue.main.async {
+            let pop = pageControllerObservable.popups.remove(at: findIdx)
+            pageControllerObservable.pages.forEach({ $0.pageRemoved( pop.pageObject )})
+            pageControllerObservable.popups.forEach({ $0.pageRemoved( pop.pageObject )})
+            pageControllerObservable.overlayView?.pageRemoved( pop.pageObject )
+            pageControllerObservable.updatePageIndex()
+        }
+        
     }
-    
+    func removeAllPopup(removePops:[String]){
+        DispatchQueue.main.async {
+            pageControllerObservable.popups.removeAll( where: { pop in
+               return removePops.first(where: { pop.id == $0 }) != nil
+            })
+            pageControllerObservable.pages.forEach({ $0.pageRemoved( nil )})
+            pageControllerObservable.overlayView?.pageRemoved(nil)
+            pageControllerObservable.updatePageIndex()
+        }
+    }
     func removeAllPopup(_ pageKey:String = "", exceptions:[PageID]? = nil){
-        pageControllerObservable.popups.removeAll( where: { pop in
-            var remove = true
-            if pop.id == pageKey { remove = false }
-            if let exps = exceptions {
-                if let _ = exps.first(where: { pop.pageID == $0 }) { remove = false }
-            }
-            return remove
-        })
-        pageControllerObservable.pages.forEach({ $0.pageRemoved( nil )})
-        pageControllerObservable.overlayView?.pageRemoved(nil)
-        pageControllerObservable.updatePageIndex()
+        DispatchQueue.main.async {
+            pageControllerObservable.popups.removeAll( where: { pop in
+                var remove = true
+                if pop.id == pageKey { remove = false }
+                if let exps = exceptions {
+                    if let _ = exps.first(where: { pop.pageID == $0 }) { remove = false }
+                }
+                return remove
+            })
+            pageControllerObservable.pages.forEach({ $0.pageRemoved( nil )})
+            pageControllerObservable.overlayView?.pageRemoved(nil)
+            pageControllerObservable.updatePageIndex()
+        }
     }
     
     func sceneDidBecomeActive(_ scene: UIScene){
@@ -208,6 +228,7 @@ struct PageContentController: View{
         pageControllerObservable.popups.forEach({$0.sceneWillEnterForeground(scene)})
         pageControllerObservable.overlayView?.sceneWillEnterForeground(scene)
     }
+    
     
     func sceneDidEnterBackground(_ scene: UIScene){
         pageObservable.status = PageStatus.enterBackground

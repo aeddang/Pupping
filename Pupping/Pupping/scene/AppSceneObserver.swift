@@ -15,7 +15,7 @@ enum SceneUpdateType {
 
 enum SceneEvent {
     case initate, toast(String), update(SceneUpdateType),
-         debug(String)
+         debug(String), openCamera(String)
 }
 
 enum SceneRequest:String {

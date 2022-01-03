@@ -76,9 +76,9 @@ struct PageHome: PageView {
                 if pos < InfinityScrollModel.PULL_RANGE { return }
                 self.reloadDegree = Double(pos - InfinityScrollModel.PULL_RANGE)
             }
-            .onReceive(self.dataProvider.user.$profiles){ profiles in
+            .onReceive(self.dataProvider.user.$pets){ profiles in
                 if profiles.isEmpty {
-                    self.profiles = [Profile().empty()]
+                    self.profiles = [PetProfile().empty()]
                 } else {
                     self.profiles = profiles
                 }
@@ -122,7 +122,7 @@ struct PageHome: PageView {
         }
     }//body
     @State var missions:[Mission]? = nil
-    @State var profiles:[Profile]? = nil
+    @State var profiles:[PetProfile]? = nil
     @State var profilePages: [PageViewProtocol] = []
     
     private func onMissionUpdated(){
@@ -173,7 +173,7 @@ struct PageHome: PageView {
                 return
             }
         }
-        if self.dataProvider.user.profiles.isEmpty {
+        if self.dataProvider.user.pets.isEmpty {
             self.appSceneObserver.alert = .alert(nil, String.alert.needProfileRegist, nil){
                 self.pagePresenter.openPopup(
                     PageProvider.getPageObject(.profileRegist)

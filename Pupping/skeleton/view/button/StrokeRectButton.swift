@@ -19,8 +19,8 @@ struct StrokeRectButton: View, SelecterbleProtocol{
         activeColor: Color.app.white
     )
     
-    var strokeColor = Color.app.greyLight
-    var strokeActiveColor = Color.app.white
+    var strokeColor = Color.app.white
+    var strokeActiveColor = Color.app.grey
     var cornerRadius:CGFloat = 0
     var size:CGSize = CGSize(width: Dimen.button.heavy, height: Dimen.button.thin)
     var icon:String? = nil

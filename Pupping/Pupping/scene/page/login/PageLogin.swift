@@ -58,12 +58,19 @@ struct PageLogin: PageView {
                 .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.center)
             Spacer()
+            FaceBookButton()
+                .modifier( MatchHorizontal(height: Dimen.button.medium))
+                .padding(.horizontal, Dimen.margin.heavy)
+                .background(Color.app.blueFB)
+                .clipShape(RoundRectMask(radius: Dimen.radius.lightExtra))
+                .modifier(ContentHorizontalEdges())
+                .padding(.bottom, Dimen.margin.thin)
             Button(action: {
                 self.snsManager.requestLogin(type: .apple)
             }) {
                 AppleButton()
             }
-            .modifier( MatchHorizontal(height: Dimen.button.medium) )
+            .modifier( MatchHorizontal(height: Dimen.button.medium))
             .background(Color.app.black)
             .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.lightExtra))
             .modifier(ContentHorizontalEdges())
@@ -75,21 +82,33 @@ struct PageLogin: PageView {
             switch err.event {
                 case .login :
                     self.appSceneObserver.alert = .alert(nil, String.alert.snsLoginError)
+                case .getProfile :
+                    self.join()
                 default : break
             }
         }
         .onReceive(self.snsManager.$user){user in
-            guard let user = user else { return }
-            self.repository.registerSnsLogin(user)
-            self.appSceneObserver.event = .initate
+            if user == nil { return }
+            self.snsManager.getUserInfo()
+            //self.appSceneObserver.event = .initate
+        }
+        .onReceive(self.snsManager.$userInfo){userInfo in
+            if userInfo == nil { return }
+            self.join(info: userInfo)
         }
         .modifier(PageFull())
         .onAppear{
-           
+            self.repository.clearLogin()
         }
     }//body
-    @State var profiles:[Profile] = []
    
+    private func join(info:SnsUserInfo? = nil){
+        guard let user = self.snsManager.user else {
+            self.appSceneObserver.alert = .alert(nil, String.alert.snsLoginError)
+            return
+        }
+        self.repository.registerSnsLogin(user, info: info)
+    }
 }
 
 

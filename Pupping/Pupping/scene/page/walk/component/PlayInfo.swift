@@ -22,7 +22,7 @@ struct PlayInfo : PageComponent {
     @ObservedObject var viewModel:PlayWalkModel = PlayWalkModel()
     
     
-    var profiles:[Profile] = []
+    var profiles:[PetProfile] = []
     @State var playTime:String = ""
     @State var playDistence:String = ""
     @State var progress:Float = 0
@@ -47,12 +47,15 @@ struct PlayInfo : PageComponent {
                     ))
             }
             HStack(spacing:Dimen.margin.tiny){
-                ForEach(profiles) { profile in
-                    PlayProfileInfo(
-                        profile: profile
-                    )
+                ScrollView(.horizontal, showsIndicators: false){
+                    HStack(spacing:Dimen.margin.tiny){
+                        ForEach(profiles) { profile in
+                            PlayProfileInfo(
+                                data: profile
+                            )
+                        }
+                    }
                 }
-                Spacer()
                 if self.viewModel.type == .mission {
                     if let currentLocation = self.currentLocation {
                         ZStack{

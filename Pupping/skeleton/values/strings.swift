@@ -19,8 +19,8 @@ extension String {
         public static let close = "close".loaalized()
         public static let cancel = "cancel".loaalized()
         public static let retry = "retry".loaalized()
-        public static let mail = "mail".loaalized()
-        public static let femail = "femail".loaalized()
+        public static let male = "male".loaalized()
+        public static let female = "female".loaalized()
         public static let puppingCoin = "puppingCoin".loaalized()
         public static let point = "point".loaalized()
         public static let completeMission = "completeMission".loaalized()
@@ -34,12 +34,15 @@ extension String {
         public static let m = "m".loaalized()
         public static let min = "min".loaalized()
         public static let redeem = "redeem".loaalized()
+        public static let filter = "filter".loaalized()
+        public static let near = "near".loaalized()
     }
     
     struct gnb {
         public static let mission = "gnbMission".loaalized()
         public static let board = "gnbBoard".loaalized()
         public static let shop = "gnbShop".loaalized()
+        public static let explore = "gnbExplore".loaalized()
         public static let my = "gnbMy".loaalized()
         public static let walk = "gnbWalk".loaalized()
     }
@@ -70,6 +73,9 @@ extension String {
         public static var closePlayWalk = "alertClosePlayWalk".loaalized()
         public static var needProfileRegist = "alertNeedProfileRegist".loaalized()
         public static var selectProfile = "alertSelectProfile".loaalized()
+        public static var completedNeedPicture = "alertCompletedNeedPicture".loaalized()
+        public static var completedNeedPictureError = "alertCompletedNeedPictureError".loaalized()
+        public static var completedExitConfirm = "alertCompletedExitConfirm".loaalized()
         public static var needInput = "alertNeedInput".loaalized()
         public static var coinSwap = "alertCoinSwap".loaalized()
         public static var pointEmpty = "alertPointEmpty".loaalized()
@@ -96,6 +102,7 @@ extension String {
         public static let my = "titleMy".loaalized()
         public static let editProfile = "titleEditProfile".loaalized()
         public static let myRewards = "titleMyRewards".loaalized()
+        public static let explore = "titleExplore".loaalized()
         public static let myDogs = "titleMyDogs".loaalized()
         public static let commingSoon = "titleCommingSoon".loaalized()
         public static let mission = "titleMission".loaalized()
@@ -113,6 +120,7 @@ extension String {
         public static let introComplete = "introComplete".loaalized()
         public static let loginText = "loginText".loaalized()
         public static let loginStart = "loginStart".loaalized()
+        public static let profileRegistNickName = "profileRegistNickName".loaalized()
         public static let profileRegistImage = "profileRegistImage".loaalized()
         public static let profileRegistName = "profileRegistName".loaalized()
         public static let profileRegistNameTip = "profileRegistNameTip".loaalized()
@@ -129,6 +137,7 @@ extension String {
         public static let profileRegistParovirusVaccinated = "profileRegistParovirusVaccinated".loaalized()
         public static let profileRegistRabiesVaccinated = "profileRegistRabiesVaccinated".loaalized()
         
+        public static let profileNickNamePlaceHolder = "profileNickNamePlaceHolder".loaalized()
         public static let profileNamePlaceHolder = "profileNamePlaceHolder".loaalized()
         public static let profileSpeciesPlaceHolder = "profileSpeciesPlaceHolder".loaalized()
         public static let profileMicroFinPlaceHolder = "profileMicroFinPlaceHolder".loaalized()
@@ -143,7 +152,11 @@ extension String {
         public static let profileHealthCare = "profileHealthCare".loaalized()
         public static let missionCompleted = "missionCompleted".loaalized()
         public static let missionCompletedText = "missionCompletedText".loaalized()
+        public static let missionCompletedSaved = "missionCompletedSaved".loaalized()
         
+        public static let walkCompleted = "walkCompleted".loaalized()
+        public static let walkCompletedText = "walkCompletedText".loaalized()
+        public static let walkCompletedSaved = "walkCompletedSaved".loaalized()
     }
     
 }

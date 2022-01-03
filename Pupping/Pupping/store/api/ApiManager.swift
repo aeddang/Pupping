@@ -9,70 +9,96 @@
 import Foundation
 import Combine
 enum ApiStatus{
-    case initate, ready
+    case initate, ready, reflash, error
 }
-
-enum ApiEvents{
-    case pairingHostChanged, pairingUpdated(PairingUpdateData)
+enum ApiEvent{
+    case initate, error
 }
-
-enum UpdateFlag:String{
-    case none ,force ,recommend ,emergency ,advance
-    static func getFlag(_ value:String?)->UpdateFlag{
-        switch value {
-            case "0", "none": return .none
-            case "1", "force": return .force
-            case "2", "recommend": return .recommend
-            case "3", "emergency": return .emergency
-            case "4", "advance": return .advance
-            default : return .none
-        }
+struct ApiNetwork :Network{
+    static fileprivate(set) var accesstoken:String? = nil
+    static func reset(){
+        Self.accesstoken = nil
     }
-}
-
-enum PairingUpdateFlag:String{
-    case none ,forceUnpairing ,upgrade
-    static func getFlag(_ value:String?)->PairingUpdateFlag{
-        switch value {
-            case "0": return .none
-            case "1": return .forceUnpairing
-            case "2": return .upgrade
-            default : return .none
-        }
+    
+    
+    var enviroment: NetworkEnvironment = ApiPath.getRestApiPath()
+    func onRequestIntercepter(request: URLRequest)->URLRequest{
+        guard let token = ApiNetwork.accesstoken else { return request }
+        var authorizationRequest = request
+        authorizationRequest.addValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+        DataLog.d("token " + token , tag: self.tag)
+        return authorizationRequest
     }
-}
-
-struct PairingUpdateData {
-    var updateFlag:PairingUpdateFlag? = nil
-    var productName:String? = nil
-    var maxCount:Int? = nil
-    var count:Int? = nil
+    func onDecodingError(data: Data, e:Error) -> Error{
+        guard let error = try? self.decoder.decode(ApiErrorResponse.self, from: data) else { return e }
+        return ApiError(response: error)
+    }
+    
     
 }
 
 
 class ApiManager :PageProtocol, ObservableObject{
+    let network:Network = ApiNetwork()
+    
     @Published var status:ApiStatus = .initate
+    @Published var event:ApiEvent? = nil {didSet{ if event != nil { event = nil} }}
     @Published var result:ApiResultResponds? = nil {didSet{ if result != nil { result = nil} }}
     @Published var error:ApiResultError? = nil {didSet{ if error != nil { error = nil} }}
-    @Published var event:ApiEvents? = nil {didSet{ if event != nil { event = nil} }}
-    
     
     private var anyCancellable = Set<AnyCancellable>()
     private var apiQ :[ ApiQ ] = []
-   
-    private(set) var updateFlag: UpdateFlag = .none
+    private var transition = [String : ApiQ]()
+    
+    //page Api
+    private let user:UserApi
+    private let pet:PetApi
+    private let mission:MissionApi
+    
+    //Store Api
+    private let auth:AuthApi
+    private let userUpdate:UserApi
+    private let petUpdate:PetApi
+    private var snsUser:SnsUser? = nil
+    
     init() {
-        self.initateApi()
+        self.auth = AuthApi(network: self.network)
+        self.user = UserApi(network: self.network)
+        self.userUpdate = UserApi(network: self.network)
+        self.pet = PetApi(network: self.network)
+        self.petUpdate = PetApi(network: self.network)
+        self.mission = MissionApi(network: self.network)
     }
     
     func clear(){
         if self.status == .initate {return}
+        self.user.clear()
+        self.pet.clear()
+        self.mission.clear()
         self.apiQ.removeAll()
+        
     }
     
-    private func initateApi()
-    {
+    func clearApi(){
+        ApiNetwork.accesstoken = nil
+        self.snsUser = nil
+        self.status = .initate
+    }
+    
+    func initateApi(token:String, user:SnsUser){
+        ApiNetwork.accesstoken = token
+        self.snsUser = user
+        self.status = .ready
+        if self.status != .reflash {
+            self.event = .initate
+        }
+        self.executeQ()
+    }
+    
+    func initateApi(res:UserAuth? = nil){
+        if let res = res {
+            ApiNetwork.accesstoken = res.token
+        }
         self.status = .ready
         self.executeQ()
     }
@@ -82,49 +108,95 @@ class ApiManager :PageProtocol, ObservableObject{
         self.apiQ.removeAll()
     }
     
-
-    private var transition = [String : ApiQ]()
     func load(q:ApiQ){
-        switch q.type {
-        case .getGnb: break
-        default : break
-        }
-        self.load(q.type, action: q.action, resultId: q.id, isOptional: q.isOptional, isProcess: q.isProcess)
+        self.load(q.type, resultId: q.id, isOptional: q.isOptional, isProcess: q.isProcess)
     }
     
-
     @discardableResult
-    func load(_ type:ApiType, action:ApiAction? = nil,
-              resultId:String = "", isOptional:Bool = false, isLock:Bool = false, isProcess:Bool = false)->String
-    {
+    func load(_ type:ApiType, resultId:String = "", isOptional:Bool = false, isLock:Bool = false, isProcess:Bool = false)->String {
         let apiID = resultId //+ UUID().uuidString
-        if status != .ready{
-            self.apiQ.append(ApiQ(id: resultId, type: type, action: action, isOptional: isOptional, isLock: isLock))
-            return apiID
-        }
-        let error = {err in self.onError(id: apiID, type: type, e: err, isOptional: isOptional, isProcess: isProcess)}
-        
+        let error = {err in self.onError(id: apiID, type: type, e: err, isOptional: isOptional, isLock: isLock,  isProcess: isProcess)}
         switch type {
-        case .getGnb : break
-            /*
-            self.euxp.getGnbBlock(
+        case .joinAuth(let user, let info):
+            self.auth.post(user: user, info: info,
             completion: {res in self.complated(id: apiID, type: type, res: res)},
             error:error)
-            */
+            return apiID
+        case .reflashAuth:
+            guard let user = self.snsUser else {return apiID}
+            self.auth.reflash(user: user,
+            completion: {res in self.complated(id: apiID, type: type, res: res)},
+            error:error)
+            return apiID
+        default: break
+        }
+        
+        if status != .ready{
+            self.apiQ.append(ApiQ(id: resultId, type: type, isOptional: isOptional, isLock: isLock, isProcess: isProcess))
+            return apiID
+        }
+        switch type {
+        case .getUser(let user, let isCanelAble) :
+            if isCanelAble == true {
+                self.user.get(user: user,
+                              completion: {res in self.complated(id: apiID, type: type, res: res)},
+                              error:error)
+            } else {
+                self.userUpdate.get(user: user,
+                              completion: {res in self.complated(id: apiID, type: type, res: res)},
+                              error:error)
+            }
+        case .updateUser(let user, let modifyData) :
+            self.userUpdate.put(user: user, modifyData:modifyData,
+                          completion: {res in self.complated(id: apiID, type: type, res: res)},
+                          error:error)
+            
+        case .registPet(let user, let pet) :
+            self.petUpdate.post(user: user, pet: pet,
+                                completion: {res in self.complated(id: apiID, type: type, res: res)},
+                                error:error)
+        case .updatePet(let petId, let pet) :
+            self.petUpdate.put(petId: petId, pet: pet,
+                                completion: {res in self.complated(id: apiID, type: type, res: res)},
+                                error:error)
+        case .updatePetImage(let petId, let img) :
+            self.petUpdate.put(petId: petId, image: img,
+                                completion: {res in self.complated(id: apiID, type: type, res: res)},
+                                error:error)
+        case .getPets(let user , let isCanelAble) :
+            if isCanelAble == true {
+                self.pet.get(user: user,
+                             completion: {res in self.complated(id: apiID, type: type, res: res)},
+                             error:error)
+            } else {
+                self.petUpdate.get(user: user,
+                             completion: {res in self.complated(id: apiID, type: type, res: res)},
+                             error:error)
+            }
+        case .getPet(let petId) :
+            self.pet.get(petId: petId, 
+                         completion: {res in self.complated(id: apiID, type: type, res: res)},
+                         error:error)
+        case .deletePet(let petId) :
+            self.petUpdate.delete(petId: petId,
+                                  completion: {res in self.complated(id: apiID, type: type, res: res)},
+                                  error:error)
+        case .getMission(let user , let petId) :
+            self.mission.get(user: user, petId: petId,
+                             completion: {res in self.complated(id: apiID, type: type, res: res)},
+                             error:error)
+        case .completeMission(let mission, let pets) :
+            self.mission.post(mission: mission, pets: pets,
+                              completion: {res in self.complated(id: apiID, type: type, res: res)},
+                              error:error)
+        case .completeWalk(let walk, let pets) :
+            self.mission.post(walk: walk, pets: pets,
+                              completion: {res in self.complated(id: apiID, type: type, res: res)},
+                              error:error)
+        default: break
         }
         return apiID
     }
-    
-    private func complated<T:Decodable>(id:String, type:ApiType, res:T){
-        let result:ApiResultResponds = .init(id: id, type:type, data: res)
-        if let trans = transition[result.id] {
-            transition.removeValue(forKey: result.id)
-            self.load(q:trans)
-        }else{
-            self.result = .init(id: id, type:type, data: res)
-        }
-    }
-    
     
     private func complated(id:String, type:ApiType, res:Blank){
         let result:ApiResultResponds = .init(id: id, type:type, data: res)
@@ -135,16 +207,82 @@ class ApiManager :PageProtocol, ObservableObject{
             self.result = .init(id: id, type:type, data: res)
         }
     }
+    private func complated(id:String, type:ApiType, res:[String:Any]){
+        guard let status = res["status"] as? String else { return }
+        if status != "200" {
+            do{
+                let data = try JSONSerialization.data(withJSONObject: res, options: .init())
+                guard let error = try? JSONDecoder().decode(ApiErrorResponse.self, from: data) else {
+                    self.onError( id: id, type: type, e: ApiError(response: ApiErrorResponse.getUnknownError()))
+                    return
+                }
+                return self.onError( id: id, type: type, e: ApiError(response: error))
+            } catch {
+                self.onError( id: id, type: type, e: error)
+            }
+            
+        }
+        self.result = .init(id: id, type:type, data: res)
+    }
+    private func complated<T:Decodable>(id:String, type:ApiType, res:ApiContentResponse<T>){
+        let result:ApiResultResponds = .init(id: id, type:type, data: res.contents)
+        switch type {
+        case .joinAuth, .reflashAuth :
+            if let res = result.data as? UserAuth {
+                self.initateApi(res: res)
+                return
+            }
+        default : break
+        }
+        
+        if let trans = transition[result.id] {
+            transition.removeValue(forKey: result.id)
+            self.load(q:trans)
+        }else{
+            self.result = result
+        }
+    }
     
-    private func onError(id:String, type:ApiType, e:Error,isOptional:Bool = false, isProcess:Bool = false){
+    private func complated<T:Decodable>(id:String, type:ApiType, res:ApiItemResponse<T>){
+        let result:ApiResultResponds = .init(id: id, type:type, data: res.items)
+        if let trans = transition[result.id] {
+            transition.removeValue(forKey: result.id)
+            self.load(q:trans)
+        }else{
+            self.result = result
+        }
+    }
+    
+    private func onError(id:String, type:ApiType, e:Error, isOptional:Bool = false, isLock:Bool = false, isProcess:Bool = false){
+        if let err = e as? ApiError {
+            if let res = err.response {
+                switch type {
+                case .reflashAuth : 
+                    self.status = .error
+                    self.event = .error
+                    return
+                default : break
+                }
+                
+                switch res.code {
+                case "C001":
+                    self.apiQ.append( ApiQ(id: id, type: type, isOptional: isOptional, isLock: isLock, isProcess: isProcess) )
+                    if self.status != .reflash {
+                        self.status = .reflash
+                        self.load(q: .init(type: .reflashAuth))
+                    }
+                    return
+                default : break
+                }
+                
+            }
+        }
         if let trans = transition[id] {
             transition.removeValue(forKey: id)
             self.error = .init(id: id, type:trans.type, error: e, isOptional:isOptional, isProcess:isProcess)
         }else{
             self.error = .init(id: id, type:type, error: e, isOptional:isOptional, isProcess:isProcess)
         }
-        
     }
 
-    
 }

@@ -31,6 +31,7 @@ struct PageProfileModify: PageView {
     var body: some View {
         GeometryReader { geometry in
             PageDragingBody(
+                pageObservable: self.pageObservable,
                 viewModel:self.pageDragingModel,
                 axis:.horizontal
             ) {
@@ -100,18 +101,18 @@ struct PageProfileModify: PageView {
                                 self.appSceneObserver.event = .toast(String.alert.needInput)
                                 return 
                             }
+                            guard let profile = self.profile else {return}
+                            let data = ModifyPetProfileData(
+                                nickName:self.inputName,
+                                species: self.inputSpecies,
+                                microfin: self.inputMicrofin,
+                                neutralization: self.healthData.checks[0].isCheck,
+                                distemper: self.healthData.checks[1].isCheck,
+                                hepatitis: self.healthData.checks[2].isCheck,
+                                parovirus: self.healthData.checks[3].isCheck,
+                                rabies: self.healthData.checks[4].isCheck)
                             
-                            self.profile?.update(
-                                data: ModifyProfileData(
-                                    nickName:self.inputName,
-                                    species: self.inputSpecies,
-                                    microfin: self.inputMicrofin,
-                                    neutralization: self.healthData.checks[0].isCheck,
-                                    distemper: self.healthData.checks[1].isCheck,
-                                    hepatitis: self.healthData.checks[2].isCheck,
-                                    parovirus: self.healthData.checks[3].isCheck,
-                                    rabies: self.healthData.checks[4].isCheck))
-                           
+                            self.dataProvider.requestData(q: .init(type: .updatePet(petId: profile.petId, data)))
                             self.pagePresenter.goBack()
                         }
                     }
@@ -134,7 +135,7 @@ struct PageProfileModify: PageView {
             
             .onAppear{
                 guard let obj = self.pageObject  else { return }
-                guard let profile = obj.getParamValue(key: .data) as? Profile else { return }
+                guard let profile = obj.getParamValue(key: .data) as? PetProfile else { return }
                 self.profile = profile
                 self.inputName = profile.nickName ?? ""
                 self.inputSpecies = profile.species ?? ""
@@ -170,7 +171,7 @@ struct PageProfileModify: PageView {
             .init(text: String.pageText.profileRegistParovirusVaccinated),
             .init(text: String.pageText.profileRegistRabiesVaccinated)
         ])
-    @State var profile:Profile? = nil
+    @State var profile:PetProfile? = nil
     
     var isComplete:Bool {
         if self.inputName.isEmpty {return false}

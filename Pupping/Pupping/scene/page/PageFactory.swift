@@ -15,9 +15,10 @@ extension PageID{
     static let home:PageID = "home"
     static let walk:PageID = "walk"
     static let mission:PageID = "mission"
+    static let explore:PageID = "explore"
     static let missionInfo:PageID = "missionInfo"
-    static let missionCompleted:PageID = "missionCompleteds"
-    
+    static let missionCompleted:PageID = "missionCompleted"
+    static let walkCompleted:PageID = "walkCompleted"
     static let selectProfile:PageID = "selectProfile"
     static let board:PageID = "board"
     static let shop:PageID = "shop"
@@ -25,6 +26,7 @@ extension PageID{
     static let profile:PageID = "profile"
     static let profileRegist:PageID = "profileRegist"
     static let profileModify:PageID = "profileModify"
+    static let user:PageID = "user"
 }
 
 struct PageProvider {
@@ -43,7 +45,7 @@ struct PageProvider {
     
     static func isHome(_ pageID:PageID)-> Bool{
         switch pageID {
-        case .home, .intro, .my, .board, .shop, .login: return  true
+        case .home, .intro, .my, .board, .shop, .login, .explore: return  true
            default : return  false
         }
     }
@@ -51,14 +53,14 @@ struct PageProvider {
     static func getType(_ pageID:PageID)-> PageAnimationType{
         switch pageID {
         case  .mission ,.missionInfo, .walk: return .vertical
-        case  .missionCompleted, .selectProfile : return .opacity
+        case  .missionCompleted,.walkCompleted, .selectProfile : return .opacity
         default : return  .horizontal
         }
     }
     
     static func isTop(_ pageID:PageID)-> Bool{
         switch pageID{
-        case .mission, .selectProfile, .walk, .missionCompleted: return true
+        case .mission, .selectProfile, .walk, .missionCompleted, .walkCompleted: return true
         default : return  false
         }
     }
@@ -69,8 +71,9 @@ struct PageProvider {
             case .login : return 1
             case .home : return  100
             case .board : return  200
-            case .shop : return  300
-            case .my : return  400
+            case .explore : return 300
+            case .shop : return  400
+            case .my : return  500
             default : return  9999
         }
     }
@@ -139,6 +142,7 @@ struct PageFactory{
         case .intro : return PageIntro()
         case .login : return PageLogin()
         case .home : return PageHome()
+        case .explore : return PageExplore()
         case .board : return PageBoard()
         case .shop : return PageShop()
         case .my : return PageMy()
@@ -146,10 +150,12 @@ struct PageFactory{
         case .profileRegist: return PageProfileRegist()
         case .profileModify: return PageProfileModify()
         case .walk : return PageWalk()
+        case .walkCompleted : return PageWalkCompleted()
         case .mission : return PageMission()
         case .missionInfo : return PageMissionInfo()
         case .missionCompleted : return PageMissionCompleted()
         case .selectProfile : return PageSelectProfile()
+        case .user : return PageUser()
         default : return PageTest()
         }
     }
@@ -161,21 +167,17 @@ struct PageSceneModel: PageModel {
     var topPageObject: PageObject? = nil
     
     func getPageOrientation(_ pageObject:PageObject?) -> UIInterfaceOrientationMask? {
-        guard let pageObject = pageObject ?? self.topPageObject else {
-            return UIInterfaceOrientationMask.all
-        }
+        guard let pageObject = pageObject ?? self.topPageObject else { return UIInterfaceOrientationMask.all }
         switch pageObject.pageID {
         default :
-            return UIInterfaceOrientationMask.all
+            return SystemEnvironment.isTablet ? UIInterfaceOrientationMask.all : UIInterfaceOrientationMask.portrait
         }
     }
     func getPageOrientationLock(_ pageObject:PageObject?) -> UIInterfaceOrientationMask? {
-        guard let pageObject = pageObject ?? self.topPageObject else {
-            return UIInterfaceOrientationMask.all
-        }
+        guard let pageObject = pageObject ?? self.topPageObject else { return UIInterfaceOrientationMask.all }
         switch pageObject.pageID {
         default :
-            return getPageOrientation(pageObject)
+            return SystemEnvironment.isTablet ? UIInterfaceOrientationMask.all : UIInterfaceOrientationMask.portrait
         }
     }
     func getCloseExceptions() -> [PageID]? {
@@ -190,7 +192,7 @@ struct PageSceneModel: PageModel {
     
     static func needBottomTab(_ pageObject:PageObject) -> Bool{
         switch pageObject.pageID {
-        case .home, .board, .shop, .my: return true
+        case .home, .board, .shop, .my, .explore: return true
         default : return false
         }
     }

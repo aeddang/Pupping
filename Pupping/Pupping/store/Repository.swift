@@ -15,9 +15,13 @@ enum RepositoryStatus{
     case initate, ready, reset
 }
 
+enum RepositoryEvent{
+    case loginUpdate
+}
+
 class Repository:ObservableObject, PageProtocol{
     @Published var status:RepositoryStatus = .initate
-    
+    @Published var event:RepositoryEvent? = nil {didSet{ if event != nil { event = nil} }}
     let appSceneObserver:AppSceneObserver?
     let pagePresenter:PagePresenter?
     let dataProvider:DataProvider
@@ -27,6 +31,7 @@ class Repository:ObservableObject, PageProtocol{
     let locationObserver:LocationObserver
     let missionGenerator:MissionGenerator
     let missionManager:MissionManager
+    let accountManager:AccountManager
     let apiCoreDataManager = ApiCoreDataManager()
     private let storage = LocalStorage()
     private let apiManager = ApiManager()
@@ -53,22 +58,23 @@ class Repository:ObservableObject, PageProtocol{
         self.shareManager = ShareManager(pagePresenter: pagePresenter)
         self.snsManager = snsManager ?? SnsManager()
         self.locationObserver = locationObserver ?? LocationObserver()
+        self.accountManager = AccountManager(user: self.dataProvider.user)
         let generator = missionGenerator ?? MissionGenerator()
         self.missionGenerator = generator
         self.missionManager = missionManager ?? MissionManager(generator: generator)
-        self.pagePresenter?.$currentPage.sink(receiveValue: { evt in 
+        self.pagePresenter?.$currentPage.sink(receiveValue: { evt in
             self.apiManager.clear()
             self.appSceneObserver?.isApiLoading = false
             self.pagePresenter?.isLoading = false
             self.retryRegisterPushToken()
         }).store(in: &anyCancellable)
         
-        
         self.setupLocationMission()
         self.setupSetting()
         self.setupDataProvider()
         self.setupApiManager()
-
+        self.status = .ready
+        self.autoSnsLogin()
       
     }
     
@@ -80,7 +86,6 @@ class Repository:ObservableObject, PageProtocol{
     }
     
     private func setupDataProvider(){
-        self.dataProvider.user.setProfiles()
         self.dataProvider.$request.sink(receiveValue: { req in
             guard let apiQ = req else { return }
             if apiQ.isLock {
@@ -107,9 +112,10 @@ class Repository:ObservableObject, PageProtocol{
     }
     private func setupApiManager(){
         
-        self.apiManager.$status.sink(receiveValue: { status in
+        self.apiManager.$event.sink(receiveValue: { status in
             switch status {
-            case .ready : self.status = .ready
+            case .initate : self.loginCompleted()
+            case .error : self.clearLogin()
             default: break
             }
         }).store(in: &dataCancellable)
@@ -125,6 +131,7 @@ class Repository:ObservableObject, PageProtocol{
         
         self.apiManager.$error.sink(receiveValue: { err in
             guard let err = err else { return }
+            self.errorApi(err)
             self.dataProvider.error = err
             if !err.isOptional {
                 self.appSceneObserver?.alert = .apiError(err)
@@ -133,6 +140,7 @@ class Repository:ObservableObject, PageProtocol{
             self.pagePresenter?.isLoading = false
             
         }).store(in: &dataCancellable)
+        
     }
     
     private func setupSetting(){
@@ -149,13 +157,21 @@ class Repository:ObservableObject, PageProtocol{
         if self.storage.retryPushToken != "" {
             self.registerPushToken(self.storage.retryPushToken)
         }
+       
+    }
+    
+    private func errorApi(_ err:ApiResultError){
+        switch err.type {
+        case .joinAuth : self.clearLogin()
+        default : break
+        }
     }
     
     private func requestApi(_ apiQ:ApiQ, coreDatakey:String){
         DispatchQueue.global(qos: .background).async(){
-            var coreData:Codable? = nil
+            let coreData:Codable? = nil
             switch apiQ.type {
-                case .getGnb : break
+                //case .getGnb : break
                 default: break
             }
             DispatchQueue.main.async {
@@ -170,6 +186,7 @@ class Repository:ObservableObject, PageProtocol{
         }
     }
     private func respondApi(_ res:ApiResultResponds){
+        self.accountManager.respondApi(res)
         if let coreDatakey = res.type.coreDataKey(){
             self.respondApi(res, coreDatakey: coreDatakey)
         }
@@ -178,9 +195,9 @@ class Repository:ObservableObject, PageProtocol{
     private func respondApi(_ res:ApiResultResponds, coreDatakey:String){
         DispatchQueue.global(qos: .background).async(){
             switch res.type {
-                case .getGnb :
+                //case .getGnb :
                     //guard let data = res.data as? GnbBlock  else { return }
-                    DataLog.d("save coreData getGnb", tag:self.tag)
+                    //DataLog.d("save coreData getGnb", tag:self.tag)
                     //self.apiCoreDataManager.setData(key: coreDatakey, data: data)
                 default: break
             }
@@ -198,14 +215,42 @@ class Repository:ObservableObject, PageProtocol{
         self.storage.retryPushToken = token
     }
     
-    func registerSnsLogin(_ user:SnsUser) {
+    
+    func registerSnsLogin(_ user:SnsUser, info:SnsUserInfo?) {
         self.storage.loginId = user.snsID
         self.storage.loginToken = user.snsToken
         self.storage.loginType = user.snsType.apiCode()
         self.dataProvider.user.registUser(user: user)
+        self.dataProvider.requestData(q: .init(type: .joinAuth(user, info)))
+    }
+    func clearLogin() {
+        self.storage.loginId = nil
+        self.storage.loginToken = nil
+        self.storage.loginType = nil
+        self.storage.authToken = nil
+        self.apiManager.clearApi()
+        self.dataProvider.user.clearUser()
+        self.snsManager.requestAllLogOut()
+        self.event = .loginUpdate
+        
+    }
+    
+    private func autoSnsLogin() {
+        if let user = self.dataProvider.user.snsUser , let token = self.storage.authToken {
+            self.apiManager.initateApi(token: token, user: user)
+            self.dataProvider.requestData(q: .init(type: .getUser(user, isCanelAble: false)))
+            self.dataProvider.requestData(q: .init(type: .getPets(user, isCanelAble: false)))
+        } else {
+            self.clearLogin()
+        }
+    }
+    
+    private func loginCompleted() {
+        self.storage.authToken = ApiNetwork.accesstoken
+        self.event = .loginUpdate
     }
     var isLogin: Bool {
-        self.dataProvider.user.snsUser != nil
+        self.storage.authToken?.isEmpty == false
     }
    
 }

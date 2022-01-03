@@ -21,7 +21,7 @@ struct PlaySummary : PageComponent {
     
     @ObservedObject var viewModel:PlayWalkModel = PlayWalkModel()
    
-    var profiles:[Profile] = []
+    var profiles:[PetProfile] = []
     
     @State var playTime:String = ""
     @State var playDistence:String = ""

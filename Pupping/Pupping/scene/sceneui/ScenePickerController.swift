@@ -31,7 +31,7 @@ struct ScenePickerController: PageComponent{
         { idx in
             switch self.currentSelect {
                 case .picker(let data, _) : self.selectedPicker(idx ,data:data)
-                default: do { return }
+                default: return 
             }
             withAnimation{
                 self.isShow = false

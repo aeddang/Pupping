@@ -49,7 +49,10 @@ struct AppLayout: PageComponent{
                 }
                 .onReceive(self.imagePickerModel.$pickImage){ img in
                     guard let img = img else { return }
-                    self.appSceneObserver.pickImage = PickImage(id:self.imagePickerModel.pickId, image: img)
+                    DispatchQueue.main.async {
+                        self.appSceneObserver.pickImage = PickImage(id:self.imagePickerModel.pickId, image: img)
+                    }
+                   
                     withAnimation{
                         self.isShowCamera = false
                     }
@@ -80,7 +83,6 @@ struct AppLayout: PageComponent{
         }
         .toast(isShowing: self.$isToastShowing , text: self.toastMsg)
         .onReceive(self.appSceneObserver.$selectResult){ result in
-        
             guard let result = result else { return }
             switch result {
                 case .complete(let type, let idx) : do {
@@ -133,6 +135,12 @@ struct AppLayout: PageComponent{
                     }
                 #endif
                 break
+            case .openCamera(let pickId) :
+                self.imagePickerModel.pickId = pickId
+                self.cameraType = .camera
+                withAnimation{
+                    self.isShowCamera = true
+                }
             default: break
             }
         }
@@ -173,6 +181,15 @@ struct AppLayout: PageComponent{
             default: break
             }
         }
+        .onReceive(self.repository.$event){ evt in
+            switch evt {
+            case .loginUpdate: self.onPageInit()
+            default: break
+            }
+        }
+        .onReceive(self.pageObservable.$status){status in
+            self.sceneObserver.status = status
+        }
         .onAppear(){
             self.isLoading = true
             //UITableView.appearance().separatorStyle = .none
@@ -195,18 +212,18 @@ struct AppLayout: PageComponent{
         self.onPageInit()
     }
     func onPageInit(){
-        
+        self.isLoading = false
         PageLog.d("onPageInit", tag: self.tag)
         if !self.repository.isLogin {
-            self.pagePresenter.changePage(
-                PageProvider.getPageObject(.login)
-            )
+            self.isInit = false
+            if self.pagePresenter.currentPage?.pageID != .login {
+                self.pagePresenter.changePage(
+                    PageProvider.getPageObject(.login)
+                )
+            }
             return
         }
-        
         self.isInit = true
-        self.isLoading = false
-        //self.appSceneObserver.event = .debug("onPageInit")
         if !self.appObserverMove(self.appObserver.page) {
             self.pagePresenter.changePage(
                 PageProvider.getPageObject(.home)

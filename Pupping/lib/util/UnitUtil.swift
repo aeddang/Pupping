@@ -109,7 +109,7 @@ extension String{
     }
     
     func subString(_ start:Int) -> String {
-        let range = self.index(self.startIndex, offsetBy: start)...self.endIndex
+        let range = self.index(self.startIndex, offsetBy: start)..<self.endIndex
         return String(self[range])
     }
     

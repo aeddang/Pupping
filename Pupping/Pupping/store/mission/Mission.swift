@@ -223,6 +223,14 @@ class Mission:PageProtocol, Identifiable, Equatable{
         return (self.duration/60).toTruncateDecimal(n:1) + String.app.min
     }
     
+    var allPoint:[GMSPlace] {
+        var points:[GMSPlace] = []
+        if let value = self.start { points.append(value) }
+        points.append(contentsOf: self.waypoints)
+        if let value = self.destination { points.append(value) }
+        return points
+    }
+    
     @discardableResult
     func build() -> Mission {
         guard let start = self.start else { return self }

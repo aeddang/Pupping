@@ -7,25 +7,31 @@
 //
 
 import Foundation
-struct ApiError :Error,Identifiable{
-    let id = UUID().uuidString
-    var message:String? = nil
-    static func getViewMessage(message:String?)->String{
-        return message ?? String.alert.apiErrorServer
-    }
-}
+
+
+
 
 struct ApiQ :Identifiable{
     var id:String = UUID().uuidString
     let type:ApiType
-    var action:ApiAction? = nil
     var isOptional:Bool = false
     var isLock:Bool = false
     var isProcess:Bool = false
     
     func copy(newId:String? = nil) -> ApiQ {
         let nid = newId ?? id
-        return ApiQ(id: nid, type: type, action: action, isOptional: isOptional, isLock: isLock)
+        return ApiQ(id: nid, type: type,  isOptional: isOptional, isLock: isLock)
+    }
+}
+
+
+struct ApiError :Error,Identifiable{
+    let id = UUID().uuidString
+    var response:ApiErrorResponse? = nil
+    
+    static func getViewMessage(response:ApiErrorResponse?)->String{
+        guard let response = response else {return String.alert.apiErrorServer }
+        return (response.error ?? String.alert.apiErrorServer) //+ " - " + response.code
     }
 }
 
@@ -42,20 +48,53 @@ struct ApiResultError :Identifiable{
     var isProcess:Bool = false
 }
 
-
-enum ApiType{
-    case getGnb
+struct ApiErrorResponse: Decodable {
+    private(set) var status:String?
+    private(set) var code: String?
+    private(set) var message: String?
+    private(set) var error: String?
     
-    func coreDataKey() -> String? {
-        switch self {
-        //case .getGnb : return "getGnb"
-        default : return nil
-        }
-    }
-    func transitionKey() -> String {
-        switch self {
-        //case .registHello : return "postHello"
-        default : return ""
-        }
+    static func getUnknownError()->ApiErrorResponse{
+        return ApiErrorResponse(status: nil, code: ApiCode.unknownError, message: nil, error: nil)
     }
 }
+
+struct ApiContentResponse<T>: Decodable where T: Decodable {
+    private(set) var contents:T
+    private(set) var kind: String
+    //private(set) var metadata: [String:String]? = nil
+}
+
+struct ApiItemResponse<T>: Decodable where T: Decodable {
+    private(set) var items:[T]
+    private(set) var kind: String
+    //private(set) var metadata: [String:String]? = nil
+}
+
+protocol ApiRoute : NetworkRoute {
+    var vs:String { get }
+    var command:String { get set }
+    var commandId:String? { get set }
+    var action:ApiAction? { get set }
+    func defaultSetup() -> ApiRoute
+    
+}
+
+extension ApiRoute  {
+    var vs:String { get{ "v1" } }
+    var path: String { get{
+        var value = self.vs + "/" + command
+        if let id = commandId {
+            value = value + "/" + id
+        }
+        if let ac = action {
+            value = value + "/" + ac.rawValue
+        }
+        return value
+    }}
+    var commandId:String? { get{ nil } set{ commandId = nil }}
+    var action:ApiAction? { get{ nil } set{ action = nil }}
+    func defaultSetup() -> ApiRoute { return self}
+}
+
+

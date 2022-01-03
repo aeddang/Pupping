@@ -33,6 +33,7 @@ extension Asset{
     struct gnb {
         public static let mission =  "ic_flag"
         public static let walk =  "ic_footPrint"
+        public static let explore =  "ic_explore"
         public static let shop =  "ic_shop"
         public static let my =  "ic_my"
     }
@@ -40,6 +41,7 @@ extension Asset{
     struct icon {
         
         public static let sort = "ic_sort"
+        public static let filter = "ic_filter"
         public static let down = "icArrowDownG"
         public static let more = "more"
         public static var dropDown = "dropDown"
@@ -50,8 +52,8 @@ extension Asset{
         public static let trash = "ic_trash"
         public static let close = "ic_close"
         public static let back = "ic_back"
-        public static let mail = "ic_mail"
-        public static let femail = "ic_femail"
+        public static let male = "ic_male"
+        public static let female = "ic_female"
         
         public static let flag = "ic_flag"
         public static let footPrint =  "ic_footPrint"

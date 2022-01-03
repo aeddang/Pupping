@@ -9,9 +9,9 @@
 import Foundation
 import Firebase
 struct DynamicLinkMamager{
-    private static let deepLink = "http://btvplusnew.com"
-    private static let urlPreFix = "https://btvplusnew.page.link"
-    private static let bundleID = "com.skb.btvplus.BtvPlusNew"
+    private static let deepLink = "http://pupping.com"
+    private static let urlPreFix = "https://pupping.page.link"
+    private static let bundleID = "com.raft.pupping"
     private static let scheme = "pupping"
     private static let packageName = "com.ironraft.Pupping"
     

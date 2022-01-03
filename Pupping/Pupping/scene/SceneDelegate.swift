@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftUI
+import FBSDKCoreKit
 //import Firebase
 
 class SceneDelegate: PageSceneDelegate {
@@ -73,7 +74,16 @@ class SceneDelegate: PageSceneDelegate {
         
         //[DL]
         //AppDelegate.appObserver.handleDynamicLink(url)
-                        
+        
+        //[FB]
+        if let url = URLContexts.first?.url {
+            ApplicationDelegate.shared.application(
+               UIApplication.shared,
+               open: url,
+               sourceApplication: nil,
+               annotation: [UIApplication.OpenURLOptionsKey.annotation]
+            )
+        }
     }
     
     override func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {

@@ -18,6 +18,7 @@ enum PageAnimationType {
 class PageObject : Equatable, Identifiable{
     let pageID: PageID
     var pageIDX:Int
+    var pageGroupID:String? = nil
     var params:[PageParam:Any]?
     var isPopup:Bool
     var zIndex:Int = 0
@@ -25,23 +26,25 @@ class PageObject : Equatable, Identifiable{
     var isHome:Bool = false
     var isAnimation:Bool = false
     var isLayer:Bool = false
+    var sendLog:Bool = false
     var animationType:PageAnimationType = .horizontal
-    let id:String
+    let id:String = UUID().uuidString
     init(
         pageID:PageID,
         pageIDX:Int = 0,
+        pageGroupID:String? = nil,
         params:[PageParam:Any]? = nil,
         isPopup:Bool = false,
-        isDimed:Bool = false,
-        
-        pageKey:String = UUID().uuidString
+        isDimed:Bool = false
+       // pageKey:String = UUID().uuidString
     ){
         self.pageID = pageID
         self.pageIDX = pageIDX
+        self.pageGroupID = pageGroupID
         self.params = params
         self.isPopup = isPopup
         self.isDimed = isDimed
-        self.id = pageKey
+        //self.id = pageKey
     }
     
     @discardableResult
@@ -51,6 +54,12 @@ class PageObject : Equatable, Identifiable{
             params = [PageParam:Any]()
         }
         params![key] = value
+        return self
+    }
+    @discardableResult
+    func removeParam(key:PageParam)->PageObject{
+        if params == nil { return self }
+        params![key] = nil 
         return self
     }
     @discardableResult
@@ -99,6 +108,12 @@ enum PageLayer:String {
 
 enum SceneOrientation :String{
     case portrait, landscape
+    var logConfig: String {
+        switch self {
+        case .portrait: return "vertical"
+        case .landscape: return "horizontal"
+        }
+    }
 }
 
 open class PageObservable: ObservableObject  {
@@ -109,67 +124,6 @@ open class PageObservable: ObservableObject  {
     @Published var pageOpacity:Double = 1.0
     @Published var isBackground:Bool = false
     @Published var isAnimationComplete:Bool = false
-}
-
-open class PageSceneObserver: ObservableObject{
-    
-    @Published private(set) var safeAreaStart:CGFloat = 0
-    @Published private(set) var safeAreaEnd:CGFloat = 0
-    @Published private(set) var safeAreaBottom:CGFloat = 0
-    @Published private(set) var safeAreaIgnoreKeyboardBottom:CGFloat = 0
-    @Published private(set) var safeAreaTop:CGFloat = 0
-    @Published var willScreenSize:CGSize? = nil
-    @Published private(set) var screenSize:CGSize = CGSize()
-    @Published var isUpdated:Bool = false
-        {didSet{ if isUpdated { isUpdated = false} }}
-    func update(geometry:GeometryProxy) {
-        var willUpdate = false
-        if geometry.safeAreaInsets.bottom != self.safeAreaBottom{
-            self.safeAreaBottom = ceil( geometry.safeAreaInsets.bottom )
-            if self.safeAreaBottom < 100 {
-                self.safeAreaIgnoreKeyboardBottom = self.safeAreaBottom
-            }
-            willUpdate = true
-        }
-        if geometry.safeAreaInsets.top != self.safeAreaTop{
-            self.safeAreaTop = ceil( geometry.safeAreaInsets.top )
-            willUpdate = true
-        }
-        if geometry.safeAreaInsets.leading != self.safeAreaStart{
-            self.safeAreaStart = ceil(geometry.safeAreaInsets.leading)
-            willUpdate = true
-        }
-        if geometry.safeAreaInsets.trailing != self.safeAreaEnd {
-            self.safeAreaEnd = ceil(geometry.safeAreaInsets.trailing)
-            willUpdate = true
-        }
-        if geometry.size != self.screenSize {
-            self.screenSize = geometry.size
-            willUpdate = true
-        }
-        if willUpdate {
-            self.isUpdated = true
-            ComponentLog.d("resize " + self.screenSize.debugDescription, tag:"SceneObserver")
-        }
-    }
-    var willSceneOrientation: SceneOrientation? {
-        get{
-            guard let screen = willScreenSize else {return nil}
-            return screen.width > screen.height
-                        ? .landscape
-                        : .portrait
-            //return UIDevice.current.orientation.isLandscape ? .landscape : .portrait
-        }
-    }
-    var sceneOrientation: SceneOrientation {
-        get{
-            return self.screenSize.width > (self.screenSize.height + self.safeAreaBottom)
-                        ? .landscape
-                        : .portrait
-            //return UIDevice.current.orientation.isLandscape ? .landscape : .portrait
-        }
-    }
-    
 }
 
 protocol PageProtocol {}
@@ -301,7 +255,7 @@ extension PageContentProtocol {
     func sceneDidBecomeActive(_ scene: UIScene){
         childViews.forEach{ $0.sceneDidBecomeActive( scene ) }
         pageObservable.status = .becomeActive
-        pageObservable.isBackground = false
+       
         onSceneDidBecomeActive()
     }
     func sceneDidDisconnect(_ scene: UIScene){
@@ -317,6 +271,7 @@ extension PageContentProtocol {
     func sceneWillEnterForeground(_ scene: UIScene){
         childViews.forEach{ $0.sceneWillEnterForeground( scene ) }
         pageObservable.status = .enterForeground
+        pageObservable.isBackground = false
         onSceneWillEnterForeground()
     }
     func sceneDidEnterBackground(_ scene: UIScene){
@@ -353,8 +308,9 @@ protocol PageViewProtocol : PageContentProtocol{
     var contentBody:AnyView { get }
 }
 
-protocol PageView : View, PageViewProtocol{}
+protocol PageView : View, PageViewProtocol, Identifiable{}
 extension PageView {
+    
     var childViews:[PageViewProtocol] {
         get{ [] }
     }
@@ -385,6 +341,7 @@ protocol PageModel {
     func isChangePageAble(_ pageObject: PageObject) -> Bool
     func getPageOrientation(_ pageObject:PageObject?) -> UIInterfaceOrientationMask?
     func getPageOrientationLock(_ pageObject:PageObject?) -> UIInterfaceOrientationMask?
+    func getUIStatusBarStyle(_ pageObject:PageObject?) -> UIStatusBarStyle?
     func getCloseExceptions() -> [PageID]?
 }
 extension PageModel{
@@ -395,6 +352,7 @@ extension PageModel{
     func isChangePageAble(_ pageObject: PageObject) -> Bool { return true }
     func getPageOrientation(_ pageObject:PageObject?) -> UIInterfaceOrientationMask? { return nil }
     func getPageOrientationLock(_ pageObject:PageObject?) -> UIInterfaceOrientationMask? { return nil }
+    func getUIStatusBarStyle(_ pageObject:PageObject?) -> UIStatusBarStyle? { return nil }
     func getCloseExceptions() -> [PageID]? { return nil }
 }
 
@@ -403,4 +361,15 @@ struct PageEvent {
     private(set) var id:String = ""
     private(set) var type:PageEventType = ""
     var data: Any? = nil
+}
+
+
+protocol Copying {
+    init(original: Self)
+}
+
+extension Copying {
+    func copy() -> Self {
+        return Self.init(original: self)
+    }
 }

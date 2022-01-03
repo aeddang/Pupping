@@ -43,7 +43,7 @@ struct BottomTab: PageComponent{
                                 self.appSceneObserver.event = .toast(String.alert.currentPlay)
                                 return
                             }
-                            if self.dataProvider.user.profiles.isEmpty {
+                            if self.dataProvider.user.pets.isEmpty {
                                 self.appSceneObserver.alert = .alert(nil, String.alert.needProfileRegist, nil){
                                     self.pagePresenter.openPopup(
                                         PageProvider.getPageObject(.profileRegist)
@@ -83,6 +83,11 @@ struct BottomTab: PageComponent{
                     id: .home,
                     idx: PageProvider.getPageIdx(.home),
                     on: Asset.gnb.mission, off: Asset.gnb.mission, text: String.gnb.mission),
+                
+                PageSelecterble(
+                    id: .explore,
+                    idx: PageProvider.getPageIdx(.explore),
+                    on: Asset.gnb.explore, off: Asset.gnb.explore, text: String.gnb.explore),
                
                 PageSelecterble(
                     id: .my,

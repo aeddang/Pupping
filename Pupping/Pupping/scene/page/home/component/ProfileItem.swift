@@ -10,9 +10,9 @@ import SwiftUI
 
 struct ProfileItem: PageComponent, Identifiable {
     let id = UUID().uuidString
-    let profile:Profile
+    let profile:PetProfile
     var body: some View {
-        ProfileInfo(profile: profile)
+         PetProfileInfo(profile: profile)
             .modifier(MatchParent())
             .background(Color.transparent.clearUi)
     }

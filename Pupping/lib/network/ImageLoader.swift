@@ -24,13 +24,18 @@ class ImageLoader: ObservableObject, PageProtocol{
     private var isLoading = false
    
     deinit {
-        guard let task = task else {return}
-        task.cancel()
+        self.cancel()
     }
     
     func reload(url: String?){
         isLoading = false
         load(url: url)
+    }
+    
+    func cancel(){
+        guard let task = task else {return}
+        task.cancel()
+        self.task = nil
     }
     
     @discardableResult
@@ -84,17 +89,17 @@ class ImageLoader: ObservableObject, PageProtocol{
     }
     
     private func loadCash(path:String){
-        cache.retrieveImage(forKey: path) {  [weak self] (result) in
-            guard let self = self else { return }
+        cache.retrieveImage(forKey: path) {  /*[weak self]*/ (result) in
+           // guard let self = self else { return }
             switch result {
             case .success(let value):
                 guard let img = value.image else {
-                    DataLog.d("cache error crear" + path , tag:self.tag)
+                    DataLog.e("cache error crear" + path , tag:self.tag)
                     self.cache.removeImage(forKey: path)
                     self.isLoading = false
                     return
                 }
-                
+               //DataLog.d("cached image" + path , tag:self.tag)
                 self.event = .complete(img)
                 self.isLoading = false
                 
@@ -106,13 +111,17 @@ class ImageLoader: ObservableObject, PageProtocol{
     }
     
     private func loadServer(url: URL, path:String){
-        self.task = downloader.downloadImage(with: url, options: nil, progressBlock: nil) {  [weak self] (result) in
-            guard let self = self else { return }
+        self.task = downloader.downloadImage(with: url, options: nil, progressBlock: nil) { /*[weak self]*/ (result) in
+            //guard let self = self else { return }
             switch result {
             case .success(let value):
-                self.cache.storeToDisk(value.originalData, forKey: path)
+                //DataLog.d("loaded image" + value.originalData.bytes.description , tag:self.tag)
                 self.event = .complete(value.image)
                 self.isLoading = false
+                DispatchQueue.global(qos: .background).async {
+                    self.cache.storeToDisk(value.originalData, forKey: path)
+                }
+                
             case .failure(_):
                 DataLog.e("loaded error " + path , tag:self.tag)
                 self.event = .error

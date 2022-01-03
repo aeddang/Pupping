@@ -140,11 +140,13 @@ struct SceneAlertController: PageComponent{
         self.appObserver.resetApns()
     }
     
-    
     func setupApi(data:ApiResultError) {
         self.title = String.alert.api
         if let apiError = data.error as? ApiError {
-            self.text = ApiError.getViewMessage(message: apiError.message)
+            self.text = ApiError.getViewMessage(response: apiError.response)
+            self.buttons = [
+                AlertBtnData(title: String.app.confirm, index: 2),
+            ]
         }else{
             if self.networkObserver.status == .none {
                 self.text = String.alert.apiErrorClient

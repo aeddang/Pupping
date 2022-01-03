@@ -15,6 +15,7 @@ struct RedeemInfo: PageComponent {
     var title:String? = nil
     var text:String? = nil
     var point:Double = 0
+    var action: (() -> Void)? = nil
     var close: (() -> Void)? = nil
     var body: some View {
         ZStack(alignment: .topTrailing){
@@ -75,10 +76,10 @@ struct RedeemInfo: PageComponent {
                 .padding(.horizontal, Dimen.margin.light)
                 .padding(.vertical, Dimen.margin.regular)
                 .onTapGesture {
-                    self.close?()
+                    self.action?()
                 }
             }
-            .frame(width: 273, height:324)
+            .frame(width: 273)
             .background(Color.brand.primary)
             .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.regular))
             .padding(.all, Dimen.margin.thin)

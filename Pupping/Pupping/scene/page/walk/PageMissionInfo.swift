@@ -35,6 +35,7 @@ struct PageMissionInfo: PageView {
     var body: some View {
         GeometryReader { geometry in
             PageDragingBody(
+                pageObservable: self.pageObservable,
                 viewModel:self.pageDragingModel,
                 axis:.vertical
             ) {
@@ -108,7 +109,7 @@ struct PageMissionInfo: PageView {
             self.appSceneObserver.event = .toast(String.alert.currentPlayMission)
             return
         }
-        if self.dataProvider.user.profiles.isEmpty {
+        if self.dataProvider.user.pets.isEmpty {
             self.appSceneObserver.alert = .alert(nil, String.alert.needProfileRegist, nil){
                 self.pagePresenter.openPopup(
                     PageProvider.getPageObject(.profileRegist)

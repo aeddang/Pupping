@@ -12,7 +12,7 @@ import Combine
 struct ProfileDataSet:Identifiable {
     private(set) var id = UUID().uuidString
     var count:Int = 3
-    var datas:[Profile] = []
+    var datas:[PetProfile] = []
 }
 
 struct SelectProfiles: PageComponent {
@@ -22,7 +22,7 @@ struct SelectProfiles: PageComponent {
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var infinityScrollModel:InfinityScrollModel = InfinityScrollModel()
     
-    let action: (_ selectedProfiles:[Profile]) -> Void
+    let action: (_ selectedProfiles:[PetProfile]) -> Void
     
     var body: some View {
         VStack(spacing: Dimen.margin.medium){
@@ -64,13 +64,13 @@ struct SelectProfiles: PageComponent {
             .frame(width: Dimen.button.lightRect.width)
         }
         .modifier(ContentTab())
-        .onReceive(self.dataProvider.user.$profiles){ profiles in
+        .onReceive(self.dataProvider.user.$pets){ profiles in
             if profiles.isEmpty {
                 self.profileSets = []
             } else {
                 let count:Int = 3
                 var rows:[ProfileDataSet] = []
-                var cells:[Profile] = []
+                var cells:[PetProfile] = []
                 profiles.forEach{ d in
                     if cells.count < count {
                         cells.append(d)
@@ -96,36 +96,54 @@ struct SelectProfiles: PageComponent {
         }
     }//body
     @State var profileSets:[ProfileDataSet] = []
-    @State var selectedProfiles:[Profile] = []
+    @State var selectedProfiles:[PetProfile] = []
 }
 
 struct SelectProfileItem: PageComponent {
    
-    var data:Profile
+    var data:PetProfile
     var isSelected:Bool
     var body: some View {
         VStack(spacing: Dimen.margin.tinyExtra){
-            Image(uiImage: self.data.image ??
-                    UIImage(named: Asset.brand.logoLauncher)!)
-                .renderingMode(.original)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: Dimen.profile.regular, height: Dimen.profile.regular)
-                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                .overlay(
-                   Circle()
-                    .stroke(
-                        self.isSelected
-                            ? Color.brand.primary
-                            : Color.transparent.clearUi ,
-                        lineWidth: Dimen.stroke.regular)
-                )
+            ZStack{
+                if let img = self.data.image {
+                    Image(uiImage: img)
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .modifier(MatchParent())
+                } else if let path = self.data.imagePath {
+                    ImageView(url: path,
+                        contentMode: .fill,
+                        noImg: Asset.brand.logoLauncher)
+                        .modifier(MatchParent())
+                } else {
+                    Image( uiImage: UIImage(named: Asset.brand.logoLauncher)! )
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .modifier(MatchParent())
+                }
+            }
+            .frame(width: Dimen.profile.regular, height: Dimen.profile.regular)
+            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            .overlay(
+               Circle()
+                .stroke(
+                    self.isSelected
+                        ? Color.brand.primary
+                        : Color.transparent.clearUi ,
+                    lineWidth: Dimen.stroke.regular)
+            )
+            
+                
             HStack(spacing:Dimen.margin.micro ){
                 Text(self.data.nickName ?? "")
                      .modifier(BoldTextStyle(
                          size: Font.size.thinExtra,
                          color: Color.app.greyDeep
                      ))
+                     .lineLimit(1)
              
                 Text("lv" + self.data.lv.description)
                      .modifier(BoldTextStyle(
@@ -133,6 +151,7 @@ struct SelectProfileItem: PageComponent {
                          color: Color.brand.primary
                      ))
              }
+            .frame(width: Dimen.profile.regular)
         }
         .onAppear{
            

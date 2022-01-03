@@ -28,20 +28,30 @@ class SnsManager: ObservableObject, PageProtocol {
     
     private var currentManager:Sns? = nil
     
-   
     let apple:AppleManager
+    let fb:FaceBookManager
+    
     init() {
        
         apple = AppleManager()
-        
+        fb = FaceBookManager()
         
         apple.$respond.sink(receiveValue: { res in
             guard let res = res else { return }
             self.onRespond(res)
         }).store(in: &anyCancellable)
         
-        
         apple.$error.sink(receiveValue: { err in
+            guard let err = err else { return }
+            self.onError(err)
+        }).store(in: &anyCancellable)
+        
+        fb.$respond.sink(receiveValue: { res in
+            guard let res = res else { return }
+            self.onRespond(res)
+        }).store(in: &anyCancellable)
+        
+        fb.$error.sink(receiveValue: { err in
             guard let err = err else { return }
             self.onError(err)
         }).store(in: &anyCancellable)
@@ -51,7 +61,7 @@ class SnsManager: ObservableObject, PageProtocol {
         guard let cType = type ?? currentSnsType else { return nil }
         switch cType {
         case .apple : return apple
-      
+        case .fb : return fb
         }
     }
     
@@ -106,6 +116,7 @@ class SnsManager: ObservableObject, PageProtocol {
         currentManager?.requestLogOut()
     }
     func requestAllLogOut() {
+        fb.requestLogOut()
         apple.requestLogOut()
     }
     

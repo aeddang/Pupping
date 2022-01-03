@@ -29,6 +29,9 @@
 "min" = "min";
 "redeem" = "Redeem";
 
+"filter" = "filter";
+"near" = "near";
+
 /*
   Button
 */
@@ -51,8 +54,8 @@
 /*
   Alert
 */
-"alertApns" = "notification";
-"alertApi" = "notification";
+"alertApns" = "Pupping notification";
+"alertApi" = "Pupping notification";
 "alertApiErrorServer" = "Connection lost. Please try again later";
 "alertApiErrorClient" = "Please check the internet connection and try again.";
 "alertNetworkError" = "Your internet connection is unstable.";
@@ -68,15 +71,18 @@
 "alertDeleteProfile" = "All related data will be deleted. Are you sure you want to delete this dog’s profile?";
 
 "alertSnsLoginError" = "After login. Available.";
-
 "alertCurrentPlayMission" = "This mission is currently being performed.";
 "alertCurrentPlay" = "Please proceed after completing the current mission.";
 "alertPrevPlayMission" = "Mission in progress.\nAre you sure you want to quit and start a new mission?";
 "alertPrevPlayWalk" = "End your walk and start a new mission?";
 "alertClosePlayMission" = "Do you want to end the mission?\nAll unsaved information will be erased.";
-"alertClosePlayWalk" = "Are you sure you want to end your walk?";
+"alertClosePlayWalk" = "Are you sure you want to end your walk?\nYou must walk at least %sm to receive a reward.";
 "alertNeedProfileRegist" = "Don't have a dog with you?\nPlease register your dog before using it.";
 "alertSelectProfile" = "Please select a dog to accompany";
+
+"alertCompletedNeedPicture" = "need picture with your Dog.";
+"alertCompletedNeedPictureError" = "need picture with your Dog. retry.";
+"alertCompletedExitConfirm" = "Don't save?. exit?";
 
 "alertNeedInput" = "Please fill in the required fields";
 "alertCoinSwap" = "Coins are charged.";
@@ -87,6 +93,7 @@
 "gnbMission" = "Mission";
 "gnbBoard" = "Board";
 "gnbShop" = "Shop";
+"gnbExplore" = "Explore";
 "gnbMy" = "My";
 "gnbWalk" = "Walk";
 
@@ -99,6 +106,7 @@
   PartTitle
 */
 "titleMy" = "MY";
+"titleExplore" = "Explore";
 "titleEditProfile" = "Edit Profile";
 "titleMyRewards" = "My Rewards";
 "titleMyDogs" = "My Dogs";
@@ -127,6 +135,7 @@ PageLogin
 /*
  PageProfileRegist
 */
+"profileRegistNickName" = "What is the nickname?";
 "profileRegistImage" = "’s profile picture";
 "profileRegistName" = "What is the name\nof your dog?";
 "profileRegistNameTip" = "-Max. 15 characters\n-NO special letters";
@@ -150,6 +159,7 @@ PageLogin
 "profileOption" = "Skip for now";
 "profileCheckAll" = "Check ALL options.";
 
+"profileNickNamePlaceHolder" = "Nickname here";
 "profileNamePlaceHolder" = "Name here";
 "profileSpeciesPlaceHolder" = "ex. Maltese";
 "profileMicroFinPlaceHolder" = "ex.123456789012345";
@@ -162,4 +172,11 @@ PageLogin
 */
 "missionCompleted" = "Mission Complete!";
 "missionCompletedText" = "Walk your dog for %s mins.";
+"missionCompletedSaved" = "saved.";
 
+/*
+ PageWalk
+*/
+"walkCompleted" = "Walk Complete!";
+"walkCompletedText" = "Walk your dog for %s mins.";
+"walkCompletedSaved" = "saved.";
