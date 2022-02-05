@@ -102,7 +102,7 @@ struct FillButton: View, SelecterbleProtocol{
             .overlay(
                 RoundedRectangle(
                     cornerRadius: Dimen.radius.lightExtra, style: .circular)
-                    .stroke( self.bgActiveColor ,lineWidth: self.isStroke ? Dimen.stroke.light : 0 )
+                    .strokeBorder( self.bgActiveColor ,lineWidth: self.isStroke ? Dimen.stroke.light : 0 )
             )
             .modifier(Shadow(
                 color: self.isSelected ? self.bgActiveColor : self.bgColor,

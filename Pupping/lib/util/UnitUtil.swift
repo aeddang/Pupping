@@ -49,7 +49,46 @@ extension Double {
     func toTruncateDecimal (n:Int = 0) -> String {
         return String(format: "%." + n.description + "f", self)
     }
+    func sinceNow()->String {
+        let now = Date(timeIntervalSinceNow: 0).localDate()
+        let diff = (now.currentTimeMillis() - self)
+        DataLog.d(Date().currentTimeMillis().description)
+        DataLog.d(self.description)
+        return diff.since()
+    }
+    
+    func since()->String {
+    
+        var value:Double = 0
+        var unit:String = ""
+       
+        if self < 60 * 1000 {
+            return "now"
+        }
+        else if self < 60 * 1000 * 60 {
+            value = self / (60 * 1000)
+            unit = "min"
+        }
+        else if self < 60 * 1000 * 60 * 24 {
+            value = self / ( 60 * 1000 * 60)
+            unit = "hour"
+        }
+        else if self < 60 * 1000 * 60 * 24 * 30{
+            value = self / ( 60 * 1000 * 60 * 24)
+            unit = "day"
+        }
+        else if self < 60 * 1000 * 60 * 24 * 365 {
+            value = self / ( 60 * 1000 * 60 * 24 * 30)
+            unit = "month"
+        }
+        else {
+            value = self / ( 60 * 1000 * 60 * 24 * 365)
+            unit = "year"
+        }
+        return String(format: "%.0f",  value ) + unit
+    }
 }
+
 
 extension Date{
     func localDate() -> Date {
@@ -215,6 +254,10 @@ extension String{
         return Int(self) ?? -1
     }
     
+    func toDouble() -> Double {
+        return Double(self) ?? -1
+    }
+    
     func toUrl()-> URL? {
         let temp = self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         return URL(string: temp)
@@ -353,7 +396,22 @@ extension String{
         return str
     }
     
-    
+    func toThousandUnit(f:Int = 0) -> String {
+        guard let num = Double(self) else { return  "0"}
+        
+        if num < 1000 { return num.calculator }
+      
+        else if num < 100000 { return
+            toDecimal(divid: 1000, f: f) +
+            "K" }
+        else if num < 100000000 { return
+            toDecimal(divid: 100000, f: f) +
+            "M" }
+        else { return
+            toDecimal(divid: 100000000, f: f) +
+            "B"}
+         
+    }
 }
 
 extension Formatter {
@@ -394,4 +452,11 @@ extension Numeric {
     var currencyKR: String { formatted(style: .currency, locale: .koreaKR) }
     
     var calculator: String { formatted(with:",", style: .decimal) }
+}
+
+
+extension CGFloat {
+    func toRadians() -> CGFloat {
+        return self * CGFloat(M_PI) / 180.0
+    }
 }

@@ -167,11 +167,11 @@ struct PetProfileImage:PageView{
     @EnvironmentObject var pagePresenter:PagePresenter
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     var id:String
-   
-    var image:UIImage?
-    var imagePath:String?
+    var image:UIImage? = nil
+    var imagePath:String? = nil
     var isEmpty:Bool = false
-    var isEditable:Bool 
+    var isEditable:Bool = false
+    var size:CGFloat = Dimen.profile.regular
     var body: some View {
         ZStack(alignment: .bottomTrailing){
             ZStack{
@@ -195,9 +195,9 @@ struct PetProfileImage:PageView{
                         .padding(.all, self.isEmpty ? Dimen.margin.tiny : 0)
                 }
             }
-            .frame(width: Dimen.profile.regular, height: Dimen.profile.regular)
+            .frame(width: self.size, height: self.size)
             .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-            .padding(.horizontal, Dimen.margin.tiny)
+            .padding(.horizontal, !self.isEmpty && self.isEditable ? Dimen.margin.tiny : 0)
             
                 
             if !self.isEmpty && self.isEditable{
@@ -217,7 +217,6 @@ struct PetProfileImage:PageView{
                 }
             }
         }
-       
     }
 }
 
@@ -231,17 +230,17 @@ struct PetProfileInfoDescription:PageView{
     var body: some View {
         HStack(spacing:Dimen.margin.tiny){
             if let gender = self.gender {
-                Image(gender.getIcon())
-                    .renderingMode(.template)
-                    .resizable()
-                    .foregroundColor(gender == .male ? Color.brand.fourth :  Color.brand.primary)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: Dimen.icon.thin, height: Dimen.icon.thin)
+                Text(gender.getSimpleTitle())
+                    .modifier(SemiBoldTextStyle(
+                        size: Font.size.thinExtra,
+                        color: Color.app.grey
+                    ))
             }
             if let age = self.age {
                 Circle()
+                    .fill(Color.brand.primary)
                     .frame(width: Dimen.circle.thin, height: Dimen.circle.thin)
-                    .background(Color.app.grey)
+                    
                 Text(age)
                     .modifier(SemiBoldTextStyle(
                         size: Font.size.thinExtra,
@@ -251,15 +250,16 @@ struct PetProfileInfoDescription:PageView{
             
             if let species = self.species {
                 Circle()
+                    .fill(Color.brand.primary)
                     .frame(width: Dimen.circle.thin, height: Dimen.circle.thin)
-                    .background(Color.app.grey)
+                    
                 Text(species)
                     .modifier(SemiBoldTextStyle(
                         size: Font.size.thinExtra,
                         color: Color.app.grey
                     ))
             }
-            if isModifyAble {
+            if self.isModifyAble {
                 Button(action: {
                     self.pagePresenter.openPopup(
                         PageProvider.getPageObject(.profileModify)

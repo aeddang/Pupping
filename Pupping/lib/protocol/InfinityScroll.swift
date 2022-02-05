@@ -51,7 +51,7 @@ class InfinityScrollModel:ComponentObservable{
     static let PULL_RANGE:CGFloat = 40
     static let PULL_COMPLETED_RANGE:CGFloat = 40
     static let DRAG_RANGE:CGFloat = 70
-    static let DRAG_COMPLETED_RANGE:CGFloat = 60
+    static let DRAG_COMPLETED_RANGE:CGFloat = 50
     @Published var uiEvent:InfinityScrollUIEvent? = nil {
         didSet{if self.uiEvent != nil { self.uiEvent = nil}}
     }
@@ -75,7 +75,7 @@ class InfinityScrollModel:ComponentObservable{
    
     let idstr:String = UUID().uuidString
     let topIdx:Int = UUID.init().hashValue
-    var size = 20
+    var size = ApiConst.pageSize
     var isLoadable:Bool {
         get {
             return !self.isLoading && !self.isCompleted
@@ -86,7 +86,7 @@ class InfinityScrollModel:ComponentObservable{
     private(set) var isDragEnd:Bool = false
     private(set) var limitedScrollIndex:Int = -1
     private(set) var pullRange:CGFloat = 40
-    private(set) var pullCompletedRange:CGFloat = 50
+    private(set) var pullCompletedRange:CGFloat = 45
     private(set) var updateScrollDiff:CGFloat = 1.0
     private(set) var updatePullDiff:CGFloat = 0.3
     private(set) var cancelPullDiff:CGFloat = 5

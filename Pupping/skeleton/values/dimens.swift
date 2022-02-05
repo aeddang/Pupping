@@ -12,22 +12,24 @@ import SwiftUI
 struct Dimen{
     struct margin {
         public static let heavy:CGFloat = 75//
-        public static let mediumUltra:CGFloat = 40
-        public static let medium:CGFloat = 30 
-        public static let mediumExtra:CGFloat = 27//
+        public static let mediumUltra:CGFloat = 46//
+        public static let medium:CGFloat = 32//
+        public static let mediumExtra:CGFloat = 26//
         public static let regular:CGFloat = 20//
+        public static let regularExtra:CGFloat = 24//
         public static let light:CGFloat = 17//
         public static let lightExtra:CGFloat = 15//
         public static let thin:CGFloat = 12//
         public static let thinExtra:CGFloat = 8//
-        public static let tiny:CGFloat = 6
-        public static let tinyExtra:CGFloat = 4
-        public static let micro:CGFloat =  2
+        public static let tiny:CGFloat = 6//
+        public static let tinyExtra:CGFloat = 4//
+        public static let micro:CGFloat =  2//
     }
 
     struct icon {
         public static let heavy:CGFloat = 56//
         public static let heavyExtra:CGFloat = 46//
+        public static let heavyLight:CGFloat = 40//
         public static let medium:CGFloat = 38//
         public static let mediumLight:CGFloat = 36//
         public static let mediumExtra:CGFloat = 32//
@@ -42,7 +44,7 @@ struct Dimen{
     }
     
     struct profile {
-        public static let heavy:CGFloat = 80
+        public static let heavy:CGFloat = 80 //
         public static let medium:CGFloat = 68//
         public static let regular:CGFloat = 62//
         public static let light:CGFloat = 48//
@@ -62,7 +64,7 @@ struct Dimen{
     struct button {
         public static let heavy:CGFloat = 70//
         public static let medium:CGFloat = 54//
-        public static let regular:CGFloat = 40
+        public static let regular:CGFloat = 44 //
         public static let light:CGFloat = 36 //
         public static let thin:CGFloat = 32 //
         
@@ -87,7 +89,7 @@ struct Dimen{
     }
     
     struct bar {
-        public static let medium:CGFloat = 20
+        public static let medium:CGFloat = 34 //
         public static let regular:CGFloat = 7
         public static let light:CGFloat = 4 //*
     }
@@ -102,9 +104,9 @@ struct Dimen{
     
     
     struct stroke {
-        public static let heavy:CGFloat =  5
-        public static let medium:CGFloat =  3
-        public static let regular:CGFloat = 2
+        public static let heavy:CGFloat =  16//
+        public static let medium:CGFloat =  8 //
+        public static let regular:CGFloat = 2//
         public static let light:CGFloat = 1//
     }
     

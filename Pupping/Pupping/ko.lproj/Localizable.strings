@@ -17,7 +17,8 @@
 
 "puppingCoin" = "퍼핑 코인";
 "point" = "포인트";
-"completeMission" = "미션";
+"mission" = "미션";
+"walk" = "산책";
 "year" = "년";
 "month" = "월";
 "day" = "일";
@@ -29,10 +30,15 @@
 "m" = "m";
 "min" = "분";
 "redeem" = "보상";
+"kg" = "kg";
+
 
 "filter" = "filter";
 "near" = "주변";
 
+"weight" = "Weight";
+"size" = "Size";
+"owner" = "의";
 
 /*
   Button
@@ -52,13 +58,14 @@
 "btnStop" = "끝내기";
 "btnPause" = "멈추기";
 "btnResume" = "재개하기";
+"btnMore" = "더보기";
 
 /*
   Alert
 */
 "alertApns" = "Pupping 알림";
 "alertApi" = "Pupping 알림";
-"alertApiErrorServer" = "인터넷이 끊어졌어요. 잠시 후 다시 시도해주세요.";
+"alertApiErrorServer" = "서비스를 이용할 수 없어요. 잠시 후 다시 시도해주세요.";
 "alertApiErrorClient" = "인터넷 연결을 확인한 후 다시 시도해주세요.";
 "alertNetworkError" = "인터넷 연결이 불안정해요.";
 "alertDataError" = "아직 데이터가 없어요.";
@@ -66,6 +73,7 @@
 "alertLocation" = "위치 탐색을 허용해주세요.";
 "alertLocationSub" = "위치 탐색을 허용해야 산책 코스를 탐지할 수 있어요.";
 "alertLocationBtn" = "권한 허용하러 가기";
+"alertLocationDisable" = "위치 정보를 가저올 수 없습니다.";
 
 "alertDragdown" = "당겨서 페이지 닫기";
 
@@ -115,17 +123,19 @@
 "titleCommingSoon" = "아직 준비 중인 기능이에요!";
 "titleMission" = "미션 시작";
 "titleMissionInfo" = "미션 미리보기";
-
+"titleHistory" = "기록";
+"titleAlbum" = "사진첩";
+"titleWalkReport" = "Walk Report";
 /*
 PageIntro
 */
-"introText1_1" = "산책은 반려견에게 줄 수 있는 최고의 선물이에요.";
-"introText1_2" = "반려견에게 건강과 행복을 가져다 주는 첫걸음,";
-"introText2_1" = "퍼핑과 함께하고 반려견에게 암호화폐를 선물하세요.";
-"introText2_2" = "반려견에게 건강과 행복을 가져다 주는 첫걸음,";
-"introText3_1" = "동네 친구들과 함께 하면 더 즐거운 산책이 될거예요!";
-"introText3_2" = "동네 친구들과 함께 하면 더 즐거운 산책이 될거예요!";
-"introComplete" = "시작하기";
+"introText1_1" = "Walking your dog is\nthe best present\nyou can give.";
+"introText1_2" = "We cannot emphasize enough\nhow walking is important for a\ndog’s health and happiness.";
+"introText2_1" = "Walk with Pupping\nand gain encrypted\ncoins for your dog.";
+"introText2_2" = "We cannot emphasize enough\nhow walking is important for a\ndog’s health and happiness.";
+"introText3_1" = "...and friends in your town\nto walk together :)";
+"introText3_2" = "Who knows? Maybe you\ncan find a new best friend\nto talk about dogs!";
+"introComplete" = "Let’s explore!";
 
 
 /*
@@ -150,13 +160,14 @@ PageLogin
 "profileRegistMicroFin" = "의 동물등록번호를 알려주세요.";
 "profileRegistMicroFinInfo" = "동물등록번호는 15자리 숫자로 구성되어 있어요. 번호는 가까운 동물병원에서 체크할 수 있어요.";
 
+"profileRegistWeight" = "의 몸무게(kg)를 알려주세요.";
+"profileRegistSize" = "의 크기(m)를 알려주세요.";
 
 "profileRegistNeutralized" = "중성화";
 "profileRegistDistemperVaccinated" = "디스템퍼 예방접종";
 "profileRegistHepatitisVaccinated" = "간염 예방접종";
 "profileRegistParovirusVaccinated" = "프로바이러스 예방접종";
 "profileRegistRabiesVaccinated" = "광견병 예방접종";
-
 
 "profileCancelConfirm" = "지금 중단하면 입력 중이던 정보가 사라져요. 정말 중단 하실건가요?";
 "profileEmptyName" = "animal";
@@ -173,7 +184,12 @@ PageLogin
 "profileWalkHistory" = "산책 기록";
 "profileMissionHistory" = "미션 기록";
 "profileHealthCare" = "건강 관리";
+"profileHealthRecord" = "Health Record";
 
+"profileHistory" = "History";
+"profileAbout" = "About";
+"profileLastUpdate" = "Last updated on";
+"profileHealthRecordUpdate" = "Update health record";
 /*
  PageMission
 */
@@ -186,3 +202,37 @@ PageLogin
 "walkCompleted" = "산책 완료!";
 "walkCompletedText" = "반려견과 %s분 산책하기";
 "walkCompletedSaved" = "산책 정보가 저장되었습니다.";
+
+/*
+ PageWalkReport
+*/
+
+
+"reportWalkSummaryDuration" = "총 산책시간";
+"reportWalkSummaryDistance" = "총 산책거리";
+"reportWalkSummary" = "Walk Summary";
+"reportWalkSummaryWeekly" = "주간";
+"reportWalkSummaryMonthly" = "월간";
+
+"reportWalkDayUnit" = "일";
+"reportWalkDayText" = "나의 산책 횟수";
+"reportWalkDayTextWeek" = "(주간)";
+"reportWalkDayTextMonth" = "(월간)";
+
+"reportWalkDayCompleted" = "You achieved the goal! Good job!";
+"reportWalkDayContinue" = "Walk %s days";
+
+"reportWalkDayCompareText1" = "다른사람들과 비교해서";
+"reportWalkDayCompareText2" = "(평균 산책 횟수)";
+"reportWalkDayCompareLess" = "덜 했어요.";
+"reportWalkDayCompareMore" = "더 했어요";
+"reportWalkDayCompareSame" = "비슷하게 했어요";
+
+"reportWalkDayCompareMe" = "나";
+"reportWalkDayCompareOthers" = "평균";
+
+"reportWalkRecentlyUnit" = "분";
+"reportWalkRecentlyText1" = "최근 평균 산책 시간은";
+"reportWalkRecentlyText2" = "입니다.";
+
+"reportWalkRecentlyTip" = "* 20-40분 정도 산책을 추천해요.";

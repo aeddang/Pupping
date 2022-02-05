@@ -79,6 +79,15 @@ extension Asset{
         public static let wayPointHeader  = "ic_wayPointHeader"
         public static let destinationHeaderOn  = "ic_destinationHeaderOn"
         public static let wayPointHeaderOn  = "ic_wayPointHeaderOn"
+        
+        public static let favorite  = "ic_favorite"
+        public static let favoriteOn  = "ic_favoriteOn"
+        public static let go  = "ic_go"
+        public static let warning  = "ic_warning"
+        public static let report  = "ic_report"
+        public static let good  = "ic_good"
+        public static let sad  = "ic_sad"
+        public static let walk  = "ic_walk"
     }
     
     struct map {
@@ -116,6 +125,7 @@ extension Asset{
         public static let present = "present"
         public static let profileEmpty = "profileEmpty"
         public static let profileEmptyContent = "profileEmptyContent"
+        public static let pictureEmpty = "pictureEmpty"
     }
     
     struct source {

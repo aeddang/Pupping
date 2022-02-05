@@ -22,4 +22,6 @@ struct PetData : Decodable {
     private(set) var exerciseDistance: Double? = nil
     private(set) var exerciseDuration: Double? = nil
     private(set) var experience: Double? = nil
+    private(set) var weight: Double? = nil
+    private(set) var size: Double? = nil
 }

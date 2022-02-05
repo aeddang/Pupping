@@ -47,7 +47,8 @@ class PetApi :Rest{
             if let value = pet.birth?.toDateFormatter() { data.append(value: value.subString(start: 0, len: 19), name: "birthdate") }
             if let value = pet.gender?.apiDataKey() { data.append(value: value, name: "sex") }
             if let value = pet.microfin { data.append(value: value, name: "regNumber") }
-        
+            if let value = pet.weight { data.append(value: value.description, name: "weight") }
+            if let value = pet.size { data.append(value: value.description, name: "size") }
             let status = PetProfile.getStatusValue(pet)
             if !status.isEmpty {
                 data.append(value:  status.reduce("", {$0 + "," + $1}).subString(1) , name: "status")

@@ -21,6 +21,8 @@ struct ModifyPetProfileData {
     var hepatitis:Bool? = nil
     var parovirus:Bool? = nil
     var rabies:Bool? = nil
+    var weight:Double? = nil
+    var size:Double? = nil
 }
 
 struct ModifyPlayData {
@@ -61,7 +63,7 @@ class PetProfile:ObservableObject, PageProtocol, Identifiable, Equatable {
     @Published private(set) var gender:Gender? = nil
     @Published private(set) var birth:Date? = nil
     @Published private(set) var exp:Double = 0
-    @Published private(set) var lv:Int = 1
+    @Published private(set) var lv:Int = 0
     @Published private(set) var prevExp:Double = 0
     @Published private(set) var nextExp:Double = 0
     @Published private(set) var neutralization:Bool? = nil
@@ -71,8 +73,16 @@ class PetProfile:ObservableObject, PageProtocol, Identifiable, Equatable {
     @Published private(set) var rabies:Bool? = nil
     
     @Published private(set) var microfin:String? = nil
+    
+    @Published private(set) var weight:Double? = nil
+    @Published private(set) var size:Double? = nil
     private(set) var isEmpty:Bool = false
     private(set) var isMypet:Bool = false
+    
+    private(set) var totalExerciseDistance: Double? = nil
+    private(set) var totalExerciseDuration: Double? = nil
+  
+    
     var isWith:Bool = true
     
     public static func == (l:PetProfile, r:PetProfile)-> Bool {
@@ -99,17 +109,19 @@ class PetProfile:ObservableObject, PageProtocol, Identifiable, Equatable {
         self.nickName = data.name
         self.species = data.breed
         self.gender = Gender.getGender(data.sex) 
-        self.birth = data.birthdate?.toDate()
+        self.birth = data.birthdate?.toDate(dateFormat: "yyyy-MM-dd'T'HH:mm:ss")
         self.exp = Double(data.experience ?? 0)
         self.microfin = data.regNumber
-        
+        self.weight = data.weight
+        self.size = data.size
         self.neutralization = data.status?.contains("neutralization")
         self.distemper = data.status?.contains("distemper")
         self.hepatitis = data.status?.contains("hepatitis")
         self.parovirus = data.status?.contains("parovirus")
         self.rabies = data.status?.contains("rabies")
-         
-        self.updatedLv()
+        self.totalExerciseDistance = data.exerciseDistance
+        self.totalExerciseDuration = data.exerciseDuration
+        self.updatedExp()
     }
     
     @discardableResult
@@ -128,8 +140,7 @@ class PetProfile:ObservableObject, PageProtocol, Identifiable, Equatable {
         self.species = "bero species"
         self.gender = .female
         self.birth = Date()
-        self.lv = 99
-        self.exp = 999
+        
         self.microfin = "19290192819281928"
         self.image =  UIImage(named: Asset.brand.logoLauncher)
         self.neutralization = true
@@ -137,8 +148,10 @@ class PetProfile:ObservableObject, PageProtocol, Identifiable, Equatable {
         self.hepatitis = true
         self.parovirus = true
         self.rabies = true
-        self.updatedLv()
-        return self
+        self.totalExerciseDistance = 1
+        self.totalExerciseDuration = 10
+    
+        return self.update(exp: 999)
     }
     
     @discardableResult
@@ -155,6 +168,8 @@ class PetProfile:ObservableObject, PageProtocol, Identifiable, Equatable {
         if let value = data.parovirus { self.parovirus = value }
         if let value = data.rabies { self.rabies = value }
         
+        if let value = data.weight { self.weight = value }
+        if let value = data.size { self.size = value }
         //ProfileCoreData().update(id: self.id, data: data)
         return self
     }

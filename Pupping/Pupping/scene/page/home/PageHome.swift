@@ -68,7 +68,7 @@ struct PageHome: PageView {
                     withAnimation{ self.reloadDegree = 0 }
                 case .pullCancel :
                     withAnimation{ self.reloadDegree = 0 }
-                default : do{}
+                default : break
                 }
                 
             }

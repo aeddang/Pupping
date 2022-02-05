@@ -131,20 +131,30 @@ struct PlayMissionInfo : PageComponent {
 
 struct PlayUnitInfo : View{
     let icon:String
+    var isOrigin:Bool = false
     let text:String
-    var color:Color? = Color.app.grey
+    var color:Color = Color.app.grey
     var body: some View {
         VStack(spacing:Dimen.margin.micro){
-            Image(icon)
-                .renderingMode(.template)
-                .resizable()
-                .foregroundColor(Color.app.grey)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: Dimen.icon.thin, height: Dimen.icon.thin)
+            if isOrigin {
+                Image(icon)
+                    .renderingMode(.original)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: Dimen.icon.thin, height: Dimen.icon.thin)
+            } else {
+                Image(icon)
+                    .renderingMode(.template)
+                    .resizable()
+                    .foregroundColor(self.color)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: Dimen.icon.thin, height: Dimen.icon.thin)
+            }
+            
             Text(text)
                 .modifier(RegularTextStyle(
                     size: Font.size.thin,
-                    color:  Color.app.grey
+                    color:  self.color
                 ))
         }
     }

@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import CoreLocation
 enum ApiStatus{
     case initate, ready, reflash, error
 }
@@ -54,6 +55,9 @@ class ApiManager :PageProtocol, ObservableObject{
     private let user:UserApi
     private let pet:PetApi
     private let mission:MissionApi
+    private let vision:VissionApi
+    private let album:AlbumApi
+    private let misc:MiscApi
     
     //Store Api
     private let auth:AuthApi
@@ -68,6 +72,9 @@ class ApiManager :PageProtocol, ObservableObject{
         self.pet = PetApi(network: self.network)
         self.petUpdate = PetApi(network: self.network)
         self.mission = MissionApi(network: self.network)
+        self.vision = VissionApi(network: self.network)
+        self.album = AlbumApi(network: self.network)
+        self.misc = MiscApi(network: self.network)
     }
     
     func clear(){
@@ -75,6 +82,9 @@ class ApiManager :PageProtocol, ObservableObject{
         self.user.clear()
         self.pet.clear()
         self.mission.clear()
+        self.vision.clear()
+        self.album.clear()
+        self.misc.clear()
         self.apiQ.removeAll()
         
     }
@@ -100,6 +110,7 @@ class ApiManager :PageProtocol, ObservableObject{
             ApiNetwork.accesstoken = res.token
         }
         self.status = .ready
+        self.event = .initate
         self.executeQ()
     }
     
@@ -181,8 +192,12 @@ class ApiManager :PageProtocol, ObservableObject{
             self.petUpdate.delete(petId: petId,
                                   completion: {res in self.complated(id: apiID, type: type, res: res)},
                                   error:error)
-        case .getMission(let user , let petId) :
-            self.mission.get(user: user, petId: petId,
+        case .getMission(let userId , let petId, let cate, let page, let size) :
+            self.mission.get(userId: userId, petId: petId, cate:cate, page:page, size: size,
+                             completion: {res in self.complated(id: apiID, type: type, res: res)},
+                             error:error)
+        case .searchMission(let cate, let search, let location, let distance, let page, let size) :
+            self.mission.get(cate: cate, search: search, location: location, distance: distance, page: page, size: size,
                              completion: {res in self.complated(id: apiID, type: type, res: res)},
                              error:error)
         case .completeMission(let mission, let pets) :
@@ -193,6 +208,31 @@ class ApiManager :PageProtocol, ObservableObject{
             self.mission.post(walk: walk, pets: pets,
                               completion: {res in self.complated(id: apiID, type: type, res: res)},
                               error:error)
+        
+        case .checkHumanWithDog(let img) :
+            self.vision.post(img: img, action: .detecthumanwithdog,
+                             completion: {res in self.complated(id: apiID, type: type, res: res)},
+                             error:error)
+        case .getAlbumPictures(let id, let cate, let page , let size) :
+            self.album.get(id: id, type: cate, page: page, size: size,
+                           completion: {res in self.complated(id: apiID, type: type, res: res)},
+                           error:error)
+        case .registAlbumPicture(let img, let thumb, let id, let cate) :
+            self.album.post(img: img, thumbImg:thumb, id: id, type: cate,
+                            completion: {res in self.complated(id: apiID, type: type, res: res)},
+                            error:error)
+        case .deleteAlbumPictures(let ids) :
+            self.album.delete(ids: ids,
+                              completion: {res in self.complated(id: apiID, type: type, res: res)},
+                              error:error)
+        case .updateAlbumPictures(let pictureId, let isLike) :
+            self.album.put(id: pictureId, isLike: isLike,
+                           completion: {res in self.complated(id: apiID, type: type, res: res)},
+                           error:error)
+        case .getWeather(let id, let action) :
+            self.misc.getWeather(id: id, action: action,
+                                 completion: {res in self.complated(id: apiID, type: type, res: res)},
+                                 error:error)
         default: break
         }
         return apiID

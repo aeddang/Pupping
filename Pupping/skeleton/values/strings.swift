@@ -23,7 +23,8 @@ extension String {
         public static let female = "female".loaalized()
         public static let puppingCoin = "puppingCoin".loaalized()
         public static let point = "point".loaalized()
-        public static let completeMission = "completeMission".loaalized()
+        public static let mission = "mission".loaalized()
+        public static let walk = "walk".loaalized()
         public static let year = "year".loaalized()
         public static let month = "month".loaalized()
         public static let day = "day".loaalized()
@@ -33,9 +34,13 @@ extension String {
         public static let km = "km".loaalized()
         public static let m = "m".loaalized()
         public static let min = "min".loaalized()
+        public static let kg = "kg".loaalized()
         public static let redeem = "redeem".loaalized()
         public static let filter = "filter".loaalized()
         public static let near = "near".loaalized()
+        public static let weight = "weight".loaalized()
+        public static let size = "size".loaalized()
+        public static let owner = "owner".loaalized()
     }
     
     struct gnb {
@@ -61,6 +66,7 @@ extension String {
         public static var location = "alertLocation".loaalized()
         public static var locationSub = "alertLocationSub".loaalized()
         public static var locationBtn = "alertLocationBtn".loaalized()
+        public static var locationDisable = "alertLocationDisable".loaalized()
         public static var dragdown = "alertDragdown".loaalized()
         public static var needProfile = "alertNeedProfile".loaalized()
         public static var deleteProfile = "alertDeleteProfile".loaalized()
@@ -96,6 +102,7 @@ extension String {
         public static let stop = "btnStop".loaalized()
         public static let pause = "btnPause".loaalized()
         public static let resume = "btnResume".loaalized()
+        public static let more = "btnMore".loaalized()
     }
     
     struct pageTitle {
@@ -107,6 +114,9 @@ extension String {
         public static let commingSoon = "titleCommingSoon".loaalized()
         public static let mission = "titleMission".loaalized()
         public static let missionInfo = "titleMissionInfo".loaalized()
+        public static let history = "titleHistory".loaalized()
+        public static let album = "titleAlbum".loaalized()
+        public static let walkReport = "titleWalkReport".loaalized()
     }
     
     struct pageText {
@@ -130,6 +140,8 @@ extension String {
         public static let profileRegistHealth = "profileRegistHealth".loaalized()
         public static let profileRegistMicroFin = "profileRegistMicroFin".loaalized()
         public static let profileRegistMicroFinInfo = "profileRegistMicroFinInfo".loaalized()
+        public static let profileRegistWeight = "profileRegistWeight".loaalized()
+        public static let profileRegistSize = "profileRegistSize".loaalized()
        
         public static let profileRegistNeutralized = "profileRegistNeutralized".loaalized()
         public static let profileRegistDistemperVaccinated = "profileRegistDistemperVaccinated".loaalized()
@@ -150,6 +162,13 @@ extension String {
         public static let profileWalkHistory = "profileWalkHistory".loaalized()
         public static let profileMissionHistory = "profileMissionHistory".loaalized()
         public static let profileHealthCare = "profileHealthCare".loaalized()
+        public static let profileHealthRecord = "profileHealthRecord".loaalized()
+        public static let profileHistory = "profileHistory".loaalized()
+        public static let profileAbout = "profileAbout".loaalized()
+        public static let profileLastUpdate = "profileLastUpdate".loaalized()
+        public static let profileHealthRecordUpdate = "profileHealthRecordUpdate".loaalized()
+
+        
         public static let missionCompleted = "missionCompleted".loaalized()
         public static let missionCompletedText = "missionCompletedText".loaalized()
         public static let missionCompletedSaved = "missionCompletedSaved".loaalized()
@@ -157,6 +176,33 @@ extension String {
         public static let walkCompleted = "walkCompleted".loaalized()
         public static let walkCompletedText = "walkCompletedText".loaalized()
         public static let walkCompletedSaved = "walkCompletedSaved".loaalized()
+        
+        public static let reportWalkSummary = "reportWalkSummary".loaalized()
+        public static let reportWalkSummaryWeekly = "reportWalkSummaryWeekly".loaalized()
+        public static let reportWalkSummaryMonthly = "reportWalkSummaryMonthly".loaalized()
+        public static let reportWalkSummaryDuration = "reportWalkSummaryDuration".loaalized()
+        public static let reportWalkSummaryDistance = "reportWalkSummaryDistance".loaalized()
+        public static let reportWalkDayUnit = "reportWalkDayUnit".loaalized()
+        public static let reportWalkDayText = "reportWalkDayText".loaalized()
+        public static let reportWalkDayWeek = "reportWalkDayTextWeek".loaalized()
+        public static let reportWalkDayMonth = "reportWalkDayTextMonth".loaalized()
+
+        public static let reportWalkDayCompleted = "reportWalkDayCompleted".loaalized()
+        public static let reportWalkDayContinue = "reportWalkDayContinue".loaalized()
+
+        public static let reportWalkDayCompareText1 = "reportWalkDayCompareText1".loaalized()
+        public static let reportWalkDayCompareText2 = "reportWalkDayCompareText2".loaalized()
+        public static let reportWalkDayCompareLess = "reportWalkDayCompareLess".loaalized()
+        public static let reportWalkDayCompareMore = "reportWalkDayCompareMore".loaalized()
+        public static let reportWalkDayCompareSame = "reportWalkDayCompareSame".loaalized()
+        
+        public static let reportWalkDayCompareMe = "reportWalkDayCompareMe".loaalized()
+        public static let reportWalkDayCompareOthers =  "reportWalkDayCompareOthers".loaalized()
+
+        public static let reportWalkRecentlyUnit = "reportWalkRecentlyUnit".loaalized()
+        public static let reportWalkRecentlyText1 = "reportWalkRecentlyText1".loaalized()
+        public static let reportWalkRecentlyText2 = "reportWalkRecentlyText2".loaalized()
+        public static let reportWalkRecentlyTip = "reportWalkRecentlyTip".loaalized()
     }
     
 }

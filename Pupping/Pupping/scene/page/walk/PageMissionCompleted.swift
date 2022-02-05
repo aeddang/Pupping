@@ -75,7 +75,7 @@ struct PageMissionCompleted: PageView {
                         let uiImage = img.normalized().centerCrop().resize(to: CGSize(width: 240,height: 240))
                         DispatchQueue.main.async {
                             self.pagePresenter.isLoading = false
-                            self.sendResult()
+                            self.checkResult(img: uiImage)
                         }
                     }
                 } 
@@ -85,14 +85,29 @@ struct PageMissionCompleted: PageView {
                 if !res.id.hasPrefix(self.tag) {return}
                 switch res.type {
                 case .completeMission : self.onClose()
+                case .checkHumanWithDog :
+                    guard let data = res.data as? DetectData else {
+                        self.appSceneObserver.event = .toast(String.alert.completedNeedPictureError)
+                        return
+                    }
+                    if data.isDetected != true {
+                        self.appSceneObserver.event = .toast(String.alert.completedNeedPictureError)
+                        return
+                    }
+                    self.sendResult(imgPath: data.pictureUrl)
                 default : break
                 }
             }
         }//geo
     }//body
    
-    private func sendResult(){
+    private func checkResult(img:UIImage){
+        self.dataProvider.requestData(q: .init(id:self.tag, type: .checkHumanWithDog(img), isLock: true))
+        
+    }
+    private func sendResult(imgPath:String?){
         guard let mission = self.mission else { return }
+        mission.pictureUrl = imgPath
         self.dataProvider.requestData(q: .init(id:self.tag, type: .completeMission(mission, self.withProfiles), isLock: true))
         
     }

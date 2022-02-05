@@ -12,7 +12,7 @@ class Walk{
     var locations:[CLLocation] = []
     var playTime:Double = 0
     var playDistence:Double = 0
-    
+    var pictureUrl:String? = nil
     func point()->Double {
         return 10 + floor(playDistence/1000)*10
     }

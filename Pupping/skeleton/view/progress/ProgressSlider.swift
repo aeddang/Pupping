@@ -25,10 +25,7 @@ struct ProgressSlider: PageView {
             ZStack(alignment: .leading) {
                 Rectangle()
                     .foregroundColor(Color.app.greyLightExtra)
-                    .frame(
-                        width: geometry.size.width,
-                        height: progressHeight
-                    )
+                    .modifier(MatchHorizontal(height: progressHeight))
                     
                 Rectangle()
                     .foregroundColor(Color.brand.primary)

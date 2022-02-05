@@ -30,7 +30,7 @@ struct SwipperView : View , PageProtocol, Swipper {
     var body: some View {
         GeometryReader { geometry in
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .center, spacing: 0) {
+                LazyHStack(alignment: .center, spacing: 0) {
                     ForEach(self.pages, id:\.id) { page in
                         page.contentBody
                         .frame(

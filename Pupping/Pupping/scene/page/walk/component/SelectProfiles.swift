@@ -105,28 +105,12 @@ struct SelectProfileItem: PageComponent {
     var isSelected:Bool
     var body: some View {
         VStack(spacing: Dimen.margin.tinyExtra){
-            ZStack{
-                if let img = self.data.image {
-                    Image(uiImage: img)
-                        .renderingMode(.original)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .modifier(MatchParent())
-                } else if let path = self.data.imagePath {
-                    ImageView(url: path,
-                        contentMode: .fill,
-                        noImg: Asset.brand.logoLauncher)
-                        .modifier(MatchParent())
-                } else {
-                    Image( uiImage: UIImage(named: Asset.brand.logoLauncher)! )
-                        .renderingMode(.original)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .modifier(MatchParent())
-                }
-            }
-            .frame(width: Dimen.profile.regular, height: Dimen.profile.regular)
-            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            PetProfileImage(
+                id : self.data.id,
+                image: self.data.image,
+                imagePath: self.data.imagePath,
+                size : Dimen.profile.regular
+            )
             .overlay(
                Circle()
                 .stroke(

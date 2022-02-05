@@ -10,13 +10,14 @@ import SwiftUI
 
 extension PetList{
     static let width:CGFloat = 294
-    static let height:CGFloat = 199
+    static let height:CGFloat = 170
 }
 struct PetList: PageComponent{
     @EnvironmentObject var pagePresenter:PagePresenter
+    var pageDragingModel:PageDragingModel = PageDragingModel()
     var viewModel: InfinityScrollModel = InfinityScrollModel()
     var datas:[PetProfile]
-   
+    var userId:String?
     @State var lv:String = ""
     @State var exp:String = ""
     
@@ -24,11 +25,11 @@ struct PetList: PageComponent{
         InfinityScrollView(
             viewModel: self.viewModel,
             axes: .horizontal,
-            marginVertical: Dimen.margin.light,
+            marginVertical: 0,
             marginHorizontal: Dimen.margin.light,
             spacing: Dimen.margin.light,
             isRecycle: true,
-            useTracking: false
+            useTracking: true
         ){
             if !self.datas.isEmpty {
                 ForEach(self.datas) { data in
@@ -38,6 +39,7 @@ struct PetList: PageComponent{
                             self.pagePresenter.openPopup(
                                 PageProvider.getPageObject(.profile)
                                     .addParam(key: .data, value: data)
+                                    .addParam(key: .id, value: self.userId)
                             )
                         }
                 }
@@ -49,7 +51,11 @@ struct PetList: PageComponent{
                     .frame(width: PetList.width, height: PetList.height)
             }
         }
-        
+        .modifier(
+            ContentScrollPull(
+                infinityScrollModel: self.viewModel,
+                pageDragingModel: self.pageDragingModel)
+        )
         
     }//body
 }
@@ -57,6 +63,7 @@ struct PetList: PageComponent{
 struct PetListItem: PageView {
     @EnvironmentObject var repository:Repository
     @EnvironmentObject var appSceneObserver:AppSceneObserver
+    @EnvironmentObject var pagePresenter:PagePresenter
     @EnvironmentObject var dataProvider:DataProvider
     @ObservedObject var profile:PetProfile
     @State var imagePath:String? = nil
@@ -137,7 +144,22 @@ struct PetListItem: PageView {
             let birthYY = birth.toDateFormatter(dateFormat:"yyyy")
             self.age = (yy.toInt() - birthYY.toInt() + 1).description + "yrs"
         }
-        
+        .onReceive(self.appSceneObserver.$pickImage) { pick in
+            guard let pick = pick else {return}
+            if pick.id?.hasSuffix(self.profile.id) != true {return}
+            if let img = pick.image {
+                self.pagePresenter.isLoading = true
+                DispatchQueue.global(qos:.background).async {
+                    let uiImage = img.normalized().centerCrop().resize(to: CGSize(width: 240,height: 240))
+                    DispatchQueue.main.async {
+                        self.pagePresenter.isLoading = false
+                        self.dataProvider.requestData(q: .init(type: .updatePetImage(petId: self.profile.petId, uiImage)))
+                    }
+                }
+            } else {
+                //self.profile.update(image: nil)
+            }
+        }
         .onReceive(self.profile.$image) { img in
             self.image = img
             self.imagePath = self.profile.imagePath
@@ -165,9 +187,12 @@ struct PetListItem: PageView {
             if exp == 0 {return}
             self.nextExp = exp.formatted(style: .decimal)
             let prev = self.profile.prevExp
-            withAnimation{
-                self.progressExp = Float((self.profile.exp - prev) / (exp - prev))
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                withAnimation{
+                    self.progressExp = Float((self.profile.exp - prev) / (exp - prev))
+                }
             }
+            
         }
         .onAppear(){
             self.imagePath = self.profile.imagePath

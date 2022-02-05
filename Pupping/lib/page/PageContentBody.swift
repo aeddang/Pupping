@@ -21,6 +21,7 @@ struct PageBackgroundBody: View {
 }
 
 extension PageContentBody{
+    static let pageMoveDuration:CGFloat = 0.2
     static let pageMoveAmount:CGFloat = -70.0
     private static var useBelowPageMove:Bool {
         get{
@@ -71,11 +72,10 @@ struct PageContentBody: PageView  {
             self.topPageType = page.animationType
             guard let pageObject = self.pageObject else { return }
             if pageObject.zIndex != 0 { return }
-            if pageObject.animationType == .opacity { return }
-            if self.offsetX != 0 || self.offsetY != 0 { return }
+            
             
             if pageObject == page {
-                withAnimation(.easeIn(duration: 0.2)){
+                withAnimation(.easeOut(duration: Self.pageMoveDuration)){
                     self.isTop = true
                     self.isBelow = false
                     self.pageOffsetX = 0.0
@@ -84,16 +84,15 @@ struct PageContentBody: PageView  {
                 }
                 
             } else {
+                if pageObject.animationType == .opacity { return }
+                if self.offsetX != 0 || self.offsetY != 0 { return }
                 
                 let below = self.pageChanger.getBelowPage(page: page)
-                
-                withAnimation(.easeIn(duration: 0.2)){
+                withAnimation(.easeOut(duration: Self.pageMoveDuration)){
                     self.isTop = false
                     self.isBelow = below == pageObject
                     self.dragOpacity = 1
-                }
-                if !self.useBelowPageMove {return}
-                withAnimation(.easeIn(duration: 0.2)){
+                    if !self.useBelowPageMove {return}
                     switch self.topPageType {
                     case .horizontal :
                         self.pageOffsetX = Self.pageMoveAmount
@@ -114,15 +113,17 @@ struct PageContentBody: PageView  {
             if !self.isReady  {return}
             if !self.isBelow {return}
             if self.isTop {return}
-            self.dragOpacity = opacity
-            if !self.useBelowPageMove {return}
-            //PageLog.log("pagePosition " + self.opacity.description + " " + self.pageID ,tag:self.pageID)
-            let amount = Self.pageMoveAmount * CGFloat(opacity)
-            switch self.topPageType {
-            case .horizontal :  self.pageOffsetX = amount
-            case .vertical :  self.pageOffsetY = -amount
-            default :break
-            }
+            //withAnimation(.easeOut(duration: Self.pageMoveDuration)){
+                self.dragOpacity = opacity
+                if !self.useBelowPageMove {return}
+                //PageLog.log("pagePosition " + self.opacity.description + " " + self.pageID ,tag:self.pageID)
+                let amount = Self.pageMoveAmount * CGFloat(opacity)
+                switch self.topPageType {
+                case .horizontal :  self.pageOffsetX = amount
+                case .vertical :  self.pageOffsetY = -amount
+                default :break
+                }
+            //}
         }
         
         .onReceive(self.pageObservable.$pagePosition){ pos in
@@ -133,7 +134,7 @@ struct PageContentBody: PageView  {
                 self.offsetY = pos.y
             }else{
                 if self.pageObject?.isAnimation == true {
-                    withAnimation(.easeOut(duration: 0.2)){
+                    withAnimation(.easeOut(duration: Self.pageMoveDuration)){
                         self.offsetX = pos.x
                         self.offsetY = pos.y
                     }

@@ -50,6 +50,24 @@ enum MissionPlayType:CaseIterable {
 
 enum MissionLv:CaseIterable {
     case lv1, lv2, lv3, lv4
+    func apiDataKey() -> String {
+        switch self {
+        case .lv1 : return "lv1"
+        case .lv2 : return "lv2"
+        case .lv3 : return "lv3"
+        case .lv4 : return "lv4"
+        }
+    }
+    
+    static func getMissionLv(_ value:String?) -> MissionLv?{
+        switch value{
+        case "lv1" : return .lv1
+        case "lv2" : return .lv2
+        case "lv3" : return .lv3
+        case "lv4" : return .lv4
+        default : return nil
+        }
+    }
     func info() -> String{
         switch self {
         case .lv1: return "Easy"
@@ -141,6 +159,18 @@ enum MissionKeyword: CaseIterable {
     }
 }
 
+extension Mission{
+    static func viewSpeed(_ value:Double) -> String {
+        return (value * 3600 / 1000).toTruncateDecimal(n:1) + String.app.kmPerH
+    }
+    static func viewDistence(_ value:Double) -> String {
+        return (value / 1000).toTruncateDecimal(n:1) + String.app.km
+    }
+    static func viewDuration(_ value:Double) -> String {
+        return (value / 60).toTruncateDecimal(n:1) + String.app.min
+    }
+}
+
 class Mission:PageProtocol, Identifiable, Equatable{ 
     let id:String = UUID().uuidString
     let type:MissionType
@@ -164,6 +194,7 @@ class Mission:PageProtocol, Identifiable, Equatable{
     private (set) var playTime:Double = 0
     private (set) var playDistence:Double = 0
     
+    var pictureUrl:String? = nil
     
     public static func == (l:Mission, r:Mission)-> Bool {
         return l.id == r.id
@@ -213,15 +244,9 @@ class Mission:PageProtocol, Identifiable, Equatable{
         return self
     }
     
-    var viewSpeed:String {
-        return (self.speed * 3600 / 1000).toTruncateDecimal(n:1) + String.app.kmPerH
-    }
-    var viewDistence:String {
-        return (self.totalDistence/1000).toTruncateDecimal(n:1) + String.app.km
-    }
-    var viewDuration:String {
-        return (self.duration/60).toTruncateDecimal(n:1) + String.app.min
-    }
+    var viewSpeed:String { return Self.viewSpeed(self.speed) }
+    var viewDistence:String { return Self.viewDistence(self.totalDistence) }
+    var viewDuration:String { return Self.viewDuration(self.duration) }
     
     var allPoint:[GMSPlace] {
         var points:[GMSPlace] = []

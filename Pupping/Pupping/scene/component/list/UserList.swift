@@ -47,7 +47,7 @@ struct UserListSet: PageComponent{
     @EnvironmentObject var pagePresenter:PagePresenter
     var viewModel: InfinityScrollModel = InfinityScrollModel()
     var datas:[UserDataSet]
-   
+    var onBottom: (() -> Void)? = nil
     var body: some View {
         InfinityScrollView(
             viewModel: self.viewModel,
@@ -55,10 +55,15 @@ struct UserListSet: PageComponent{
             marginVertical: Dimen.margin.light,
             spacing: Dimen.margin.light,
             isRecycle: true,
-            useTracking: false
+            useTracking: true
         ){
             ForEach(self.datas) { data in
                 UserSet(data: data )
+                .onAppear{
+                    if data.index == self.datas.last?.index {
+                        self.onBottom?()
+                    }
+                }
             }
         }
     }//body
@@ -109,17 +114,7 @@ struct UserListItem: PageView {
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var dataProvider:DataProvider
     @ObservedObject var data:User
-    
-    @State var image:UIImage? = nil
-    @State var name:String? = nil
-    @State var age:String? = nil
-    @State var species:String? = nil
-    @State var gender:Gender? = nil
-    @State var lv:String = ""
-    @State var exp:String = ""
-    @State var prevExp:String = ""
-    @State var nextExp:String = ""
-    @State var progressExp:Float = 0
+
    
     var body: some View {
         VStack(alignment:.leading, spacing: Dimen.margin.regular){
@@ -128,16 +123,14 @@ struct UserListItem: PageView {
                 isModifyAble: false
             )
             ScrollView(.horizontal, showsIndicators: false){
-                HStack(spacing:Dimen.margin.micro){
+                HStack(spacing:Dimen.margin.tinyExtra){
                     ForEach(self.data.pets) { pet in
-                        Image(uiImage: pet.image ??
-                                UIImage(named:Asset.brand.logoLauncher)!)
-                            .renderingMode(.original)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: Dimen.profile.thin, height: Dimen.profile.thin)
-                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                            .padding(.horizontal, Dimen.margin.tiny)
+                        PetProfileImage(
+                            id : pet.id,
+                            image: pet.image,
+                            imagePath: pet.imagePath,
+                            size: Dimen.profile.thin
+                        )
                     }
                 }
             }

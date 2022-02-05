@@ -17,8 +17,8 @@ struct LocationInfo : PageComponent {
     @EnvironmentObject var locationObserver:LocationObserver
  
     @State var location:String? = nil
-    @State var temperature:String? = "24°"
-    @State var weather:String? = "Sunny"
+    @State var temperature:String? = nil
+    @State var weather:String? = nil
      
     var body: some View {
         HStack(spacing:Dimen.margin.light){
@@ -69,17 +69,33 @@ struct LocationInfo : PageComponent {
             case .updateLocation(let loc):
                 self.locationObserver.convertLocationToAddress(location: loc){ address in
                     guard let state = address.state else {return}
+    
                     if let city = address.city {
                         if let street = address.street {
                             self.location = state + " " + city  + " " + street
                         } else {
                             self.location = state + " " + city
                         }
+                        self.requestWeather(cityId: city)
                     } else {
                         self.location = state
                     }
                     self.locationObserver.requestMe(false, id:self.tag)
+                   
                 }
+            }
+        }
+        .onReceive(self.dataProvider.$result){ res in
+            guard let res = res else { return }
+            switch res.type {
+            case .getWeather :
+                guard let data = res.data as? WeatherCityData else { return }
+                self.weather = data.desc
+                if let temp = data.temp {
+                    self.temperature = temp + "°"
+                }
+                
+            default : break
             }
         }
         .onAppear(){
@@ -103,7 +119,9 @@ struct LocationInfo : PageComponent {
         }
     }
     
-    
+    func requestWeather(cityId:String) {
+        self.dataProvider.requestData(q: .init(type: .getWeather(id: cityId), isOptional: true))
+    }
 }
 
 

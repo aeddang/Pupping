@@ -13,10 +13,20 @@ struct ImageItem: PageComponent, Identifiable {
     let id = UUID().uuidString
     let imagePath: String
     var body: some View {
-        ImageView(url:imagePath, contentMode: .fill)
+        ImageView(url:imagePath, contentMode: .fit)
     }
 }
 
+struct UIImageItem: PageComponent, Identifiable {
+    let id = UUID().uuidString
+    let image: UIImage
+    var body: some View {
+        Image(uiImage: image)
+            .renderingMode(.original)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+    }
+}
 struct ResourceItem: PageComponent, Identifiable {
     let id = UUID().uuidString
     let asset: String

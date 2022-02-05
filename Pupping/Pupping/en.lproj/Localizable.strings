@@ -16,7 +16,8 @@
 
 "puppingCoin" = "Pupping";
 "point" = "Point";
-"completeMission" = "Mission";
+"mission" = "Mission";
+"walk" = "Walk";
 "year" = "YY";
 "month" = "MM";
 "day" = "DD";
@@ -27,11 +28,15 @@
 "km" = "km";
 "m" = "m";
 "min" = "min";
+"kg" = "kg";
 "redeem" = "Redeem";
 
 "filter" = "filter";
 "near" = "near";
 
+"weight" = "Weight";
+"size" = "Size";
+"owner" = "'s";
 /*
   Button
 */
@@ -50,7 +55,7 @@
 "btnStop" = "Finish";
 "btnPause" = "Stop";
 "btnResume" = "Walk";
-
+"btnMore" = "See More";
 /*
   Alert
 */
@@ -64,6 +69,7 @@
 "alertLocation" = "Please allow location access";
 "alertLocationSub" = "According to Apple's policy, you must allow location access to send us your locatoin";
 "alertLocationBtn" = "Go to grant permission";
+"alertLocationDisable" = "Unable to get location information.";
 
 "alertDragdown" = "Pull to close this page";
 
@@ -113,7 +119,9 @@
 "titleCommingSoon" = "comming soon";
 "titleMission" = "Start Mission";
 "titleMissionInfo" = "Preview Mission";
-
+"titleHistory" = "History";
+"titleAlbum" = "Album";
+"titleWalkReport" = "Walk Report";
 /*
 PageIntro
 */
@@ -146,6 +154,9 @@ PageLogin
 "profileRegistMicroFin" = "’s animal ID or a microchip number";
 "profileRegistMicroFinInfo" = "An animal ID is consisted of 15 digits.\nTake your pet to be scanned at the local vet,\nrescue centre or dog wardens service.";
 
+"profileRegistWeight" = "’s weight(kg)";
+"profileRegistSize" = "’s size(m)";
+
 "profileRegistNeutralized" = "Neutralized";
 "profileRegistDistemperVaccinated" = "Distemper Vaccinated";
 "profileRegistHepatitisVaccinated" = "Hepatitis Vaccinated";
@@ -166,6 +177,12 @@ PageLogin
 "profileWalkHistory" = "Walk History";
 "profileMissionHistory" = "Mission History";
 "profileHealthCare" = "Health Care";
+"profileHealthRecord" = "Health Record";
+
+"profileHistory" = "History";
+"profileAbout" = "About";
+"profileLastUpdate" = "Last updated on";
+"profileHealthRecordUpdate" = "Update health record";
 
 /*
  PageMission
@@ -180,3 +197,35 @@ PageLogin
 "walkCompleted" = "Walk Complete!";
 "walkCompletedText" = "Walk your dog for %s mins.";
 "walkCompletedSaved" = "saved.";
+
+/*
+ PageWalkReport
+*/
+"reportWalkSummary" = "Walk Summary";
+"reportWalkSummaryDuration" = "Total. Time";
+"reportWalkSummaryDistance" = "Total. Distance";
+"reportWalkSummaryWeekly" = "Weekly";
+"reportWalkSummaryMonthly" = "Monthly";
+
+"reportWalkDayUnit" = "days";
+"reportWalkDayText" = "You’ve walked";
+"reportWalkDayTextWeek" = "in total this week.";
+"reportWalkDayTextMonth" = "in total this month.";
+
+"reportWalkDayCompleted" = "You achieved the goal! Good job!";
+"reportWalkDayContinue" = "Walk %s days";
+
+"reportWalkDayCompareText1" = "This is";
+"reportWalkDayCompareText2" = "as the average of others.";
+"reportWalkDayCompareLess" = "day less";
+"reportWalkDayCompareMore" = "day more";
+"reportWalkDayCompareSame" = "just the same";
+
+"reportWalkDayCompareMe" = "Me";
+"reportWalkDayCompareOthers" = "Others";
+
+"reportWalkRecentlyUnit" = "mins";
+"reportWalkRecentlyText1" = "Your recently walked";
+"reportWalkRecentlyText2" = "in average for each walk.";
+
+"reportWalkRecentlyTip" = "The recommended time for each walk\nis between 20-40 mins.";

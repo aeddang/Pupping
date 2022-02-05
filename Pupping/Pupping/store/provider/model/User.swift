@@ -24,6 +24,13 @@ enum Gender {
         }
     }
     
+    func getSimpleTitle() -> String {
+        switch self {
+        case .male : return "Male"
+        case .female : return "Female"
+        }
+    }
+    
     func coreDataKey() -> Int {
         switch self {
         case .male : return 1
@@ -68,7 +75,7 @@ class User:ObservableObject, PageProtocol, Identifiable{
     private(set) var currentProfile:UserProfile = UserProfile()
     private(set) var currentPet:PetProfile? = nil
     private(set) var snsUser:SnsUser? = nil
-    
+    private(set) var recentMission:History? = nil
     func registUser(user:SnsUser){
         self.snsUser = user
     }
@@ -82,6 +89,24 @@ class User:ObservableObject, PageProtocol, Identifiable{
         guard let id = id, let token = token , let type = SnsType.getType(code: code) else {return}
         DataLog.d("user init " + (code ?? ""), tag: self.tag)
         self.snsUser = SnsUser(snsType: type, snsID: id, snsToken: token)
+    }
+    
+    func setData(_ data:MissionData) -> User {
+        self.recentMission = History(data: data)
+        if let user = data.user {
+            self.setData(data:user)
+        }
+        if let pets = data.pets {
+            self.setData(data:pets)
+        }
+        if let type = SnsType.getType(code: data.user?.providerType), let id = data.user?.userId {
+            self.snsUser = SnsUser(
+                snsType: type,
+                snsID: id,
+                snsToken: ""
+            )
+        }
+        return self
     }
     
     func setData(data:UserData){
@@ -125,6 +150,8 @@ class User:ObservableObject, PageProtocol, Identifiable{
         self.mission = data.mission
         self.coin = data.coin
     }
+    
+    
      
     func addPet(_ profile:PetProfile) {
         pets.append(profile)

@@ -23,10 +23,15 @@ extension PageID{
     static let board:PageID = "board"
     static let shop:PageID = "shop"
     static let my:PageID = "my"
+    static let history:PageID = "history"
     static let profile:PageID = "profile"
     static let profileRegist:PageID = "profileRegist"
     static let profileModify:PageID = "profileModify"
+    static let healthModify:PageID = "healthModify"
     static let user:PageID = "user"
+    static let picture:PageID = "picture"
+    static let pictureList:PageID = "pictureList"
+    static let report:PageID = "report"
 }
 
 struct PageProvider {
@@ -53,7 +58,7 @@ struct PageProvider {
     static func getType(_ pageID:PageID)-> PageAnimationType{
         switch pageID {
         case  .mission ,.missionInfo, .walk: return .vertical
-        case  .missionCompleted,.walkCompleted, .selectProfile : return .opacity
+        case  .missionCompleted,.walkCompleted, .selectProfile, .picture : return .opacity
         default : return  .horizontal
         }
     }
@@ -92,6 +97,7 @@ struct PageProvider {
 }
 
 extension PageParam {
+    static let idx = "idx"
     static let id = "id"
     static let subId = "subId"
     static let link = "link"
@@ -146,7 +152,8 @@ struct PageFactory{
         case .board : return PageBoard()
         case .shop : return PageShop()
         case .my : return PageMy()
-        case .profile: return PageProfile()
+        case .history : return PageHistory()
+        case .profile : return PageProfile()
         case .profileRegist: return PageProfileRegist()
         case .profileModify: return PageProfileModify()
         case .walk : return PageWalk()
@@ -156,6 +163,10 @@ struct PageFactory{
         case .missionCompleted : return PageMissionCompleted()
         case .selectProfile : return PageSelectProfile()
         case .user : return PageUser()
+        case .picture : return PagePicture()
+        case .pictureList : return PagePictureList()
+        case .healthModify : return PageHealthModify()
+        case .report : return PageReport()
         default : return PageTest()
         }
     }
@@ -169,15 +180,22 @@ struct PageSceneModel: PageModel {
     func getPageOrientation(_ pageObject:PageObject?) -> UIInterfaceOrientationMask? {
         guard let pageObject = pageObject ?? self.topPageObject else { return UIInterfaceOrientationMask.all }
         switch pageObject.pageID {
-        default :
-            return SystemEnvironment.isTablet ? UIInterfaceOrientationMask.all : UIInterfaceOrientationMask.portrait
+        case .picture, .pictureList :  return .all
+        default :  return .portrait
         }
     }
     func getPageOrientationLock(_ pageObject:PageObject?) -> UIInterfaceOrientationMask? {
         guard let pageObject = pageObject ?? self.topPageObject else { return UIInterfaceOrientationMask.all }
         switch pageObject.pageID {
-        default :
-            return SystemEnvironment.isTablet ? UIInterfaceOrientationMask.all : UIInterfaceOrientationMask.portrait
+        case .picture, .pictureList :  return .all
+        default : return  .portrait
+        }
+    }
+    func getUIStatusBarStyle(_ pageObject:PageObject?) -> UIStatusBarStyle? {
+        guard let page = pageObject else {return .darkContent}
+        switch page.pageID {
+        case .picture : return .lightContent
+        default : return .darkContent
         }
     }
     func getCloseExceptions() -> [PageID]? {

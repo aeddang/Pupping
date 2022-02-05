@@ -7,8 +7,9 @@
 //
 
 import Foundation
-
+import CoreLocation
 import UIKit
+import AVFAudio
 
 struct ApiPath {
     static func getRestApiPath() -> String {
@@ -33,7 +34,7 @@ struct ApiCode {
 }
 
 enum ApiAction:String{
-    case login
+    case login, detecthumanwithdog, search, thumbsup, cities
 }
 
 enum ApiValue:String{
@@ -46,8 +47,18 @@ enum ApiType{
     case registPet(SnsUser, PetProfile), getPets(SnsUser, isCanelAble:Bool? = true), getPet(petId:Int),
          updatePet(petId:Int, ModifyPetProfileData), updatePetImage(petId:Int, UIImage),
          deletePet(petId:Int)
-    case getMission(SnsUser,petId:Int),
+    case getMission(userId:String? = nil,petId:Int? = nil, MissionApi.Category , page:Int? = nil, size:Int? = nil),
+         searchMission(MissionApi.Category, MissionApi.SearchType, location:CLLocation? = nil, distance:Double? = nil, page:Int? = nil, size:Int? = nil),
          completeMission(Mission, [PetProfile]),completeWalk(Walk, [PetProfile])
+    case checkHumanWithDog(UIImage)
+    
+    case getAlbumPictures(id:String, AlbumApi.Category, page:Int? = nil, size:Int? = nil),
+         registAlbumPicture(img:UIImage, thumbImg:UIImage, id:String, AlbumApi.Category),
+         deleteAlbumPictures(ids:String),
+         updateAlbumPictures(pictureId:Int, isLike:Bool)
+    
+    case getWeather(id:String, type:ApiAction = .cities)
+    
     func coreDataKey() -> String? {
         switch self {
         default : return nil
