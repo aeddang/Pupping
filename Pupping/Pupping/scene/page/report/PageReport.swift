@@ -12,27 +12,23 @@ import Combine
 class ReportData {
     private(set) var daysWalkData:ArcGraphData = ArcGraphData()
     private(set) var daysWalkReport:String = ""
-    private(set) var daysWalkCompareData:[CompareGraphData]
-    = [
-        CompareGraphData(value:1, color:Color.brand.primary, title:String.pageText.reportWalkDayCompareMe),
-        CompareGraphData(value:2, color:Color.app.grey, title:String.pageText.reportWalkDayCompareOthers)
-    ]
+    private(set) var daysWalkCompareData:[CompareGraphData] = []
     private(set) var daysWalkCompareReport:String = ""
     private(set) var daysWalkTimeData:LineGraphData = LineGraphData()
     private(set) var currentDaysWalkTimeIdx:Int = 0
     private(set) var daysWalkTimeReport:String = ""
     
     
-    func seupData(){
+    func setupData(){
         self.daysWalkReport = Int(daysWalkData.value).description + " " + String.pageText.reportWalkDayUnit
         if daysWalkCompareData.count >= 2 {
             let me = daysWalkCompareData.first!.value
             let other = daysWalkCompareData.last!.value
             let diff = me - other
             if diff > 0 {
-                self.daysWalkCompareReport = diff.description + String.pageText.reportWalkDayUnit + " " + String.pageText.reportWalkDayCompareMore
+                self.daysWalkCompareReport = Double(diff).toTruncateDecimal(n:2) + String.pageText.reportWalkDayUnit + " " + String.pageText.reportWalkDayCompareMore
             } else if diff < 0 {
-                self.daysWalkCompareReport = abs(diff).description + String.pageText.reportWalkDayUnit + " " + String.pageText.reportWalkDayCompareLess
+                self.daysWalkCompareReport = Double(abs(diff)).toTruncateDecimal(n:2) + String.pageText.reportWalkDayUnit + " " + String.pageText.reportWalkDayCompareLess
             } else {
                 self.daysWalkCompareReport = String.pageText.reportWalkDayCompareSame
             }
@@ -40,7 +36,50 @@ class ReportData {
         let avg = self.daysWalkTimeData.values.reduce(Float(0), {$0 + $1}) / Float(self.daysWalkTimeData.values.count) * 50.0
         self.daysWalkTimeReport = Double(avg).toTruncateDecimal(n:2) + " " + String.pageText.reportWalkRecentlyUnit
     }
+    func setWeeklyData(_ data:MissionSummary) -> ReportData{
+        if let report = data.weeklyReport {
+            self.currentDaysWalkTimeIdx = self.setReport(report)
+        }
+        self.setupData()
+        return self
+    }
+    func setMonthlyData(_ data:MissionSummary) -> ReportData{
+        if let report = data.monthlyReport {
+            self.currentDaysWalkTimeIdx = self.setReport(report)
+        }
+        self.setupData()
+        return self
+    }
     
+    func setReport(_ data:MissionReport)-> Int{
+        
+        var todayIdx:Int = -1
+        let max = Float(data.missionTimes?.count ?? 7)
+        let myCount =  Float(data.totalMissionCount ?? 0)
+        self.daysWalkCompareData
+        = [
+            CompareGraphData(value:myCount, max:max , color:Color.brand.primary, title:String.pageText.reportWalkDayCompareMe),
+            CompareGraphData(value:Float(data.avgMissionCount ?? 0), max:max, color:Color.app.grey, title:String.pageText.reportWalkDayCompareOthers)
+        ]
+        if let missionTimes = data.missionTimes {
+            let count = missionTimes.count
+            self.daysWalkData = ArcGraphData(value: myCount, max: Float(count))
+            let today = Date().toDateFormatter(dateFormat: "yyyyMMdd")
+            let values:[Float] = missionTimes.map{ time in
+                return Float(min(50, time.v ?? 0)) / 50
+            }
+            let lines:[String] = zip(0...missionTimes.count,missionTimes).map{idx, time in
+                if time.d == today { todayIdx = idx }
+                let date = time.d?.toDate(dateFormat: "yyyyMMdd") ?? Date()
+                let mm = date.toDateFormatter(dateFormat: "MM").toInt().description
+                let dd = date.toDateFormatter(dateFormat: "dd").toInt().description
+                return mm + "/" + dd
+            }
+            self.daysWalkTimeData = LineGraphData(values: values, lines: lines)
+            
+        }
+        return todayIdx
+    }
     func setDummyWeekly() -> ReportData{
         self.daysWalkData = ArcGraphData()
         self.daysWalkCompareData
@@ -50,7 +89,7 @@ class ReportData {
         ]
         self.daysWalkTimeData = LineGraphData()
         self.currentDaysWalkTimeIdx = 2
-        self.seupData()
+        self.setupData()
         return self
     }
     func setDummyMonthly() -> ReportData{
@@ -65,7 +104,7 @@ class ReportData {
         }
         self.daysWalkTimeData = LineGraphData(values: values, lines: values.map{$0.description})
         self.currentDaysWalkTimeIdx = 5
-        self.seupData()
+        self.setupData()
         return self
     }
 }
@@ -90,7 +129,7 @@ struct PageReport: PageView {
     @State var userId:String? = nil
     @State var selectedMenu:Int = 0
     @State var isUiReady:Bool = false
-    
+   
     var body: some View {
         GeometryReader { geometry in
             PageDragingBody(
@@ -228,6 +267,16 @@ struct PageReport: PageView {
                     self.load()
                 }
             }
+            .onReceive(self.dataProvider.$result){ res in
+                guard let res = res else { return }
+                switch res.type {
+                case .getMissionSummary(let id) :
+                    if self.profile?.petId == id {
+                        self.loaded(res)
+                    }
+                default : break
+                }
+            }
             .onAppear{
                 guard let obj = self.pageObject  else { return }
                 guard let profile = obj.getParamValue(key: .data) as? PetProfile else { return }
@@ -241,20 +290,34 @@ struct PageReport: PageView {
    
     @State var reportType:ReportType = .weekly
     @State var reportData:ReportData? = nil
+    @State var cachedData:MissionSummary? = nil
     
     func load(){
         if !self.isUiReady {return}
         self.reportData = nil
-        if self.selectedMenu == 0 {
-            self.reportType = .weekly
-            withAnimation{
-                self.reportData = ReportData().setDummyWeekly()
+        self.reportType = self.selectedMenu == 0 ? .weekly : .monthly
+        
+        if let cachedData = self.cachedData {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.05){
+                self.setupReportData(cachedData)
             }
         } else {
-            self.reportType = .monthly
-            withAnimation{
-                self.reportData = ReportData().setDummyMonthly()
-            }
+            self.dataProvider.requestData(q: .init(type: .getMissionSummary(petId: self.profile?.petId ?? 0)))
+        }
+    }
+    
+    private func loaded(_ res:ApiResultResponds){
+        guard let data = res.data as? MissionSummary else { return }
+        self.cachedData = data
+        self.setupReportData(data)
+    }
+    
+    func setupReportData(_ data:MissionSummary){
+        switch self.reportType {
+        case .monthly :
+            self.reportData = ReportData().setMonthlyData(data)
+        case .weekly :
+            self.reportData = ReportData().setWeeklyData(data)
         }
     }
     

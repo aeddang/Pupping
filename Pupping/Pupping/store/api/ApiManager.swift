@@ -208,6 +208,10 @@ class ApiManager :PageProtocol, ObservableObject{
             self.mission.post(walk: walk, pets: pets,
                               completion: {res in self.complated(id: apiID, type: type, res: res)},
                               error:error)
+        case .getMissionSummary(let petId) :
+            self.mission.getSummary(petId: petId,
+                                    completion: {res in self.complated(id: apiID, type: type, res: res)},
+                                    error:error)
         
         case .checkHumanWithDog(let img) :
             self.vision.post(img: img, action: .detecthumanwithdog,
@@ -229,7 +233,11 @@ class ApiManager :PageProtocol, ObservableObject{
             self.album.put(id: pictureId, isLike: isLike,
                            completion: {res in self.complated(id: apiID, type: type, res: res)},
                            error:error)
-        case .getWeather(let id, let action) :
+        case .getWeather(let loc) :
+            self.misc.getWeather(location: loc,
+                                 completion: {res in self.complated(id: apiID, type: type, res: res)},
+                                 error:error)
+        case .getWeatherCity(let id, let action) :
             self.misc.getWeather(id: id, action: action,
                                  completion: {res in self.complated(id: apiID, type: type, res: res)},
                                  error:error)

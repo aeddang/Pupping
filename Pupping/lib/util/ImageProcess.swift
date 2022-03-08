@@ -23,6 +23,21 @@ extension UIImage {
         return resultImage ?? self
     }
     
+    func maskRoundedImage(size:CGRect? = nil, radius: CGFloat, borderColor:Color = Color.white, borderWidth:CGFloat = 0) -> UIImage {
+        let imageView: UIImageView = UIImageView(image:self)
+        let layer = imageView.layer
+        layer.masksToBounds = true
+        layer.cornerRadius = radius
+        layer.borderColor = borderColor.cgColor
+        layer.borderWidth = borderWidth
+        if let s = size {layer.frame = s}
+        UIGraphicsBeginImageContext(imageView.bounds.size)
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let roundedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return roundedImage!
+    }
+    
     func crop(to:CGSize) -> UIImage {
         let contextSize: CGSize = self.contextSize()
 

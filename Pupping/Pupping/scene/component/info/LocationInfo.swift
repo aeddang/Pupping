@@ -19,7 +19,7 @@ struct LocationInfo : PageComponent {
     @State var location:String? = nil
     @State var temperature:String? = nil
     @State var weather:String? = nil
-     
+    @State var weatherIcon:String? = nil
     var body: some View {
         HStack(spacing:Dimen.margin.light){
             Image(Asset.icon.location)
@@ -49,10 +49,18 @@ struct LocationInfo : PageComponent {
                     }
                     if let weather = self.weather {
                         Text(weather)
-                            .modifier(BoldTextStyle(
-                                size: Font.size.mediumExtra,
-                                color: Color.app.greyDeep
+                            .modifier(MediumTextStyle(
+                                size: Font.size.regular,
+                                color: Color.app.grey
                             ))
+                    }
+                    
+                    if let icon = self.weatherIcon {
+                        ImageView(
+                            url:icon,
+                            contentMode: .fit)
+                            .frame(width: Dimen.icon.medium, height: Dimen.icon.medium)
+                            .padding(.leading, -Dimen.margin.tinyExtra)
                     }
                 }
             }
@@ -67,6 +75,7 @@ struct LocationInfo : PageComponent {
                     self.requestLocation()
                 }
             case .updateLocation(let loc):
+                self.requestWeather(loc:loc)
                 self.locationObserver.convertLocationToAddress(location: loc){ address in
                     guard let state = address.state else {return}
     
@@ -76,7 +85,7 @@ struct LocationInfo : PageComponent {
                         } else {
                             self.location = state + " " + city
                         }
-                        self.requestWeather(cityId: city)
+                        //self.requestWeather(cityId: city)
                     } else {
                         self.location = state
                     }
@@ -88,11 +97,14 @@ struct LocationInfo : PageComponent {
         .onReceive(self.dataProvider.$result){ res in
             guard let res = res else { return }
             switch res.type {
-            case .getWeather :
+            case .getWeatherCity, .getWeather :
                 guard let data = res.data as? WeatherCityData else { return }
                 self.weather = data.desc
                 if let temp = data.temp {
-                    self.temperature = temp + "°"
+                    self.temperature = temp.toTruncateDecimal(n: 1) + "°"
+                }
+                if let icon = data.iconId {
+                    self.weatherIcon = "http://openweathermap.org/img/wn/" + icon + "@2x.png"
                 }
                 
             default : break
@@ -120,7 +132,13 @@ struct LocationInfo : PageComponent {
     }
     
     func requestWeather(cityId:String) {
-        self.dataProvider.requestData(q: .init(type: .getWeather(id: cityId), isOptional: true))
+        
+        self.dataProvider.requestData(q: .init(type: .getWeatherCity(id: cityId), isOptional: true))
+    }
+    
+    func requestWeather(loc:CLLocation) {
+        
+        self.dataProvider.requestData(q: .init(type: .getWeather(loc), isOptional: true))
     }
 }
 

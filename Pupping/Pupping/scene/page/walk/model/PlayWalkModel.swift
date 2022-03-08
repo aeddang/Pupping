@@ -11,7 +11,7 @@ import CoreLocation
 import GooglePlaces
 
 enum PlayMissionEvent {
-    case accessDenied, start, completeStep(Int), next(Int) ,completed, resume, pause
+    case accessDenied, start, completeStep(Int), next(Int) ,completed, resume, pause, viewPoint(CLLocation)
 }
 enum PlayMissionStatus {
     case initate, play, stop, complete
@@ -24,16 +24,17 @@ enum PlayWalkType {
 struct PlayDestination {
     let place:GMSPlace
     let location:CLLocation
+    var isLast:Bool = false
 }
 
 class PlayWalkModel:ObservableObject, PageProtocol{
     private var locationObserver:LocationObserver? = nil
-    private var mission:Mission? = nil
+    private(set) var mission:Mission? = nil
     private var anyCancellable = Set<AnyCancellable>()
    
     private(set) var startTime:Date = Date()
     
-    @Published private(set) var event:PlayMissionEvent? = nil
+    @Published var event:PlayMissionEvent? = nil
         {didSet{ if event != nil { event = nil} }}
     @Published private(set) var status:PlayMissionStatus = .initate
        
@@ -74,7 +75,7 @@ class PlayWalkModel:ObservableObject, PageProtocol{
             }
             self.destinations.append(PlayDestination(place: start, location: startLocation))
             self.destinations.append(contentsOf: wayPointLocation)
-            self.destinations.append(PlayDestination(place: end, location: endLocation ))
+            self.destinations.append(PlayDestination(place: end, location: endLocation, isLast: true ))
             self.startLocation = startLocation
             self.endLocation = endLocation
             

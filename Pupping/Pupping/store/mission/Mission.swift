@@ -32,19 +32,28 @@ enum MissionType:CaseIterable {
     }
 }
 
-enum MissionPlayType:CaseIterable {
+enum MissionPlayType:CaseIterable, Equatable {
     case nearby, location, speed, endurance
     func info() -> String{
         switch self {
-        case .nearby: return "주면 둘러 보기"
-        case .location: return "주변 시설 알아보기"
-        case .speed : return "스피드 기르기"
-        case .endurance : return "지구력 기르기"
+        case .nearby: return String.play.around
+        case .location: return String.play.location
+        case .speed : return String.play.speed
+        case .endurance : return String.play.endurance
         }
     }
    
     static func random() -> MissionPlayType{
         return Self.allCases.map{$0}.randomElement()!
+    }
+    static func ==(lhs: MissionPlayType, rhs: MissionPlayType) -> Bool {
+        switch (lhs, rhs) {
+        case ( .nearby, .nearby): return true
+        case ( .location, .location): return true
+        case ( .speed, .speed): return true
+        case ( .endurance, .endurance): return true
+        default : return false
+        }
     }
 }
 
@@ -259,6 +268,8 @@ class Mission:PageProtocol, Identifiable, Equatable{
     @discardableResult
     func build() -> Mission {
         guard let start = self.start else { return self }
+        let locale = NSLocale.current.languageCode
+        
         if let destination = self.destination {
             var desc = ""
             var distence:Double = 0
@@ -278,27 +289,44 @@ class Mission:PageProtocol, Identifiable, Equatable{
             if !desc.isEmpty {
                 desc.removeLast(way.count)
                 let trailing = self.destination?.name ?? ""
-                self.description = desc + "\n를(을) 경유하여 " + viewDuration + " 안에\n" + trailing + "로(으로) 이동"
+                if locale == "ko" {
+                    self.description = desc + "\n를(을) 경유하여 " + viewDuration + " 안에\n" + trailing + "로(으로) 이동"
+                } else {
+                    self.description = "Move " + trailing + " in " + viewDuration + " via\n" + desc
+                }
+                
             } else {
-                self.description = viewDuration + " 안에\n" + (destination.name ?? "") + "로(으로) 이동"
+                if locale == "ko" {
+                    self.description = viewDuration + " 안에\n" + (destination.name ?? "") + "로(으로) 이동"
+                } else {
+                    self.description = "Move " + (destination.name ?? "") + "\nwithin " + viewDuration
+                }
             }
-            self.summary = viewDuration + " 안에 " + (destination.name ?? "") + "로(으로) 이동"
+            if locale == "ko" {
+                self.summary = viewDuration + " 안에 " + (destination.name ?? "") + "로(으로) 이동"
+            } else {
+                self.summary = "Move " + (destination.name ?? "") + " within " + viewDuration
+            }
         } else {
             switch self.playType {
             case .endurance:
                 self.totalDistence = self.lv.distance()
                 self.duration = self.lv.duration()
                 self.speed = ceil(self.totalDistence/self.duration)
-                self.description =
-                    viewDuration + " 동안 "
-                    + viewDistence + " 이상 이동"
+                if locale == "ko" {
+                    self.description = viewDuration + " 동안 " + viewDistence + " 이상 이동"
+                } else {
+                    self.description = "Move for " + viewDuration + ", over " + viewDistence
+                }
             case .speed:
                 self.totalDistence = MissionLv.lv1.distance()
                 self.speed = self.lv.speed()
                 self.duration = ceil(self.totalDistence/self.speed)
-                self.description =
-                    viewSpeed + " 이상 속도로 "
-                    + viewDistence + " 이동"
+                if locale == "ko" {
+                    self.description = viewSpeed + " 이상 속도로 " + viewDistence + " 이동"
+                } else {
+                    self.description = viewDistence  + " moves at a speed of" + viewSpeed
+                }
             default: break
             }
             self.summary =  description

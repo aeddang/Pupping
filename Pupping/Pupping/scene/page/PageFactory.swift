@@ -110,6 +110,8 @@ extension PageParam {
     static let subText = "subText"
     static let viewPagerModel = "viewPagerModel"
     static let infinityScrollModel = "infinityScrollModel"
+    
+    static let autoStart = "autoStart"
 }
 
 extension PageEventType {

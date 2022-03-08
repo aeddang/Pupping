@@ -76,6 +76,9 @@ class User:ObservableObject, PageProtocol, Identifiable{
     private(set) var currentPet:PetProfile? = nil
     private(set) var snsUser:SnsUser? = nil
     private(set) var recentMission:History? = nil
+    private(set) var finalGeo:GeoData? = nil
+    
+    
     func registUser(user:SnsUser){
         self.snsUser = user
     }
@@ -97,7 +100,7 @@ class User:ObservableObject, PageProtocol, Identifiable{
             self.setData(data:user)
         }
         if let pets = data.pets {
-            self.setData(data:pets)
+            self.setData(data:pets, isMyPet:false)
         }
         if let type = SnsType.getType(code: data.user?.providerType), let id = data.user?.userId {
             self.snsUser = SnsUser(
@@ -106,6 +109,7 @@ class User:ObservableObject, PageProtocol, Identifiable{
                 snsToken: ""
             )
         }
+        self.finalGeo = data.geos?.first
         return self
     }
     
@@ -113,8 +117,8 @@ class User:ObservableObject, PageProtocol, Identifiable{
         self.point = data.point ?? 0
         self.currentProfile.setData(data: data)
     }
-    func setData(data:[PetData]){
-        self.pets = data.map{ PetProfile(data: $0, isMyPet: true)}
+    func setData(data:[PetData], isMyPet:Bool = true){
+        self.pets = data.map{ PetProfile(data: $0, isMyPet: isMyPet)}
     }
     
     func deletePet(petId:Int) {

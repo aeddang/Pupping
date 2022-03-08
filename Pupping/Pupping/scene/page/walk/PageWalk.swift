@@ -191,7 +191,7 @@ struct PageWalk: PageView {
                
             }
             .onDisappear{
-                
+                self.viewModel.pauseWalk()
             }
         }//geo
     }//body

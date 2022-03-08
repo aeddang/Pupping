@@ -51,13 +51,13 @@ struct CompareGraph: PageComponent{
                         )
                         .modifier(MatchHorizontal(height: Dimen.stroke.heavy))
                         HStack(spacing: 0){
-                            Text(data.value.description)
+                            Text( Double(data.value).toTruncateDecimal(n:2))
                                 .modifier(MediumTextStyle(
                                     size: Font.size.micro,
                                     color: Color.app.greyExtra
                                 ))
                             
-                            Text("/" + data.max.description + data.end)
+                            Text("/" + Double(data.max).toTruncateDecimal(n:0) + data.end)
                                 .modifier(MediumTextStyle(
                                     size: Font.size.micro,
                                     color: Color.app.greyLight

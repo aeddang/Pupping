@@ -67,6 +67,7 @@ extension String {
         public static var locationSub = "alertLocationSub".loaalized()
         public static var locationBtn = "alertLocationBtn".loaalized()
         public static var locationDisable = "alertLocationDisable".loaalized()
+        public static var locationFind = "alertLocationFind".loaalized() 
         public static var dragdown = "alertDragdown".loaalized()
         public static var needProfile = "alertNeedProfile".loaalized()
         public static var deleteProfile = "alertDeleteProfile".loaalized()
@@ -103,6 +104,7 @@ extension String {
         public static let pause = "btnPause".loaalized()
         public static let resume = "btnResume".loaalized()
         public static let more = "btnMore".loaalized()
+        public static let pictureCertification = "btnPictureCertification".loaalized()
     }
     
     struct pageTitle {
@@ -173,6 +175,10 @@ extension String {
         public static let missionCompletedText = "missionCompletedText".loaalized()
         public static let missionCompletedSaved = "missionCompletedSaved".loaalized()
         
+        public static let missionStartGuide = "missionStartGuide".loaalized()
+        public static let missionPointGuide = "missionPointGuide".loaalized()
+        public static let missionPointEndGuide = "missionPointEndGuide".loaalized()
+        
         public static let walkCompleted = "walkCompleted".loaalized()
         public static let walkCompletedText = "walkCompletedText".loaalized()
         public static let walkCompletedSaved = "walkCompletedSaved".loaalized()
@@ -203,6 +209,14 @@ extension String {
         public static let reportWalkRecentlyText1 = "reportWalkRecentlyText1".loaalized()
         public static let reportWalkRecentlyText2 = "reportWalkRecentlyText2".loaalized()
         public static let reportWalkRecentlyTip = "reportWalkRecentlyTip".loaalized()
+    }
+ 
+    struct play {
+        
+        public static let around = "playAround".loaalized()
+        public static let location = "playLocation".loaalized()
+        public static let speed = "playSpeed".loaalized()
+        public static let endurance = "playEndurance".loaalized()
     }
     
 }

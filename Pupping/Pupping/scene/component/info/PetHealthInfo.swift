@@ -23,34 +23,34 @@ struct PetHealthInfo: PageView {
     
     var body: some View {
         VStack(alignment: .leading, spacing: Dimen.margin.thin){
-            
-            TitleTab(
-                title: String.pageText.profileHealthRecord,
-                type: .modify){
-                    self.openModify()
-                }
-            HStack(spacing: Dimen.margin.thin){
-                if weight == nil && size == nil {
-                    FillButton(
-                        type: .stroke,
-                        text: String.pageText.profileHealthRecordUpdate,
-                        icon: Asset.icon.add,
-                        isSelected:false){ _ in
+            if profile.isMypet || weight != nil || size != nil {
+                TitleTab(
+                    title: String.pageText.profileHealthRecord,
+                    type: .modify){
                         self.openModify()
                     }
-                }
-                if let value = weight {
-                    ValueBox(
-                        title: String.app.weight,
-                        value: value)
-                }
-                if let value = size {
-                    ValueBox(
-                        title: String.app.size,
-                        value: value)
+                HStack(spacing: Dimen.margin.thin){
+                    if weight == nil && size == nil {
+                        FillButton(
+                            type: .stroke,
+                            text: String.pageText.profileHealthRecordUpdate,
+                            icon: Asset.icon.add,
+                            isSelected:false){ _ in
+                            self.openModify()
+                        }
+                    }
+                    if let value = weight {
+                        ValueBox(
+                            title: String.app.weight,
+                            value: value)
+                    }
+                    if let value = size {
+                        ValueBox(
+                            title: String.app.size,
+                            value: value)
+                    }
                 }
             }
-            
         }
         .onReceive(self.profile.$weight) { weight in
             guard let w = weight else {return}

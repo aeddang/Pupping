@@ -16,7 +16,7 @@ import Foundation
 import SwiftUI
 
 struct ArcGraphData{
-    var value:Float = 4
+    var value:Float = 0
     var max:Float = 7
     var start:String = "Goal"
     var end:String = String.pageText.reportWalkDayUnit

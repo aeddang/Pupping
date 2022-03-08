@@ -27,6 +27,7 @@ struct GraphHorizontal: PageView {
                         .modifier(MatchParent())
                 }
                 .modifier(MatchVertical(width: geometry.size.width * CGFloat(progress) ))
+                .animation(.easeIn)
             }
             .modifier(MatchHorizontal(height: self.stroke))
             .clipShape(RoundedRectangle(cornerRadius: self.cornerRadius))

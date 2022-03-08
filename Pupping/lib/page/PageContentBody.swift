@@ -134,9 +134,16 @@ struct PageContentBody: PageView  {
                 self.offsetY = pos.y
             }else{
                 if self.pageObject?.isAnimation == true {
-                    withAnimation(.easeOut(duration: Self.pageMoveDuration)){
-                        self.offsetX = pos.x
-                        self.offsetY = pos.y
+                    if self.offsetX > pos.x || self.offsetY > pos.y {
+                        withAnimation(.easeOut(duration: Self.pageMoveDuration)){
+                            self.offsetX = pos.x
+                            self.offsetY = pos.y
+                        }
+                    } else {
+                        withAnimation(.easeIn(duration: Self.pageMoveDuration)){
+                            self.offsetX = pos.x
+                            self.offsetY = pos.y
+                        }
                     }
                 }else{
                     self.offsetX = pos.x

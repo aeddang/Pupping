@@ -126,7 +126,7 @@ struct Alert<Presenting>: View where Presenting: View {
             .frame(
                 minWidth: 0,
                 idealWidth:  320,
-                maxWidth:   460,
+                maxWidth:   320,
                 minHeight: 0,
                 maxHeight: (self.text?.count ?? 0) > self.maxTextCount
                     ?  320

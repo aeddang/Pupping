@@ -52,7 +52,7 @@ struct RedeemInfo: PageComponent {
                 }
                 
                 HStack(alignment: .center, spacing: Dimen.margin.tiny){
-                    Text(String.app.redeem)
+                    Text(String.button.pictureCertification)
                         .modifier(RegularTextStyle(
                             size: Font.size.light,
                             color: Color.app.greyDeep
@@ -79,7 +79,7 @@ struct RedeemInfo: PageComponent {
                     self.action?()
                 }
             }
-            .frame(width: 273)
+            .frame(width: 320)
             .background(Color.brand.primary)
             .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.regular))
             .padding(.all, Dimen.margin.thin)

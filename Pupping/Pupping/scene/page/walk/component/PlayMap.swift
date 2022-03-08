@@ -10,9 +10,10 @@ import SwiftUI
 import Combine
 import GoogleMaps
 import GooglePlaces
+import QuartzCore
 
 enum PlayMapUiEvent {
-    case setupMission(Mission), me(CLLocation), completeStep(Int)
+    case setupMission(Mission), me(CLLocation, rotate:Double? = nil), completeStep(Int)
 }
 class PlayMapModel:MapModel{
     @Published var playEvent:PlayMapUiEvent? = nil{
@@ -27,15 +28,19 @@ extension PlayMap {
     static let zoomRatio:Float = 15.0
     static let zoomCloseup:Float = 16.0
     static let mapMoveDuration:Double = 1.0
+    
+    static let mapMoveAngle:Double = 30
 }
 
 struct PlayMap: PageView {
     
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var viewModel:PlayMapModel = PlayMapModel()
+   
     @Binding var isFollowMe:Bool
     @Binding var isForceMove:Bool
     @State var wayPoints:[MapMarker] = []
+    
     var bottomMargin:CGFloat = 0
     var body: some View {
         ZStack(alignment: .bottomTrailing){
@@ -44,6 +49,10 @@ struct PlayMap: PageView {
                 pageObservable: self.pageObservable)
             Button(action: {
                 self.isFollowMe.toggle()
+                self.viewModel.angle = self.isFollowMe ? Self.mapMoveAngle : 0
+                if let loc = self.location {
+                    self.moveMe(loc: loc)
+                }
                 
             }) {
                 Image( Asset.icon.fixMap )
@@ -58,30 +67,38 @@ struct PlayMap: PageView {
                     .clipShape(Circle())
             }
             .padding(.trailing, Dimen.margin.regular)
-            .padding(.bottom, Dimen.margin.regular + self.bottomMargin)
+            .padding(.bottom, Dimen.margin.medium + self.bottomMargin)
         }
         .onReceive(self.viewModel.$playEvent) { evt in
             guard let evt = evt else { return }
             switch evt {
             case .setupMission(let mission) :
                 self.playSetup(mission: mission)
-            case .me(let loc):
-                self.moveMe(loc: loc)
+            case .me(let loc, let rote):
+                self.moveMe(loc: loc, rotation:rote)
             case .completeStep(let idx):
                 self.completedStep(idx)
             }
             
         }
+        
+        .onAppear{
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        .onDisappear(){
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
     }//body
    
-    
+    @State var rotation:Double? = 270
+    @State var location:CLLocation? = nil
   
     private func getStartMarker(_ start:GMSPlace) -> GMSMarker{
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(
             latitude: start.coordinate.latitude,
             longitude: start.coordinate.longitude)
-        marker.title = "S"
+        marker.title = "Start"
         marker.icon = UIImage(named: Asset.map.startPoint)
         marker.snippet = start.name
         return marker
@@ -92,7 +109,7 @@ struct PlayMap: PageView {
         marker.position = CLLocationCoordinate2D(
             latitude: point.coordinate.latitude,
             longitude: point.coordinate.longitude)
-        marker.title = "P"+(idx+1).description
+        marker.title = "Point"+(idx+1).description
         marker.icon = UIImage(named: Asset.map.wayPoint)
         marker.snippet = point.name
         return marker
@@ -103,7 +120,7 @@ struct PlayMap: PageView {
         marker.position = CLLocationCoordinate2D(
             latitude: destination.coordinate.latitude,
             longitude: destination.coordinate.longitude)
-        marker.title = "D"
+        marker.title = "Goal"
         marker.icon = UIImage(named: Asset.map.destination)
         marker.snippet = destination.name
         return marker
@@ -127,14 +144,25 @@ struct PlayMap: PageView {
     }
     
     
-    private func moveMe(loc:CLLocation){
+    private func moveMe(loc:CLLocation, rotation:Double? = nil){
+        self.location = loc
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(
             latitude: loc.coordinate.latitude,
             longitude: loc.coordinate.longitude)
         marker.title = "Me"
-        marker.icon = UIImage(named: Asset.map.me)
-        self.viewModel.uiEvent = .me( MapMarker(id: "me", marker:  marker)  , follow:self.isFollowMe ? loc : nil )
+        let icon = UIImage(named: self.isFollowMe ? Asset.map.meMove : Asset.map.me)!
+        let imgv = UIImageView(image: icon)
+        marker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
+        marker.iconView = imgv
+    
+        self.viewModel.uiEvent = .me( MapMarker(
+            id: "me",
+            marker:  marker,
+            rotation: rotation ?? self.rotation,
+            isRotationMap: self.isFollowMe
+            
+        )  , follow:self.isFollowMe ? loc : nil )
         
     }
     private func completedStep(_ step:Int){
@@ -143,7 +171,7 @@ struct PlayMap: PageView {
             marker.icon = UIImage(named: Asset.map.destinationOn)
         } else {
             marker.icon = UIImage(named: Asset.map.wayPointOn)
-            marker.snippet = "완료"
+            marker.snippet = "completed"
         }
         
        

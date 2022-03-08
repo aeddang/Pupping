@@ -45,7 +45,8 @@ struct SortButton: View{
                 .padding(.horizontal, Dimen.margin.thin)
             }
             .frame(height:Dimen.button.thin)
-            .background(Color.transparent.clearUi)
+            .background(Color.app.white)
+            .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.light))
             .overlay(
                 RoundedRectangle(cornerRadius: Dimen.radius.light)
                     .stroke(self.isSelected ? Color.brand.primary : Color.app.greyLight  ,

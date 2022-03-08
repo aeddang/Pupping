@@ -34,7 +34,7 @@ struct ApiCode {
 }
 
 enum ApiAction:String{
-    case login, detecthumanwithdog, search, thumbsup, cities
+    case login, detecthumanwithdog, search, thumbsup, cities, summary
 }
 
 enum ApiValue:String{
@@ -47,9 +47,12 @@ enum ApiType{
     case registPet(SnsUser, PetProfile), getPets(SnsUser, isCanelAble:Bool? = true), getPet(petId:Int),
          updatePet(petId:Int, ModifyPetProfileData), updatePetImage(petId:Int, UIImage),
          deletePet(petId:Int)
+    
     case getMission(userId:String? = nil,petId:Int? = nil, MissionApi.Category , page:Int? = nil, size:Int? = nil),
          searchMission(MissionApi.Category, MissionApi.SearchType, location:CLLocation? = nil, distance:Double? = nil, page:Int? = nil, size:Int? = nil),
-         completeMission(Mission, [PetProfile]),completeWalk(Walk, [PetProfile])
+         completeMission(Mission, [PetProfile]),completeWalk(Walk, [PetProfile]),
+         getMissionSummary(petId:Int)
+    
     case checkHumanWithDog(UIImage)
     
     case getAlbumPictures(id:String, AlbumApi.Category, page:Int? = nil, size:Int? = nil),
@@ -57,7 +60,8 @@ enum ApiType{
          deleteAlbumPictures(ids:String),
          updateAlbumPictures(pictureId:Int, isLike:Bool)
     
-    case getWeather(id:String, type:ApiAction = .cities)
+    case getWeather(CLLocation),
+         getWeatherCity(id:String, type:ApiAction = .cities)
     
     func coreDataKey() -> String? {
         switch self {

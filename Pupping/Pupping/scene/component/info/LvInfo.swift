@@ -29,7 +29,7 @@ struct LvInfo: PageComponent{
     @State var exp:String = ""
     @State var prevExp:String = ""
     @State var nextExp:String = ""
-    @State var progressExp:Float = 0
+    @State var progressExp:Float? = nil
     var body: some View {
         ZStack{
             if self.type == .progress {
@@ -47,18 +47,21 @@ struct LvInfo: PageComponent{
                                 color: Color.app.greyLight
                             ))
                     }
-                    ProgressSlider(progress: self.progressExp, useGesture: false, progressHeight: Dimen.bar.light, thumbSize: 0)
-                        .frame(height: Dimen.bar.light)
-                        .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.micro))
-                    
+                    if let exp = self.progressExp {
+                        ProgressSlider(progress: exp, useGesture: false, progressHeight: Dimen.bar.light, thumbSize: 0)
+                            .frame(height: Dimen.bar.light)
+                            .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.micro))
+                    }
                 }
             } else {
                 ZStack(alignment: .top){
                     ZStack(alignment: .bottom){
-                        GraphArc(progress: self.progressExp, stroke: Dimen.stroke.medium)
-                            .frame(width: self.size, height: self.size)
-                            .frame(height: self.size/2, alignment: .top)
-                            .clipped()
+                        if let exp = self.progressExp {
+                            GraphArc(progress: exp, stroke: Dimen.stroke.medium)
+                                .frame(width: self.size, height: self.size)
+                                .frame(height: self.size/2, alignment: .top)
+                                .clipped()
+                        }
                         HStack{
                             Spacer()
                             Text(self.exp)
@@ -91,9 +94,7 @@ struct LvInfo: PageComponent{
             if exp == 0 {return}
             self.nextExp = exp.formatted(style: .decimal)
             let prev = self.profile.prevExp
-            withAnimation{
-                self.progressExp = Float((self.profile.exp - prev) / (exp - prev))
-            }
+            self.progressExp = Float((self.profile.exp - prev) / (exp - prev))
         }
     }
 }

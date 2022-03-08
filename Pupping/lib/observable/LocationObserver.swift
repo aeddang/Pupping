@@ -26,6 +26,7 @@ class LocationObserver: NSObject, ObservableObject, CLLocationManagerDelegate {
     private let  locationManager = CLLocationManager()
     private(set) var isSearch:Bool = false
     private(set) var requestId:String? = nil
+    private(set) var finalLocation:CLLocation? = nil
     @Published var event: LocationObserverEvent? = nil
     {
         didSet{
@@ -69,7 +70,13 @@ class LocationObserver: NSObject, ObservableObject, CLLocationManagerDelegate {
     */
     func requestMe(_ isStart:Bool, id:String? = nil, desiredAccuracy:CLLocationAccuracy? = nil ){
         if isStart {
-            if self.isSearch { return }
+            if self.isSearch {
+                if let loc = self.finalLocation {
+                    self.event = .updateLocation(loc)
+                }
+                return
+                
+            }
             self.isSearch = true
             if let id = id { self.requestId = id }
            
@@ -79,8 +86,8 @@ class LocationObserver: NSObject, ObservableObject, CLLocationManagerDelegate {
             locationManager.startUpdatingLocation()
         } else {
             if !self.isSearch { return }
-            if let id = id {
-                if id != self.requestId { return }
+            if let id = id , let prev = self.requestId{
+                if id != prev { return }
             }
             self.isSearch = false
             self.requestId = nil
@@ -94,6 +101,7 @@ class LocationObserver: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
+        self.finalLocation = location
         self.event = .updateLocation(location)
     }
     

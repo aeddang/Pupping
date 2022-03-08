@@ -7,8 +7,8 @@
 */
 
 "appName" = "Pupping";
-"confirm" = "확인했어요";
-"cancel" = "취소할래요";
+"confirm" = "확인";
+"cancel" = "취소";
 "retry" = "재시도";
 "close" = "닫기";
 
@@ -29,7 +29,7 @@
 "km" = "km";
 "m" = "m";
 "min" = "분";
-"redeem" = "보상";
+"redeem" = "상환";
 "kg" = "kg";
 
 
@@ -60,6 +60,8 @@
 "btnResume" = "재개하기";
 "btnMore" = "더보기";
 
+"btnPictureCertification" = "인증사진 찍고 보상받기";
+
 /*
   Alert
 */
@@ -73,8 +75,8 @@
 "alertLocation" = "위치 탐색을 허용해주세요.";
 "alertLocationSub" = "위치 탐색을 허용해야 산책 코스를 탐지할 수 있어요.";
 "alertLocationBtn" = "권한 허용하러 가기";
-"alertLocationDisable" = "위치 정보를 가저올 수 없습니다.";
-
+"alertLocationDisable" = "위치 정보를 가저올 수 없습니다.\n다시시도 하시겠습니까?";
+"alertLocationFind" = "위치 정보를 가저오는 중 입니다.\n잠시만 기다려주세요.";
 "alertDragdown" = "당겨서 페이지 닫기";
 
 "alertNeedProfile" = "강아지 등록하기";
@@ -92,11 +94,13 @@
 
 "alertCompletedNeedPicture" = "반려견과 함깨한 사진이 필요합니다.";
 "alertCompletedNeedPictureError" = "반려견과 사용자가 함께 찍힌 사진이 필요합니다. 다시 시도해주세요.";
-"alertCompletedExitConfirm" = "미션 보상을 받지 않고 나가면 수행한 미션기록이 저장되지 않습니다. 나가나요?";
+"alertCompletedExitConfirm" = "미션 보상을 받지 않고 종료하면 수행한 미션기록이 저장되지 않습니다. 종료 하시겠습니까?";
 
 "alertNeedInput" = "필수 항목을 입력해주세요.";
 "alertCoinSwap" = "코인이 충전됐어요.";
 "alertPointEmpty" = "포인트가 부족해요.";
+
+
 /*
   Gnb
 */
@@ -196,6 +200,11 @@ PageLogin
 "missionCompleted" = "미션 완료!";
 "missionCompletedText" = "반려견과 %s분 산책하기";
 "missionCompletedSaved" = "미션 정보가 저장되었습니다.";
+
+"missionStartGuide" = "지도에 표시된 출발 지점으로 이동해주세요.";
+"missionPointGuide" = "다음 목적지로 이동해주세요.";
+"missionPointEndGuide" = "마지막 목적지로 이동해주세요.";
+
 /*
  PageWalk
 */
@@ -236,3 +245,11 @@ PageLogin
 "reportWalkRecentlyText2" = "입니다.";
 
 "reportWalkRecentlyTip" = "* 20-40분 정도 산책을 추천해요.";
+
+/*
+ MissionPlay
+ */
+"playAround" = "주면 둘러 보기";
+"playLocation" = "주변 시설 알아보기";
+"playSpeed" = "스피드 기르기";
+"playEndurance" = "지구력 기르기";

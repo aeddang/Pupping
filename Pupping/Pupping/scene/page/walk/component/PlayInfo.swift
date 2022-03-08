@@ -27,8 +27,9 @@ struct PlayInfo : PageComponent {
     @State var playDistence:String = ""
     @State var progress:Float = 0
     @State var currentDistence:String? = nil
-    @State var currentLocation:String = ""
+    @State var currentLocationName:String? = nil
     @State var currentStatus:PlayMissionStatus = .stop
+    @State var currentLocation:CLLocation? = nil
     
     var body: some View {
         VStack(spacing:Dimen.margin.thin){
@@ -46,45 +47,61 @@ struct PlayInfo : PageComponent {
                         color: Color.app.greyDeep
                     ))
             }
+            .padding(.horizontal,Dimen.margin.regular )
             HStack(spacing:Dimen.margin.tiny){
-                ScrollView(.horizontal, showsIndicators: false){
-                    HStack(spacing:Dimen.margin.tiny){
-                        ForEach(profiles) { profile in
-                            PlayProfileInfo(
-                                data: profile
-                            )
+                ZStack(alignment: .trailing){
+                    ScrollView(.horizontal, showsIndicators: false){
+                        HStack(spacing:Dimen.margin.tiny){
+                            ForEach(profiles) { profile in
+                                PlayProfileInfo(
+                                    data: profile
+                                )
+                            }
                         }
+                        .padding(.horizontal,Dimen.margin.regular)
                     }
+                    LinearGradient(
+                        gradient:Gradient(colors: [Color.app.white.opacity(0), Color.app.white]),
+                        startPoint: .leading, endPoint: .trailing)
+                        .frame(width: Dimen.margin.regular, height: Dimen.profile.thin)
                 }
                 if self.viewModel.type == .mission {
-                    if let currentLocation = self.currentLocation {
-                        ZStack{
-                            Image(Asset.icon.flag)
-                                .renderingMode(.template)
-                                .resizable()
-                                .foregroundColor(Color.app.greyDeep)
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: Dimen.icon.tiny, height: Dimen.icon.tiny)
-                        }
-                        .frame(width: Dimen.icon.regular, height: Dimen.icon.regular)
-                        .background(Color.app.greyLight)
-                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                        VStack(alignment: .leading, spacing: 0) {
+                    ZStack{
+                        Image(Asset.icon.flag)
+                            .renderingMode(.template)
+                            .resizable()
+                            .foregroundColor(Color.app.greyDeep)
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: Dimen.icon.tiny, height: Dimen.icon.tiny)
+                            .onTapGesture {
+                                guard let loc = self.currentLocation else {return}
+                                self.viewModel.event = .viewPoint(loc)
+                            }
+                    }
+                    .frame(width: Dimen.icon.regular, height: Dimen.icon.regular)
+                    .background(Color.app.greyLight)
+                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                    VStack(alignment: .leading, spacing: 0) {
+                        if let currentLocation = self.currentLocationName {
                             Text(currentLocation)
                                 .modifier(RegularTextStyle(size: Font.size.tiny, color: Color.brand.primary))
-                            Text(self.currentDistence ?? "...")
+                        }
+                        if let dis = self.currentDistence {
+                            Text(dis)
                                 .modifier(SemiBoldTextStyle(size: Font.size.tiny, color: Color.app.grey))
                         }
                     }
                 }
             }
+            .padding(.trailing, Dimen.margin.regular)
+            
             if self.viewModel.type == .mission {
                 ProgressSlider(
                     progress: self.progress,
                     useGesture: false,
                     progressHeight: Dimen.line.medium)
                     .frame(height:Dimen.line.medium)
-            
+                    .padding(.horizontal,Dimen.margin.regular )
                 HStack(spacing:Dimen.margin.thin){
                     FillButton(
                         type: .stroke,
@@ -99,12 +116,13 @@ struct PlayInfo : PageComponent {
                     }
                     .frame(width: 211)
                 }
+                .padding(.horizontal,Dimen.margin.regular )
             } else {
                 HStack(spacing:Dimen.margin.thin){
                     FillButton(
                         type: .stroke,
                         text: self.currentStatus == .play
-                            ? String.button.resume : String.button.pause,
+                            ? String.button.pause : String.button.resume,
                         icon:self.currentStatus == .play
                             ? Asset.icon.resume: Asset.icon.pause,
                         isSelected:false){ _ in
@@ -117,10 +135,13 @@ struct PlayInfo : PageComponent {
                     }
                     .frame(width: 211)
                 }
+                .padding(.horizontal,Dimen.margin.regular )
+                
             }
             
         }
-        .modifier(BottomFunctionTab())
+        .padding(.vertical, Dimen.margin.regular)
+        .modifier(BottomFunctionTab(margin:0))
         .onReceive(self.viewModel.$playTime) { time in
             self.playTime = time.secToMinString()
         }
@@ -144,15 +165,23 @@ struct PlayInfo : PageComponent {
         .onReceive(self.viewModel.$event) { evt in
             guard let evt = evt  else { return }
             switch evt {
-            
             case .next(_):
-                self.currentLocation = self.viewModel.currentDestination?.place.name ?? ""
+                self.currentLocationName = self.viewModel.currentDestination?.place.name
+                self.currentLocation = self.viewModel.currentDestination?.location
             default : break
             }
         }
-        
         .onAppear(){
-           
+            if self.viewModel.mission?.playType == .location {
+                self.currentLocationName = self.viewModel.destinations.first?.place.name
+                self.currentLocation = self.viewModel.destinations.first?.location
+            } else {
+                if let distence = self.viewModel.mission?.totalDistence {
+                    self.currentDistence = Mission.viewDistence(distence)
+                } else {
+                    self.currentDistence = nil
+                }
+            }
         }
     }
     

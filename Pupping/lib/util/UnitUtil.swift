@@ -457,6 +457,15 @@ extension Numeric {
 
 extension CGFloat {
     func toRadians() -> CGFloat {
-        return self * CGFloat(M_PI) / 180.0
+        return self * CGFloat(Double.pi) / 180.0
     }
 }
+
+extension CGPoint{
+    func getAngleBetweenPoints(target:CGPoint) -> Double {
+        let n = 270 - (atan2(self.x - target.x, self.y - target.y)) * 180 / .pi
+        return n
+    }
+}
+
+

@@ -102,9 +102,6 @@ struct PageMissionInfo: PageView {
     private func startMission(){
         
         guard let mission = self.mission else { return }
-        
-        
-    
         if self.missionManager.currentMission == mission {
             self.appSceneObserver.event = .toast(String.alert.currentPlayMission)
             return
@@ -149,6 +146,7 @@ struct PageMissionInfo: PageView {
         self.pagePresenter.openPopup(
             PageProvider.getPageObject(.mission)
                 .addParam(key: UUID().uuidString, value:  "")
+                .addParam(key: .autoStart, value:  true)
         )
     }
 }

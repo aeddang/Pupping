@@ -88,10 +88,15 @@ extension Asset{
         public static let good  = "ic_good"
         public static let sad  = "ic_sad"
         public static let walk  = "ic_walk"
+        
+        public static let map  = "ic_map"
+        public static let list  = "ic_gallery"
+        
     }
     
     struct map {
         public static let me = "ic_me"
+        public static let meMove = "ic_meMove"
         public static let destination = "ic_destination"
         public static let destinationOn = "ic_destinationOn"
         public static let wayPoint = "ic_wayPoint"

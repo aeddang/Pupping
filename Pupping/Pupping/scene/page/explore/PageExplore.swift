@@ -17,10 +17,13 @@ extension PageExplore{
         "5km",
         "10Km"
     ]
+    
     static let values:[Double] = [
         0, 500, 1000, 5000, 10000
     ]
-    
+    static let zooms:[Float] = [
+        8, 14, 13, 12, 10
+    ]
     static private var filter:Int = 0
 }
 
@@ -34,64 +37,102 @@ struct PageExplore: PageView {
  
     @ObservedObject var pageObservable:PageObservable = PageObservable()
     @ObservedObject var infinityScrollModel:InfinityScrollModel = InfinityScrollModel()
-   
+    @ObservedObject var userMapModel: UserMapModel = UserMapModel()
     @State var bottomMargin:CGFloat = 0
     @State var isUiReady:Bool = false
-    
+    @State var isMap:Bool = true
     
     @State var currentFilterIdx = Self.filter
     @State var currentFilter = ""
     @State var reloadDegree:Double = 0
     @State var reloadDegreeMax:Double = Double(InfinityScrollModel.PULL_COMPLETED_RANGE)
-    
+    @State var isFollowMe:Bool = false
+    @State var isForceMove:Bool = false
     var body: some View {
         VStack(alignment: .leading, spacing:0){
-            PageTab(
-                title: String.gnb.explore,
-                isBack: false,
-                isClose: false,
-                isSetting: false)
-                .padding(.top, self.sceneObserver.safeAreaTop)
-            
-            HStack{
-                Text(String.app.near + self.currentFilter)
-                    .modifier(ContentTitle())
-                Spacer()
-                SortButton(
-                    text: String.app.filter,
-                    isSelected: false,
-                    icon: Asset.icon.filter
-                ){
-                    self.appSceneObserver.select = .select((self.tag , Self.filters), Self.filter){ idx in
-                        self.currentFilterIdx = idx
-                        Self.filter = idx
-                        self.setupFilter()
-                        self.reload()
+            HStack(spacing:Dimen.margin.thin){
+                PageTab(
+                    title: String.gnb.explore,
+                    isBack: false,
+                    isClose: false,
+                    isSetting: false)
+                ImageButton(
+                    isSelected: self.isMap,  defaultImage: Asset.icon.map,
+                    size: .init(width: Dimen.icon.regular, height: Dimen.icon.regular),
+                    defaultColor: Color.app.greyLight, activeColor: Color.app.black){_ in
+                        self.isMap = true
+                        DispatchQueue.main.asyncAfter(deadline: .now()+0.05){
+                            self.updateLocation()
+                        }
                     }
-                }
+                
+                Spacer().modifier(LineVertical(width: Dimen.line.light))
+                    .frame( height: Dimen.tab.thin )
+                
+                ImageButton(
+                    isSelected: !self.isMap,  defaultImage: Asset.icon.list,
+                    size: .init(width: Dimen.icon.regular, height: Dimen.icon.regular),
+                    defaultColor: Color.app.greyLight, activeColor: Color.app.black){_ in
+                        self.isMap = false
+                        DispatchQueue.main.asyncAfter(deadline: .now()+0.05){
+                            self.updateLocation()
+                        }
+                    }
             }
-            .modifier(ContentHorizontalEdges())
-            .padding(.top, Dimen.margin.mediumUltra)
+            .padding(.top, self.sceneObserver.safeAreaTop)
+            .padding(.trailing, Dimen.margin.light)
             ZStack(alignment: .top){
+                
                 ReflashSpinner(
                     progress: self.$reloadDegree)
-                    .padding(.top, Dimen.margin.regular)
-                if let dataSets = self.dataSets {
-                    if dataSets.isEmpty {
-                        EmptyInfo()
-                    } else {
-                        UserListSet(
-                            viewModel: self.infinityScrollModel,
-                            datas: dataSets){
-                                self.load()
-                            }
-                            .modifier(MatchParent())
-                    }
+                    .padding(.top, Dimen.margin.regular + Dimen.margin.regular)
+                if self.isMap {
+                    UserMap(
+                        pageObservable: self.pageObservable,
+                        viewModel: self.userMapModel,
+                        isFollowMe: self.$isFollowMe,
+                        isForceMove: self.$isForceMove)
+                
                 } else {
-                    Spacer().modifier(MatchParent())
+                    if let dataSets = self.dataSets {
+                        if dataSets.isEmpty {
+                            EmptyInfo()
+                                .padding(.top, Dimen.margin.medium + Dimen.margin.thin)
+                        } else {
+                            UserListSet(
+                                viewModel: self.infinityScrollModel,
+                                datas: dataSets){
+                                    self.load()
+                                }
+                                .padding(.top, Dimen.margin.medium + Dimen.margin.thin)
+                                .modifier(MatchParent())
+                        }
+                    } else {
+                        Spacer().modifier(MatchParent())
+                    }
                 }
+                
+                HStack{
+                    Spacer()
+                    SortButton(
+                        text: self.currentFilterIdx == 0
+                        ? String.app.filter
+                        : String.app.near + self.currentFilter,
+                        isSelected: self.currentFilterIdx != 0,
+                        icon: Asset.icon.filter
+                    ){
+                        self.appSceneObserver.select = .select((self.tag , Self.filters), Self.filter){ idx in
+                            self.currentFilterIdx = idx
+                            Self.filter = idx
+                            self.setupFilter()
+                            self.reload()
+                        }
+                    }
+                }
+                .modifier(ContentHorizontalEdges())
+                .padding(.top, Dimen.margin.thin)
             }
-            
+            .padding(.top, Dimen.margin.medium)
         }
         .padding(.bottom, self.bottomMargin)
         .onReceive(self.infinityScrollModel.$event){evt in
@@ -108,6 +149,18 @@ struct PageExplore: PageView {
             }
             
         }
+        .onReceive(self.userMapModel.$event){ evt in
+            guard let evt = evt else {return}
+            switch evt {
+            case .selectedMarker(let marker):
+                guard let markerUser = marker.userData as? User else{ return }
+                self.pagePresenter.openPopup(
+                    PageProvider.getPageObject(.user)
+                        .addParam(key: .data, value: markerUser)
+                )
+            default : break
+            }
+        }
         .onReceive(self.infinityScrollModel.$pullPosition){ pos in
             if pos < InfinityScrollModel.PULL_RANGE { return }
             self.reloadDegree = Double(pos - InfinityScrollModel.PULL_RANGE)
@@ -120,8 +173,10 @@ struct PageExplore: PageView {
                     self.requestLocation()
                 }
             case .updateLocation(let loc):
+                if self.location != nil {return}
                 self.location = loc
-                self.locationObserver.requestMe(false, id:self.tag)
+                self.clearWaitingRequestLocation()
+                self.reload()
             }
         }
         .onReceive(self.dataProvider.$result){ res in
@@ -145,16 +200,52 @@ struct PageExplore: PageView {
             self.setupFilter()
             self.requestLocation()
         }
+        .onDisappear{
+            self.clearWaitingRequestLocation()
+        }
     }//body
     @State var datas:[User] = []
     @State var dataSets:[UserDataSet]? = nil
     @State var isError:Bool? = nil
     @State var location:CLLocation? = nil
+   
     
+    @State var requestLocationTimer:AnyCancellable?
+    func waitingRequestLocation(){
+        self.location = nil
+        self.locationObserver.requestMe(true, id:nil)
+        
+        var count = 0
+        self.requestLocationTimer?.cancel()
+        self.requestLocationTimer = Timer.publish(
+            every: 1, on: .current, in: .common)
+            .autoconnect()
+            .sink() {_ in
+                if count == 0 {
+                    self.appSceneObserver.loadingInfo = [
+                        String.alert.locationFind
+                    ]
+                } else if count == 2 {
+                    self.clearWaitingRequestLocation()
+                    DispatchQueue.main.async {
+                        if self.location != nil {return}
+                        self.undefinedLocation()
+                    }
+                }
+                count += 1
+            }
+    }
+    func clearWaitingRequestLocation() {
+        self.locationObserver.requestMe(false, id:self.tag)
+        self.appSceneObserver.loadingInfo = nil
+        self.requestLocationTimer?.cancel()
+        self.requestLocationTimer = nil
+    }
     func requestLocation() {
         let status = self.locationObserver.status
         if status == .authorizedWhenInUse || status == .authorizedAlways {
-            self.locationObserver.requestMe(true, id:self.tag)
+            self.waitingRequestLocation()
+           
             
         } else if status == .denied {
             self.appSceneObserver.alert = .requestLocation{ retry in
@@ -162,6 +253,14 @@ struct PageExplore: PageView {
             }
         } else {
             self.locationObserver.requestWhenInUseAuthorization()
+        }
+    }
+    
+    func undefinedLocation(){
+        self.appSceneObserver.alert = .confirm(nil, String.alert.locationDisable){ isOk in
+            if isOk {
+                self.requestLocation()
+            }
         }
     }
     
@@ -202,7 +301,7 @@ struct PageExplore: PageView {
                         distance: Self.values[self.currentFilterIdx],
                         page: self.infinityScrollModel.page) ))
         } else {
-            self.appSceneObserver.event = .toast(String.alert.locationDisable)
+            self.undefinedLocation()
             self.dataSets = []
         }
         
@@ -247,6 +346,23 @@ struct PageExplore: PageView {
             )
         }
         self.dataSets = rows
+        self.updateLocation()
+        
+    }
+    
+    @State var isInitMove:Bool = true
+    private func updateLocation(){
+        self.userMapModel.userEvent = .setupMap(self.datas)
+        if let loc = self.location {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.05){
+                self.userMapModel.userEvent = .me(loc)
+                let zoom = PageExplore.zooms[self.currentFilterIdx]
+                self.userMapModel.uiEvent = .move(
+                    loc, zoom:  zoom,
+                    duration: self.isInitMove ? 0 :  0.5)
+                self.isInitMove = false
+            }
+        }
     }
 }
 

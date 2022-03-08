@@ -190,6 +190,7 @@ extension Network {
                     }
                    
                 } catch {
+                    DataLog.e("parse error : \(error)", tag: self.tag)
                     throw self.onDecodingError(data: result.data, e: error)
                 }
             }

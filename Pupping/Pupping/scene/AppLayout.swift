@@ -67,16 +67,16 @@ struct AppLayout: PageComponent{
             if self.isLoading {
                 Spacer().modifier(MatchParent()).background(Color.transparent.black70)
                 if self.loadingInfo != nil {
-                    VStack {
-                        VStack(spacing:0){
-                            ForEach(self.loadingInfo!, id: \.self ) { text in
-                                Text( text )
-                                    .modifier(MediumTextStyle( size: Font.size.mediumExtra ))
-                            }
+                    VStack(spacing:0){
+                        ForEach(self.loadingInfo!, id: \.self ) { text in
+                            Text( text )
+                                .modifier(MediumTextStyle( size: Font.size.mediumExtra, color:Color.app.white ))
                         }
-                        .modifier(MatchParent())
                         Spacer().modifier(MatchParent())
                     }
+                    .padding(.horizontal, Dimen.margin.regular)
+                    .frame(height: 300)
+                    
                 }
                 ActivityIndicator(isAnimating: self.$isLoading, style: .large)
             }
@@ -226,7 +226,7 @@ struct AppLayout: PageComponent{
         self.isInit = true
         if !self.appObserverMove(self.appObserver.page) {
             self.pagePresenter.changePage(
-                PageProvider.getPageObject(.home)
+                PageProvider.getPageObject(.explore)
             )
         }
         if self.appObserver.apns != nil  {

@@ -56,6 +56,8 @@
 "btnPause" = "Stop";
 "btnResume" = "Walk";
 "btnMore" = "See More";
+
+"btnPictureCertification" = "Photo verification and reward";
 /*
   Alert
 */
@@ -70,7 +72,7 @@
 "alertLocationSub" = "According to Apple's policy, you must allow location access to send us your locatoin";
 "alertLocationBtn" = "Go to grant permission";
 "alertLocationDisable" = "Unable to get location information.";
-
+"alertLocationFind" = "Retrieving location information. Please wait.";
 "alertDragdown" = "Pull to close this page";
 
 "alertNeedProfile" = "Add your dog";
@@ -88,7 +90,7 @@
 
 "alertCompletedNeedPicture" = "need picture with your Dog.";
 "alertCompletedNeedPictureError" = "need picture with your Dog. retry.";
-"alertCompletedExitConfirm" = "Don't save?. exit?";
+"alertCompletedExitConfirm" = "If you exit without receiving a mission reward, the completed mission record will not be saved. Are you sure you want to quit?";
 
 "alertNeedInput" = "Please fill in the required fields";
 "alertCoinSwap" = "Coins are charged.";
@@ -197,6 +199,11 @@ PageLogin
 "walkCompleted" = "Walk Complete!";
 "walkCompletedText" = "Walk your dog for %s mins.";
 "walkCompletedSaved" = "saved.";
+"missionStartGuide" = "Please proceed to the starting point indicated on the map.";
+"missionPointGuide" = "Please proceed to the next destination.";
+"missionPointEndGuide" = "Please go to your last destination.";
+
+
 
 /*
  PageWalkReport
@@ -229,3 +236,12 @@ PageLogin
 "reportWalkRecentlyText2" = "in average for each walk.";
 
 "reportWalkRecentlyTip" = "The recommended time for each walk\nis between 20-40 mins.";
+
+
+/*
+ MissionPlay
+ */
+"playAround" = "Take a look around";
+"playLocation" = "Find nearby facilities";
+"playSpeed" = "speed up";
+"playEndurance" = "build endurance";

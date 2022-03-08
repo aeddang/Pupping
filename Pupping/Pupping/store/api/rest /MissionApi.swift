@@ -65,6 +65,8 @@ class MissionApi :Rest{
         fetch(route: MissionApiRoute (method: .get, action:.search, query: params), completion: completion, error:error)
     }
     
+   
+    
     func post(mission:Mission, pets:[PetProfile] , completion: @escaping (ApiContentResponse<MissionData>) -> Void, error: ((_ e:Error) -> Void)? = nil){
         var params = [String: Any]()
         params["missionCategory"] = Category.mission.getApiCode()
@@ -109,6 +111,14 @@ class MissionApi :Rest{
         }
         params["geos"] = geos
         fetch(route: MissionApiRoute (method: .post, body: params), completion: completion, error:error)
+    }
+    
+    
+    func getSummary(petId:Int?,
+             completion: @escaping (ApiContentResponse<MissionSummary>) -> Void, error: ((_ e:Error) -> Void)? = nil){
+        var params = [String: String]()
+        params["petId"] = petId?.description ?? ""
+        fetch(route: MissionApiRoute (method: .get, action:.summary, query: params), completion: completion, error:error)
     }
     
 }

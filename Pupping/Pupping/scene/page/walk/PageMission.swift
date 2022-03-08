@@ -17,7 +17,7 @@ extension PageMission {
     static let mapMoveDuration:Double = 0.5
     static let forceMoveDelay:Double = 1.5
     
-    static var isFollowMe:Bool = false
+    static var isFollowMe:Bool = true
 }
 
 struct PageMission: PageView {
@@ -163,6 +163,7 @@ struct PageMission: PageView {
             
             .onReceive(self.viewModel.$currentLocation){ loc in
                 guard let me = loc else {return}
+                
                 self.moveMe(loc: me)
             }
             .onReceive(self.pageObservable.$isAnimationComplete){ ani in
@@ -204,6 +205,10 @@ struct PageMission: PageView {
                     
                 case .completed:
                     self.playCompleted()
+                    
+                case .viewPoint(let loc) :
+                    self.mapModel.uiEvent = .move(loc, zoom: Self.zoomCloseup, duration: Self.mapMoveDuration)
+                    self.forceMoveLock()
                 default : break
                 }
             }
@@ -213,6 +218,10 @@ struct PageMission: PageView {
                 self.mapModel.uiEvent = .move(self.mapModel.startLocation)
                 self.mission = self.missionManager.currentMission
                 self.isFollowMe = Self.isFollowMe
+                
+                guard let obj = self.pageObject  else { return }
+                guard let autoStart = obj.getParamValue(key: .autoStart) as? Bool else { return }
+                if autoStart { self.playStart() }
             }
             .onDisappear{
                 Self.isFollowMe = self.isFollowMe
@@ -220,6 +229,7 @@ struct PageMission: PageView {
                 if self.missionManager.currentMission == self.mission {
                     self.missionManager.endMission()
                 }
+                self.viewModel.pauseWalk()
             }
         }//geo
     }//body
@@ -232,7 +242,16 @@ struct PageMission: PageView {
         self.isInit = true
     }
     private func moveMe(loc:CLLocation){
-        self.mapModel.playEvent = .me(loc)
+        if let target = self.viewModel.currentDestination?.location.coordinate ?? self.viewModel.startLocation?.coordinate {
+            let targetPoint = CGPoint(x: target.latitude, y: target.longitude)
+            let mePoint = CGPoint(x: loc.coordinate.latitude, y: loc.coordinate.longitude)
+            let rt = mePoint.getAngleBetweenPoints(target: targetPoint)
+            
+            self.mapModel.playEvent = .me(loc , rotate:rt)
+        } else {
+            self.mapModel.playEvent = .me(loc)
+        }
+        
     }
     
     private func playStart(){
@@ -250,12 +269,20 @@ struct PageMission: PageView {
             self.mapModel.uiEvent = .move(start, zoom: Self.zoomCloseup, duration: Self.mapMoveDuration)
             self.forceMoveLock()
         }
+        self.appSceneObserver.event = .toast(String.pageText.missionStartGuide)
+        
     }
     private func playNext(){
         if let location = self.viewModel.currentDestination?.location {
             self.mapModel.uiEvent = .move(location, zoom: Self.zoomCloseup, duration: Self.mapMoveDuration)
             self.forceMoveLock()
+            if self.viewModel.currentDestination?.isLast == true {
+                self.appSceneObserver.event = .toast(String.pageText.missionPointEndGuide)
+            } else {
+                self.appSceneObserver.event = .toast(String.pageText.missionPointGuide)
+            }
         }
+        
     }
     
     private func playCompleted(){
