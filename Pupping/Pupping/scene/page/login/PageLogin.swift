@@ -65,6 +65,7 @@ struct PageLogin: PageView {
                 .clipShape(RoundRectMask(radius: Dimen.radius.lightExtra))
                 .modifier(ContentHorizontalEdges())
                 .padding(.bottom, Dimen.margin.thin)
+            
             Button(action: {
                 self.snsManager.requestLogin(type: .apple)
             }) {

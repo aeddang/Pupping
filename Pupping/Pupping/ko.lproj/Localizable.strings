@@ -133,12 +133,12 @@
 /*
 PageIntro
 */
-"introText1_1" = "Walking your dog is\nthe best present\nyou can give.";
-"introText1_2" = "We cannot emphasize enough\nhow walking is important for a\ndog’s health and happiness.";
-"introText2_1" = "Walk with Pupping\nand gain encrypted\ncoins for your dog.";
-"introText2_2" = "We cannot emphasize enough\nhow walking is important for a\ndog’s health and happiness.";
-"introText3_1" = "...and friends in your town\nto walk together :)";
-"introText3_2" = "Who knows? Maybe you\ncan find a new best friend\nto talk about dogs!";
+"introText1_1" = "Walk your dog\nwith fun missions.";
+"introText1_2" = "Walking dogs never been this\nfun! Explore new routes with\nthe daily and monthly missions.";
+"introText2_1" = "Earn Encrypted\nCoins as you walk.";
+"introText2_2" = "Walk your dog and earn\nfinancial rewards. The coins are\ndesignated to your dog!";
+"introText3_1" = "Make a local dog\ncommunity.";
+"introText3_2" = "Find new local dog friends to\nwalk with and share\ninformation.";
 "introComplete" = "Let’s explore!";
 
 
@@ -156,12 +156,12 @@ PageLogin
 "profileRegistNickName" = "닉네임을 알려주세요.";
 "profileRegistImage" = "프로필 사진";
 "profileRegistName" = "반려견의 이름을 알려주세요.";
-"profileRegistNameTip" = "-최대 15자\n-특수문자는 입력할 수 없어요.";
-"profileRegistSpecies" = "의 종을 알려주세요.";
-"profileRegistBirth" = "의 생일을 알려주세요.";
-"profileRegistGender" = "의 성별을 알려주세요.";
-"profileRegistHealth" = "의 건강상태를 알려주세요.";
-"profileRegistMicroFin" = "의 동물등록번호를 알려주세요.";
+"profileRegistNameTip" = "-최대 15자만 입력할 수 있어요.";
+"profileRegistSpecies" = "종을 알려주세요.";
+"profileRegistBirth" = "생일을 알려주세요.";
+"profileRegistGender" = "성별을 알려주세요.";
+"profileRegistHealth" = "건강상태를 알려주세요.";
+"profileRegistMicroFin" = "동물등록번호를 알려주세요.";
 "profileRegistMicroFinInfo" = "동물등록번호는 15자리 숫자로 구성되어 있어요. 번호는 가까운 동물병원에서 체크할 수 있어요.";
 
 "profileRegistWeight" = "의 몸무게(kg)를 알려주세요.";
@@ -194,6 +194,7 @@ PageLogin
 "profileAbout" = "About";
 "profileLastUpdate" = "Last updated on";
 "profileHealthRecordUpdate" = "Update health record";
+"profileRegistGuide" = "You haven’t added a dog yet. Press + button to add your dog!";
 /*
  PageMission
 */

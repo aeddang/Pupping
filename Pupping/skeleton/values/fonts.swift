@@ -39,7 +39,7 @@ extension Font{
     struct size {
         public static let black:CGFloat = 32//
         public static let bold:CGFloat =  26//
-        public static let boldxtra:CGFloat =  24//
+        public static let boldExtra:CGFloat =  24//
         public static let medium:CGFloat =  22//
         public static let mediumExtra:CGFloat =  20//
         public static let regular:CGFloat = 18//

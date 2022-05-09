@@ -35,7 +35,6 @@ struct PetList: PageComponent{
                 ForEach(self.datas) { data in
                     PetListItem(profile: data )
                         .onTapGesture {
-                            
                             self.pagePresenter.openPopup(
                                 PageProvider.getPageObject(.profile)
                                     .addParam(key: .data, value: data)
@@ -44,11 +43,21 @@ struct PetList: PageComponent{
                         }
                 }
             } else {
-                Image(Asset.image.profileEmpty)
-                    .renderingMode(.original)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: PetList.width, height: PetList.height)
+                HStack(alignment: .center, spacing: Dimen.margin.thin){
+                    Image(Asset.image.emtpyDogProfileCard)
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: Dimen.profile.heavy, height: PetList.height)
+                    Text(String.pageText.profileRegistGuide)
+                         .modifier(MediumTextStyle(
+                             size: Font.size.thin,
+                             color: Color.app.greyDeep
+                         ))
+                }
+                .background(Color.app.greyLight)
+                .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.medium))
+                
             }
         }
         .modifier(

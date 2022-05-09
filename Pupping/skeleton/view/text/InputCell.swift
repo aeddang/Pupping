@@ -184,10 +184,11 @@ struct InputCell_Previews: PreviewProvider {
                 title: "title",
                 input: .constant("test"),
                 isFocus: true,
-                tip: "sdsdsdd",
+                tip: "tip",
+                info: "info",
                 actionTitle: "btn"
             )
-            .environmentObject(PagePresenter()).frame(width:320,height:600)
+            .environmentObject(PagePresenter()).frame(width:240,height:600)
             .background(Color.brand.bg)
         }
     }

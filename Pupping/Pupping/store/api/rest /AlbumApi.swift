@@ -35,6 +35,7 @@ extension AlbumApi {
         }
     }
 }
+
 class AlbumApi :Rest{
     func get(id:String, type:AlbumApi.Category,  page:Int?, size:Int?, completion: @escaping (ApiItemResponse<PictureData>) -> Void, error: ((_ e:Error) -> Void)? = nil){
         var params = [String: String]()
@@ -59,9 +60,9 @@ class AlbumApi :Rest{
         }, completion: completion, error:error)
     }
     
-    func put( id:Int, isLike:Bool, completion: @escaping (Blank) -> Void, error: ((_ e:Error) -> Void)? = nil){
+    func put( id:Int, isLike:Bool, completion: @escaping (ApiItemResponse<PictureUpdateData>) -> Void, error: ((_ e:Error) -> Void)? = nil){
         var param = [String: Any]()
-        param["pictureId"] = id
+        param["id"] = id
         param["isChecked"] = isLike
         
         var params = [String: Any]()

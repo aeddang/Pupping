@@ -35,8 +35,6 @@ struct CashedPlace {
     let places:[GMSPlace]
 }
 
-
-
 class MissionGenerator:ObservableObject, PageProtocol{
     @Published private(set) var request:MissionGeneratorRequest? = nil
         {didSet{ if request != nil { request = nil} }}
@@ -136,7 +134,7 @@ class MissionGenerator:ObservableObject, PageProtocol{
             }
         }
     }
-    
+
     private var cashedCurrentPlace:CashedPlace? = nil
     private func getCurrentPlace(completionHandler: @escaping (GMSPlace) -> Void){
         if let cashed = self.cashedCurrentPlace {

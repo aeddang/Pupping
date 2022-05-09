@@ -23,7 +23,7 @@ struct SelectImagePicker: PageComponent{
     var body: some View {
         VStack (alignment: .center, spacing: 0){
             if let title = self.data.title {
-                Text(self.name + title)
+                Text(self.name  + title)
                     .modifier(SemiBoldTextStyle(size: Font.size.medium, color: Color.app.greyDeep))
                     .multilineTextAlignment(.center)
             }

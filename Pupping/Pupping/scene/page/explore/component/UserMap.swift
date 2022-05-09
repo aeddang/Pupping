@@ -85,8 +85,10 @@ struct UserMap: PageView {
         marker.title = data.currentProfile.nickName
         var leading = data.pets.filter{$0.nickName != nil}.reduce("", {$0 + $1.nickName! + ", "})
         //let trailing = String.app.owner + " " + (data.currentProfile.nickName ?? "")
-        leading.removeLast()
-        leading.removeLast()
+        if !leading.isEmpty {
+            leading.removeLast()
+            leading.removeLast()
+        }
         marker.snippet = leading
         
         if let path = data.currentProfile.imagePath {

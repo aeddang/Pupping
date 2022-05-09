@@ -14,15 +14,17 @@
 import Foundation
 import SwiftUI
 struct ModifyButton: View{
-    
+    var color = Color.app.greyLight
     let action: () -> Void
     var body: some View {
         Button(action: {
             self.action()
         }) {
             Image(Asset.icon.modify)
+                .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
+                .foregroundColor(color)
                 .frame(width: Dimen.icon.regularExtra,
                        height: Dimen.icon.regularExtra)
         }

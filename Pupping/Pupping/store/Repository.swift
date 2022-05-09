@@ -12,7 +12,7 @@ import SwiftUI
 import Combine
 
 enum RepositoryStatus{
-    case initate, ready, reset
+    case initate, ready
 }
 
 enum RepositoryEvent{
@@ -114,6 +114,9 @@ class Repository:ObservableObject, PageProtocol{
         
         self.apiManager.$event.sink(receiveValue: { status in
             switch status {
+            case .join :
+                self.loginCompleted()
+                self.apiManager.initateApi(user: self.dataProvider.user.snsUser)
             case .initate : self.loginCompleted()
             case .error : self.clearLogin()
             default: break
@@ -238,8 +241,6 @@ class Repository:ObservableObject, PageProtocol{
     private func autoSnsLogin() {
         if let user = self.dataProvider.user.snsUser , let token = self.storage.authToken {
             self.apiManager.initateApi(token: token, user: user)
-            self.dataProvider.requestData(q: .init(type: .getUser(user, isCanelAble: false)))
-            self.dataProvider.requestData(q: .init(type: .getPets(user, isCanelAble: false)))
         } else {
             self.clearLogin()
         }
@@ -248,6 +249,10 @@ class Repository:ObservableObject, PageProtocol{
     private func loginCompleted() {
         self.storage.authToken = ApiNetwork.accesstoken
         self.event = .loginUpdate
+        if let user = self.dataProvider.user.snsUser {
+            self.dataProvider.requestData(q: .init(type: .getUser(user, isCanelAble: false)))
+            self.dataProvider.requestData(q: .init(type: .getPets(user, isCanelAble: false)))
+        }
     }
     var isLogin: Bool {
         self.storage.authToken?.isEmpty == false

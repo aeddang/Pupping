@@ -169,7 +169,7 @@ extension String {
         public static let profileAbout = "profileAbout".loaalized()
         public static let profileLastUpdate = "profileLastUpdate".loaalized()
         public static let profileHealthRecordUpdate = "profileHealthRecordUpdate".loaalized()
-
+        public static let profileRegistGuide = "profileRegistGuide".loaalized()
         
         public static let missionCompleted = "missionCompleted".loaalized()
         public static let missionCompletedText = "missionCompletedText".loaalized()

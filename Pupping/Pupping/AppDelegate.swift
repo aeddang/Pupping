@@ -108,13 +108,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PageProtocol {
         application.registerForRemoteNotifications()
         Self.appURLSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
         let launchedURL = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL
-        
         //[FB]
         ApplicationDelegate.shared.application(
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
-        
         return AppDelegate.appObserver.handleDynamicLink(launchedURL)
         
         

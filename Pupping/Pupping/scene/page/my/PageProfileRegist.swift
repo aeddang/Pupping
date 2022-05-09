@@ -94,7 +94,7 @@ struct PageProfileRegist: PageView {
                     VStack( spacing: 0 ){
                         
                         VStack(spacing: 0) {
-                            if self.step != 0 {
+                            if self.step != 1 {
                                 if let img = self.selectedProfileImage {
                                     Image(uiImage: img)
                                     .renderingMode(.original)
@@ -276,7 +276,7 @@ struct PageProfileRegist: PageView {
                                 .init(
                                     idx: 1,
                                     image: Asset.icon.female,
-                                    text: String.app.female, color: Color.brand.primary)
+                                    text: String.app.female, color: Color.brand.fiveth)
                             ]),
                         InputData(
                             type:.text,
@@ -343,7 +343,7 @@ struct PageProfileRegist: PageView {
         switch self.step {
         case  0 :
             if self.input.isEmpty  { return false }
-            self.currentName = self.input
+            self.currentName = self.input + String.app.owner + " "
             self.profile?.update(data: ModifyPetProfileData(nickName: self.input))
             self.userProfile?.update(data: ModifyUserProfileData( nickName: self.input))
         case  1 :
@@ -423,7 +423,6 @@ struct PageProfileRegist: PageView {
         if willStep < 0 { return }
        
         self.step = willStep
-        self.setBar()
         self.setupInput()
     }
     
@@ -434,12 +433,12 @@ struct PageProfileRegist: PageView {
             self.setupCompleted()
         } else {
             self.step = willStep
-            self.setBar()
             self.setupInput()
         }
     }
     
     private func setBar(){
+        if self.steps.count <= 1 {return}
         let count = self.steps.count
         let size =  Dimen.bar.medium
         let cidx = self.step + 1
@@ -450,6 +449,10 @@ struct PageProfileRegist: PageView {
     }
     private func setupInput(){
         let cdata = self.steps[self.step]
+        if self.step == 0 {
+            self.currentName = ""
+        }
+        
         self.selectedIdx = cdata.selectedIdx
         self.input = cdata.inputValue
         self.selectedDate = cdata.selectedDate
@@ -468,6 +471,7 @@ struct PageProfileRegist: PageView {
                 self.isFocus = true
             }
         }
+        self.setBar()
     }
     private func setupCompleted(){
         guard let user = self.dataProvider.user.snsUser else { return }

@@ -87,7 +87,7 @@ struct PetHealthInfo_Previews: PreviewProvider {
             .environmentObject(PageSceneObserver())
             .environmentObject(AppSceneObserver())
             .environmentObject(DataProvider())
-            .frame(width: 375, height: 640)
+            .frame(width: 320, height: 640)
         }
     }
 }

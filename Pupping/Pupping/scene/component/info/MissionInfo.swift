@@ -5,7 +5,6 @@
 //  Created by JeongCheol Kim on 2020/09/10.
 //  Copyright © 2020 JeongCheol Kim. All rights reserved.
 //
-
 import Foundation
 import SwiftUI
 import Combine
@@ -64,7 +63,6 @@ struct WayPointInfo : View{
     }
 }
 
-
 struct MissionInfo : PageComponent {
     enum UiType{
         case simple, normal
@@ -73,7 +71,6 @@ struct MissionInfo : PageComponent {
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var dataProvider:DataProvider
     let data:Mission
-    
     var uiType:UiType = .normal
     var body: some View {
         ZStack(alignment: .topTrailing){
@@ -107,10 +104,8 @@ struct MissionInfo : PageComponent {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: Dimen.icon.thin, height: Dimen.icon.thin)
                     Text(data.type.info())
-                        .modifier(BoldTextStyle(
-                            size: Font.size.light,
-                            color: Color.app.greyDeep
-                        ))
+                        .modifier(BoldTextStyle(size: Font.size.light,color: Color.app.greyDeep))
+                    
                 }
                 .padding(.trailing, Self.pointBoxSize )
                 UnitInfo(icon: data.lv.icon(), text: data.lv.info(), color: data.lv.color())
@@ -158,12 +153,9 @@ struct MissionInfo : PageComponent {
         }
         .modifier(ContentTab(margin: Dimen.margin.thin))
         .onAppear(){
-            
         }
     }
 }
-
-
 
 #if DEBUG
 struct MissionInfo_Previews: PreviewProvider {
@@ -175,7 +167,7 @@ struct MissionInfo_Previews: PreviewProvider {
             .environmentObject(AppSceneObserver())
             .environmentObject(DataProvider())
             .environmentObject(LocationObserver())
-            .frame(width: 375, height: 640)
+            .frame(width: 240, height: 640)
         }
     }
 }

@@ -31,7 +31,7 @@ extension Color {
         public static let thirdly = Color.init(red: 242/255, green:39/255, blue: 11/255)
         public static let fourth = Color.init(red: 10/255, green:132/255, blue: 255/255)
         public static let fourthExtra = Color.init(red: 136/255, green:161/255, blue: 251/255)
-        public static let fiveth = Color.init(red: 10/255, green:132/255, blue: 255/255)
+        public static let fiveth = Color.init(red: 255/255, green:116/255, blue: 72/255)
         public static let bg = app.whiteDeep
     }
     struct app {

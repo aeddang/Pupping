@@ -132,10 +132,10 @@ struct UserProfileImage:PageView{
                 } else if let path = self.imagePath {
                     ImageView(url: path,
                         contentMode: .fill,
-                        noImg: Asset.gnb.my)
+                              noImg: Asset.image.emtpyUserProfile)
                         .modifier(MatchParent())
                 } else {
-                    Image( uiImage: UIImage(named: Asset.gnb.my)! )
+                    Image( uiImage: UIImage(named: Asset.image.emtpyUserProfile)! )
                         .renderingMode(.original)
                         .resizable()
                         .aspectRatio(contentMode: .fill)

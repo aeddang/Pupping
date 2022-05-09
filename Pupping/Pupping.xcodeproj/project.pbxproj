@@ -1208,7 +1208,6 @@
 			isa = PBXGroup;
 			children = (
 				3174AFDB279E421B0034A986 /* graph */,
-				31755AC1279118230082C2D3 /* item */,
 				31755AB6278BEE7B0082C2D3 /* viewpager */,
 				3190E6252675AF30000CBCB9 /* list */,
 				31D07B9B2660A10A00BCC169 /* button */,
@@ -1344,14 +1343,6 @@
 			path = viewpager;
 			sourceTree = "<group>";
 		};
-		31755AC1279118230082C2D3 /* item */ = {
-			isa = PBXGroup;
-			children = (
-				31755AC22791187A0082C2D3 /* ValueBox.swift */,
-			);
-			path = item;
-			sourceTree = "<group>";
-		};
 		31807D442654A89D00531063 /* font */ = {
 			isa = PBXGroup;
 			children = (
@@ -1395,6 +1386,7 @@
 		31807D542654DAF300531063 /* info */ = {
 			isa = PBXGroup;
 			children = (
+				31755AC22791187A0082C2D3 /* ValueBox.swift */,
 				31807D522654DAE300531063 /* PetProfileInfo.swift */,
 				3190E62A2676EA96000CBCB9 /* PetProfileDetail.swift */,
 				31E3F44727895B7300933B90 /* PetAbout.swift */,
@@ -2356,7 +2348,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -2431,7 +2423,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;

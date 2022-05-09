@@ -196,7 +196,7 @@ struct PageSceneModel: PageModel {
     func getUIStatusBarStyle(_ pageObject:PageObject?) -> UIStatusBarStyle? {
         guard let page = pageObject else {return .darkContent}
         switch page.pageID {
-        case .picture : return .lightContent
+        case .picture, .profile, .user : return .lightContent
         default : return .darkContent
         }
     }

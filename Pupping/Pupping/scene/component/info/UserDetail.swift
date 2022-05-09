@@ -89,7 +89,7 @@ struct UserDetail: PageView {
                     VStack(alignment: .leading, spacing: Dimen.margin.tiny){
                         Text(self.user.currentProfile.nickName ?? "")
                              .modifier(BoldTextStyle(
-                                 size: Font.size.boldxtra,
+                                 size: Font.size.boldExtra,
                                  color: Color.app.greyDeep
                              ))
                              .padding(.top ,Dimen.margin.regular)
@@ -148,7 +148,10 @@ struct UserDetail: PageView {
             .modifier(BottomFunctionTab(margin:0))
             .padding(.top, self.profileHeight - Dimen.margin.mediumExtra)
             .modifier(MatchParent())
-            
+            LinearGradient(
+                gradient:Gradient(colors: [Color.app.black.opacity(0.7), Color.app.black.opacity(0)]),
+                startPoint: .top, endPoint: .bottom)
+            .modifier(MatchHorizontal(height:  70 + self.sceneObserver.safeAreaTop ))
             HStack{
                 Button(action: {
                     self.pagePresenter.goBack()

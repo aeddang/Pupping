@@ -131,6 +131,9 @@ extension Asset{
         public static let profileEmpty = "profileEmpty"
         public static let profileEmptyContent = "profileEmptyContent"
         public static let pictureEmpty = "pictureEmpty"
+        public static let emtpyDogProfileCard = "emtpyDogProfileCard"
+        public static let emtpyDogProfile = "emtpyDogProfile"
+        public static let emtpyUserProfile = "emtpyUserProfile"
     }
     
     struct source {

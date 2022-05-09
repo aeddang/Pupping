@@ -18,4 +18,9 @@ struct PictureData : Decodable {
     private(set) var createdAt: String? = nil
 }
 
+struct PictureUpdateData : Decodable {
+    private(set) var id: String? = nil
+    private(set) var isChecked: Bool? = nil
+}
+
 

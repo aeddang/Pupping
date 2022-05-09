@@ -68,6 +68,13 @@ struct SelectRadio: PageComponent{
                     .modifier( MatchHorizontal(height:Dimen.button.medium ) )
                     .background(Color.app.white )
                     .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.lightExtra))
+                    .overlay(
+                        RoundedRectangle(
+                            cornerRadius: Dimen.radius.lightExtra, style: .circular)
+                            .strokeBorder(
+                                Color.brand.secondary ,
+                                lineWidth: self.selected.first(where:{$0.id == check.id}) != nil ? Dimen.stroke.light : 0 )
+                    )
                     .modifier(Shadow())
                 }
             }

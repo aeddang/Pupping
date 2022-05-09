@@ -117,8 +117,31 @@ struct FillButton: View, SelecterbleProtocol{
 struct FillButton_Previews: PreviewProvider {
     
     static var previews: some View {
-        Form{
+        VStack{
             FillButton(
+                type: .normal,
+                text: "test",
+                icon: Asset.noImg1_1,
+                isSelected: false
+                
+            ){_ in
+                
+            }
+            .frame( alignment: .center)
+            .background(Color.app.white)
+            FillButton(
+                type: .stroke,
+                text: "test",
+                icon: Asset.noImg1_1,
+                isSelected: true
+                
+            ){_ in
+                
+            }
+            .frame( alignment: .center)
+            .background(Color.app.white)
+            FillButton(
+                type: .small,
                 text: "test",
                 icon: Asset.noImg1_1,
                 isSelected: true

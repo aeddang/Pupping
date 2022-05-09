@@ -34,7 +34,7 @@ struct PagePicture: PageView {
                         }
                     }
                     VStack(spacing:0){
-                        HStack{
+                        HStack(spacing:Dimen.margin.tiny){
                             Button(action: {
                                 self.pagePresenter.closePopup(self.pageObject?.id)
                     

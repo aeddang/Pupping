@@ -65,6 +65,7 @@ struct PetProfileDetail: PageView {
                             .aspectRatio(contentMode: .fill)
                             .modifier(MatchParent())
                     }
+                    
                 }
                 .modifier(MatchHorizontal(height: self.profileHeight * self.profileScale))
                 .onReceive(self.infinityScrollModel.$event){evt in
@@ -103,7 +104,7 @@ struct PetProfileDetail: PageView {
                                 Spacer().modifier(MatchHorizontal(height: 0))
                                 Text(self.name ?? "")
                                      .modifier(BoldTextStyle(
-                                         size: Font.size.boldxtra,
+                                         size: Font.size.boldExtra,
                                          color: Color.app.greyDeep
                                      ))
                                 
@@ -199,7 +200,13 @@ struct PetProfileDetail: PageView {
             .modifier(BottomFunctionTab(margin:0))
             .padding(.top, self.profileHeight - self.scrollTop)
             .modifier(MatchParent())
-            HStack{
+            
+            LinearGradient(
+                gradient:Gradient(colors: [Color.app.black.opacity(0.7), Color.app.black.opacity(0)]),
+                startPoint: .top, endPoint: .bottom)
+            .modifier(MatchHorizontal(height:  70 + self.sceneObserver.safeAreaTop ))
+            
+            HStack(spacing:Dimen.margin.tiny){
                 Button(action: {
                     self.pagePresenter.goBack()
         
@@ -419,7 +426,7 @@ struct PetProfileDetail_Previews: PreviewProvider {
             .environmentObject(PageSceneObserver())
             .environmentObject(AppSceneObserver())
             .environmentObject(DataProvider())
-            .frame(width: 375, height: 640)
+            .frame(width: 325, height: 640)
         }
     }
 }

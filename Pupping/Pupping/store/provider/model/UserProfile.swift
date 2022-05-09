@@ -47,7 +47,7 @@ class UserProfile:ObservableObject, PageProtocol, Identifiable {
     
     @discardableResult
     func setDummy() -> UserProfile{
-        self.image =  UIImage(named: Asset.brand.logoLauncher)
+        self.image =  UIImage(named: Asset.image.emtpyUserProfile)
         self.nickName = "SERO"
         self.email = "test@apple.com"
         self.type = .apple

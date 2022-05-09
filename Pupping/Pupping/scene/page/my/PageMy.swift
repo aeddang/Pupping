@@ -62,14 +62,23 @@ struct PageMy: PageView {
                     .modifier(MatchHorizontal(height: PetList.height))
                     .padding(.top, Dimen.margin.light)
                 } else {
-                    ZStack{
-                        Image(Asset.image.profileEmptyContent)
-                            .renderingMode(.original)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 274, height: PetList.height)
+                    VStack(spacing:0){
+                        Spacer().modifier(MatchHorizontal(height: 0))
+                        HStack(alignment: .center, spacing: Dimen.margin.thin){
+                            Image(Asset.image.emtpyDogProfileCard)
+                                .renderingMode(.original)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 120)
+                            Text(String.pageText.profileRegistGuide)
+                                 .modifier(MediumTextStyle(
+                                     size: Font.size.thin,
+                                     color: Color.app.grey
+                                 ))
+                        }
                     }
-                    .modifier(MatchHorizontal(height: PetList.height))
+                    .frame(height: PetList.height)
+                    .padding(Dimen.margin.thin)
                     .background(Color.app.whiteDeepExtra)
                     .clipShape(RoundedRectangle(cornerRadius: Dimen.radius.light))
                     .modifier(ContentHorizontalEdges())

@@ -13,7 +13,7 @@ enum ApiStatus{
     case initate, ready, reflash, error
 }
 enum ApiEvent{
-    case initate, error
+    case initate, error, join
 }
 struct ApiNetwork :Network{
     static fileprivate(set) var accesstoken:String? = nil
@@ -105,10 +105,16 @@ class ApiManager :PageProtocol, ObservableObject{
         self.executeQ()
     }
     
+    func initateApi(user:SnsUser?){
+        self.snsUser = user
+        self.executeQ()
+    }
+    
     func initateApi(res:UserAuth? = nil){
         if let res = res {
             ApiNetwork.accesstoken = res.token
         }
+        
         self.status = .ready
         self.event = .initate
         self.executeQ()
@@ -275,7 +281,14 @@ class ApiManager :PageProtocol, ObservableObject{
     private func complated<T:Decodable>(id:String, type:ApiType, res:ApiContentResponse<T>){
         let result:ApiResultResponds = .init(id: id, type:type, data: res.contents)
         switch type {
-        case .joinAuth, .reflashAuth :
+        case .joinAuth :
+            if let res = result.data as? UserAuth {
+                ApiNetwork.accesstoken = res.token
+            }
+            self.status = .ready
+            self.event = .join
+            
+        case .reflashAuth :
             if let res = result.data as? UserAuth {
                 self.initateApi(res: res)
                 return

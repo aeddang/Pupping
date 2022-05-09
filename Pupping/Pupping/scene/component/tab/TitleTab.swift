@@ -41,6 +41,7 @@ struct TitleTab: PageComponent{
                 AddedButton(){action?()}
             case .modify :
                 ModifyButton(){action?()}
+                  
             case .none :
                 Spacer()
             }
@@ -53,7 +54,7 @@ struct TitleTab_Previews: PreviewProvider {
     
     static var previews: some View {
         Form{
-            TitleTab(title: "title")
+            TitleTab(title: "title",type:.modify )
                 .environmentObject(PagePresenter()).frame(width:320,height:100)
                 
         }

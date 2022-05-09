@@ -101,7 +101,7 @@ struct PageTab_Previews: PreviewProvider {
     
     static var previews: some View {
         Form{
-            PageTab(title: "title")
+            PageTab(title: "title", isBack: true, isClose: true, isSetting: true)
                 .environmentObject(PagePresenter()).frame(width:320,height:100)
                 
         }

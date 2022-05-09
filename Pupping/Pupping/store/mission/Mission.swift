@@ -325,7 +325,7 @@ class Mission:PageProtocol, Identifiable, Equatable{
                 if locale == "ko" {
                     self.description = viewSpeed + " 이상 속도로 " + viewDistence + " 이동"
                 } else {
-                    self.description = viewDistence  + " moves at a speed of" + viewSpeed
+                    self.description = viewDistence  + " moves at a speed of " + viewSpeed
                 }
             default: break
             }

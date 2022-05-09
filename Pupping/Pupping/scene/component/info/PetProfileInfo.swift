@@ -29,36 +29,35 @@ struct PetProfileInfo : PageComponent {
     var body: some View {
         ZStack{
             if self.axio == .vertical {
-                VStack(spacing:Dimen.margin.thinExtra){
-                    PetProfileImage(
-                        id : self.profile.id,
-                        image: self.image,
-                        imagePath: self.imagePath,
-                        isEmpty: self.profile.isEmpty,
-                        isEditable: true
-                    )
-                    HStack(spacing:Dimen.margin.thin){
-                        Text(self.name ?? "")
-                            .modifier(BoldTextStyle(
-                                size: Font.size.mediumExtra,
-                                color: Color.app.greyDeep
-                            ))
-                        if !self.profile.isEmpty {
+                if !self.profile.isEmpty {
+                    VStack(spacing:Dimen.margin.thinExtra){
+                        PetProfileImage(
+                            id : self.profile.id,
+                            image: self.image,
+                            imagePath: self.imagePath,
+                            isEmpty: self.profile.isEmpty,
+                            isEditable: true
+                        )
+                        HStack(spacing:Dimen.margin.thin){
+                            Text(self.name ?? "")
+                                .modifier(BoldTextStyle(
+                                    size: Font.size.mediumExtra,
+                                    color: Color.app.greyDeep
+                                ))
                             Text(self.lv)
                                 .modifier(BoldTextStyle(
                                     size: Font.size.thinExtra,
                                     color: Color.brand.primary
                                 ))
+                            
                         }
                     }
-                    if !self.profile.isEmpty {
-                        PetProfileInfoDescription(
-                            profile: self.profile,
-                            age: self.age,
-                            species: self.species,
-                            gender: self.gender,
-                            isModifyAble: self.isModifyAble)
-                    }
+                } else {
+                    Image(Asset.image.emtpyDogProfileCard)
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .modifier(MatchParent())
                 }
                 
             } else {
@@ -184,10 +183,10 @@ struct PetProfileImage:PageView{
                 } else if let path = self.imagePath {
                     ImageView(url: path,
                         contentMode: .fill,
-                        noImg: Asset.icon.footPrint)
+                              noImg: Asset.image.emtpyDogProfile)
                         .modifier(MatchParent())
                 } else {
-                    Image( uiImage: UIImage(named: self.isEmpty ? Asset.icon.footPrint : Asset.brand.logoLauncher)! )
+                    Image( uiImage: UIImage(named: Asset.image.emtpyDogProfile)! )
                         .renderingMode(.original)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
