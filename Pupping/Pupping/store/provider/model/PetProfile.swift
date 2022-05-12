@@ -81,8 +81,8 @@ class PetProfile:ObservableObject, PageProtocol, Identifiable, Equatable {
     
     private(set) var totalExerciseDistance: Double? = nil
     private(set) var totalExerciseDuration: Double? = nil
-  
-    
+    private(set) var totalMissionCount: Int? = nil
+    private(set) var totalWalkCount: Int? = nil
     var isWith:Bool = true
     
     public static func == (l:PetProfile, r:PetProfile)-> Bool {
@@ -121,6 +121,8 @@ class PetProfile:ObservableObject, PageProtocol, Identifiable, Equatable {
         self.rabies = data.status?.contains("rabies")
         self.totalExerciseDistance = data.exerciseDistance
         self.totalExerciseDuration = data.exerciseDuration
+        self.totalMissionCount = data.missionCompleteCnt
+        self.totalWalkCount = data.walkCompleteCnt
         self.updatedExp()
     }
     
@@ -172,6 +174,19 @@ class PetProfile:ObservableObject, PageProtocol, Identifiable, Equatable {
         if let value = data.size { self.size = value }
         //ProfileCoreData().update(id: self.id, data: data)
         return self
+    }
+    
+    func recordSummry() -> String? {
+        var summry = ""
+        if let distance = self.totalExerciseDistance {
+            summry += Mission.viewDistence(distance)
+        }
+        if let duration = self.totalExerciseDuration {
+            if !summry.isEmpty {summry += " / "}
+            summry += Mission.viewDuration(duration)
+        }
+        if summry.isEmpty {return nil}
+        return summry
     }
     
     

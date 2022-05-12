@@ -57,14 +57,14 @@ struct PageHealthModify: PageView {
                         VStack( spacing: Dimen.margin.medium ){
                             if self.isReady {
                                 InputCell(
-                                    title: self.name + String.pageText.profileRegistWeight,
+                                    title: self.name  + String.app.owner + " " + String.pageText.profileRegistWeight,
                                     input: self.$inputWeight,
                                     isFocus: self.currentModifyType == .weight,
                                     placeHolder: String.app.kg,
                                     keyboardType: .decimalPad
                                 )
                                 InputCell(
-                                    title: self.name + String.pageText.profileRegistSize,
+                                    title: self.name  + String.app.owner + " " + String.pageText.profileRegistSize,
                                     input: self.$inputSize,
                                     isFocus: self.currentModifyType == .size,
                                     placeHolder: String.app.m,

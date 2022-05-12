@@ -191,20 +191,21 @@ struct PageReport: PageView {
                                 }
                                 
                                 Spacer().modifier(LineHorizontal())
-                                    
-                                Text(String.pageTitle.walkReport)
-                                    .modifier(MediumTextStyle(size: Font.size.thin, color: Color.app.grey))
-                                MenuTab(
-                                    pageObservable:self.pageObservable,
-                                    viewModel:self.navigationModel,
-                                    buttons: [
-                                        String.pageText.reportWalkSummaryWeekly, String.pageText.reportWalkSummaryMonthly
-                                    ],
-                                    selectedIdx: self.selectedMenu
-                                )
-                                .onReceive(self.navigationModel.$index){ idx in
-                                    self.selectedMenu = idx
-                                    self.load()
+                                VStack(alignment: .leading, spacing: Dimen.margin.regularExtra){
+                                    Text(String.pageText.reportWalkSummary)
+                                        .modifier(MediumTextStyle(size: Font.size.thin, color: Color.app.grey))
+                                    MenuTab(
+                                        pageObservable:self.pageObservable,
+                                        viewModel:self.navigationModel,
+                                        buttons: [
+                                            String.pageText.reportWalkSummaryWeekly, String.pageText.reportWalkSummaryMonthly
+                                        ],
+                                        selectedIdx: self.selectedMenu
+                                    )
+                                    .onReceive(self.navigationModel.$index){ idx in
+                                        self.selectedMenu = idx
+                                        self.load()
+                                    }
                                 }
                                 if let data = self.reportData {
                                     VStack(alignment: .leading, spacing: Dimen.margin.mediumUltra){

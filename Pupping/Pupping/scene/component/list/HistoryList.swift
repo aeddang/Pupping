@@ -142,7 +142,7 @@ struct HistoryListItem: PageView {
                             .modifier(MatchHorizontal(height: 60))
                     }
                     if let value = self.data.distance {
-                        PlayUnitInfo(icon: Asset.icon.distence, text: Mission.viewDuration(value))
+                        PlayUnitInfo(icon: Asset.icon.distence, text: Mission.viewDistence(value))
                             .modifier(MatchHorizontal(height: 60))
                     }
                     if let value = self.data.point {

@@ -182,6 +182,10 @@ PageLogin
 "profileHealthRecord" = "Health Record";
 
 "profileHistory" = "History";
+"profileHistoryTotalWalk" = "%s walks in total";
+"profileHistoryTotalMission" = "%s missions in total";
+"profileHistoryTotalRecord" = "%s in total";
+
 "profileAbout" = "About";
 "profileLastUpdate" = "Last updated on";
 "profileHealthRecordUpdate" = "Update health record";

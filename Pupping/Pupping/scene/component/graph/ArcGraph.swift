@@ -20,7 +20,7 @@ struct ArcGraphData{
     var max:Float = 7
     var start:String = "Goal"
     var end:String = String.pageText.reportWalkDayUnit
-    var description:String? = nil
+
 }
 
 

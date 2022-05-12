@@ -191,6 +191,10 @@ PageLogin
 "profileHealthRecord" = "Health Record";
 
 "profileHistory" = "History";
+"profileHistoryTotalWalk" = "%s walks in total";
+"profileHistoryTotalMission" = "%s missions in total";
+"profileHistoryTotalRecord" = "%s in total";
+
 "profileAbout" = "About";
 "profileLastUpdate" = "Last updated on";
 "profileHealthRecordUpdate" = "Update health record";
@@ -250,7 +254,7 @@ PageLogin
 /*
  MissionPlay
  */
-"playAround" = "주면 둘러 보기";
+"playAround" = "주변 둘러 보기";
 "playLocation" = "주변 시설 알아보기";
 "playSpeed" = "스피드 기르기";
 "playEndurance" = "지구력 기르기";

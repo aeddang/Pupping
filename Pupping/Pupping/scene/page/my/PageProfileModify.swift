@@ -64,14 +64,14 @@ struct PageProfileModify: PageView {
                                     keyboardType: .default
                                 )
                                 InputCell(
-                                    title:self.inputName + String.pageText.profileRegistSpecies,
+                                    title:self.inputName + String.app.owner + " " + String.pageText.profileRegistSpecies,
                                     input: self.$inputSpecies,
                                     isFocus: self.currentModifyType == .species,
                                     placeHolder: String.pageText.profileSpeciesPlaceHolder,
                                     keyboardType: .default
                                 )
                                 InputCell(
-                                    title:self.inputName + String.pageText.profileRegistMicroFin,
+                                    title:self.inputName  + String.app.owner + " " + String.pageText.profileRegistMicroFin,
                                     input: self.$inputMicrofin,
                                     isFocus: self.currentModifyType == .species,
                                     placeHolder: String.pageText.profileMicroFinPlaceHolder,

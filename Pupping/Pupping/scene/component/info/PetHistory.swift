@@ -15,7 +15,7 @@ struct PetHistory: PageView {
     @EnvironmentObject var appSceneObserver:AppSceneObserver
     @EnvironmentObject var dataProvider:DataProvider
    
-    @ObservedObject var profile:PetProfile
+    var profile:PetProfile
     var userId:String? = nil
     
    
@@ -25,7 +25,11 @@ struct PetHistory: PageView {
                 icon:Asset.icon.footPrint,
                 color:Color.brand.primary,
                 title:String.pageText.profileWalkHistory,
-                subTitle:"subTitle"){
+                subTitle: (self.profile.totalWalkCount != nil)
+                    ? String.pageText.profileHistoryTotalWalk.replace(self.profile.totalWalkCount!.description)
+                    : nil
+            )
+            {
                     self.pagePresenter.openPopup(
                         PageProvider.getPageObject(.history)
                             .addParam(key: .type, value: MissionApi.Category.walk)
@@ -37,7 +41,10 @@ struct PetHistory: PageView {
                 icon:Asset.icon.flag,
                 color:Color.brand.primary,
                 title:String.pageText.profileMissionHistory,
-                subTitle:"subTitle"){
+                subTitle:(self.profile.totalWalkCount != nil)
+                ? String.pageText.profileHistoryTotalMission.replace(self.profile.totalMissionCount!.description)
+                : nil
+            ){
                     self.pagePresenter.openPopup(
                         PageProvider.getPageObject(.history)
                             .addParam(key: .type, value: MissionApi.Category.mission)
@@ -47,10 +54,13 @@ struct PetHistory: PageView {
             }
             
             CategoryButton(
-                icon:Asset.icon.speed,
+                icon:Asset.icon.report,
                 color:Color.brand.secondary,
                 title:String.pageText.profileHealthCare,
-                subTitle:"subTitle"){
+                subTitle:(self.profile.recordSummry() != nil)
+                ? String.pageText.profileHistoryTotalRecord.replace(self.profile.recordSummry()!)
+                : nil
+            ){
                     self.pagePresenter.openPopup(
                         PageProvider.getPageObject(.report)
                             .addParam(key: .data, value:self.profile)
