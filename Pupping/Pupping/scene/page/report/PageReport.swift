@@ -19,7 +19,7 @@ class ReportData {
     private(set) var daysWalkTimeReport:String = ""
     
     
-    func setupData(){
+    func setupData(_ data:MissionReport){
         self.daysWalkReport = Int(daysWalkData.value).description + " " + String.pageText.reportWalkDayUnit
         if daysWalkCompareData.count >= 2 {
             let me = daysWalkCompareData.first!.value
@@ -33,21 +33,28 @@ class ReportData {
                 self.daysWalkCompareReport = String.pageText.reportWalkDayCompareSame
             }
         }
-        let avg = self.daysWalkTimeData.values.reduce(Float(0), {$0 + $1}) / Float(self.daysWalkTimeData.values.count) * 50.0
+        var avg:Float = 0
+        if let missionTimes = data.missionTimes {
+            let values:[Float] = missionTimes.map{ time in
+                return Float(time.v ?? 0)
+            }
+            avg = values.reduce(Float(0), {$0 + $1}) / Float(self.daysWalkTimeData.values.count)
+        }
         self.daysWalkTimeReport = Double(avg).toTruncateDecimal(n:2) + " " + String.pageText.reportWalkRecentlyUnit
     }
     func setWeeklyData(_ data:MissionSummary) -> ReportData{
         if let report = data.weeklyReport {
             self.currentDaysWalkTimeIdx = self.setReport(report)
+            self.setupData(report)
         }
-        self.setupData()
+       
         return self
     }
     func setMonthlyData(_ data:MissionSummary) -> ReportData{
         if let report = data.monthlyReport {
             self.currentDaysWalkTimeIdx = self.setReport(report)
+            self.setupData(report)
         }
-        self.setupData()
         return self
     }
     
@@ -80,33 +87,7 @@ class ReportData {
         }
         return todayIdx
     }
-    func setDummyWeekly() -> ReportData{
-        self.daysWalkData = ArcGraphData()
-        self.daysWalkCompareData
-        = [
-            CompareGraphData(value:1, color:Color.brand.primary, title:String.pageText.reportWalkDayCompareMe),
-            CompareGraphData(value:2, color:Color.app.grey, title:String.pageText.reportWalkDayCompareOthers)
-        ]
-        self.daysWalkTimeData = LineGraphData()
-        self.currentDaysWalkTimeIdx = 2
-        self.setupData()
-        return self
-    }
-    func setDummyMonthly() -> ReportData{
-        self.daysWalkData = ArcGraphData(value: 10, max: 31)
-        self.daysWalkCompareData
-        = [
-            CompareGraphData(value:1, max:31,color:Color.brand.primary, title:String.pageText.reportWalkDayCompareMe),
-            CompareGraphData(value:2, max:31, color:Color.app.grey, title:String.pageText.reportWalkDayCompareOthers)
-        ]
-        let values:[Float] = (0...31).map{ _ in
-            return Float(arc4random() % 100) / 100
-        }
-        self.daysWalkTimeData = LineGraphData(values: values, lines: values.map{$0.description})
-        self.currentDaysWalkTimeIdx = 5
-        self.setupData()
-        return self
-    }
+    
 }
 
 extension PageReport{
