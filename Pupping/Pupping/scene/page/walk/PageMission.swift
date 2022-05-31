@@ -72,13 +72,15 @@ struct PageMission: PageView {
                             ){
                                 self.pageDragingModel.uiEvent = .dragEnd(!self.isBottom)
                             }
+                            .modifier(Shadow(opacity:0.3))
                             Spacer()
                             CloseButton(){
                                 self.onClose()
                             }
+                            .modifier(Shadow(opacity:0.3))
                         }
-                        .padding(.horizontal, Dimen.margin.regular)
-                        
+                        .background(Color.transparent.clearUi)
+                        .padding(.horizontal, Dimen.margin.light)
                         if self.uiType == .simple {
                             PlaySummary(
                                 viewModel: self.viewModel

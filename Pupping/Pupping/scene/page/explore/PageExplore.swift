@@ -208,8 +208,6 @@ struct PageExplore: PageView {
     @State var dataSets:[UserDataSet]? = nil
     @State var isError:Bool? = nil
     @State var location:CLLocation? = nil
-   
-    
     @State var requestLocationTimer:AnyCancellable?
     func waitingRequestLocation(){
         self.location = nil

@@ -17,7 +17,7 @@ struct UserProfileInfo : PageComponent {
     @EnvironmentObject var dataProvider:DataProvider
     @ObservedObject var profile:UserProfile
     var isModifyAble:Bool = false
-   
+    var useProfileImage:Bool = true
     @State var image:UIImage? = nil
     @State var imagePath:String? = nil
     @State var name:String? = nil
@@ -25,11 +25,13 @@ struct UserProfileInfo : PageComponent {
     var body: some View {
         ZStack{
             VStack(alignment:.leading, spacing:Dimen.margin.thinExtra){
-                UserProfileImage(
-                    id : self.profile.id,
-                    image: self.image,
-                    imagePath: self.imagePath,
-                    isModifyAble: self.isModifyAble)
+                if self.useProfileImage {
+                    UserProfileImage(
+                        id : self.profile.id,
+                        image: self.image,
+                        imagePath: self.imagePath,
+                        isModifyAble: self.isModifyAble)
+                }
                 HStack(spacing:Dimen.margin.tiny){
                     if self.name?.isEmpty == false, let name = self.name {
                         Text(name)

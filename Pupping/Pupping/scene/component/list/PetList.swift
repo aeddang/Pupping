@@ -25,7 +25,7 @@ struct PetList: PageComponent{
         InfinityScrollView(
             viewModel: self.viewModel,
             axes: .horizontal,
-            marginVertical: 0,
+            marginTop: Dimen.margin.tiny,
             marginHorizontal: Dimen.margin.light,
             spacing: Dimen.margin.light,
             isRecycle: true,

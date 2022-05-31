@@ -122,6 +122,7 @@ struct UserListItem: PageView {
                 profile: self.data.currentProfile,
                 isModifyAble: false
             )
+            .padding(.horizontal, Dimen.margin.regular)
             ScrollView(.horizontal, showsIndicators: false){
                 HStack(spacing:Dimen.margin.tinyExtra){
                     ForEach(self.data.pets) { pet in
@@ -133,10 +134,12 @@ struct UserListItem: PageView {
                         )
                     }
                 }
+                .padding(.horizontal, Dimen.margin.regular)
             }
         }
         .modifier(MatchParent())
-        .modifier(ContentTab())
+        .padding(.vertical, Dimen.margin.regular)
+        .modifier(ContentTab(margin: 0))
         
         
     }

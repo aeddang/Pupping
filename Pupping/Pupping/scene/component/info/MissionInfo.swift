@@ -115,6 +115,7 @@ struct MissionInfo : PageComponent {
                     VStack(alignment: .leading, spacing:Dimen.margin.light){
                         if let destination = data.destination {
                             VStack(alignment: .leading, spacing:0){
+                                
                                 ForEach( Array(data.waypoints.enumerated()), id: \.offset){idx,  point in
                                     WayPointInfo(icon: Asset.icon.wayPointHeader, text: point.name ?? "", color: Color.app.grey)
                                     ZStack{

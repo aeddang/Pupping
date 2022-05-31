@@ -90,7 +90,6 @@ struct UserMap: PageView {
             leading.removeLast()
         }
         marker.snippet = leading
-        
         if let path = data.currentProfile.imagePath {
             let loader = ImageLoader()
             loader.$event.sink(receiveValue: { evt in
@@ -120,20 +119,18 @@ struct UserMap: PageView {
                 }
             }).store(in: &anyCancellable)
             loader.load(url: path)
-        
         }
-        
         return marker
     }
     
     private func userSetup(users:[User]){
-        let markers:[MapMarker] = users.map{ user in
+        let markers:[MapMarker] = users.filter{$0.currentProfile.imagePath?.isEmpty == false}.map{ user in
+            
             MapMarker(id:user.snsUser?.snsID ?? user.id , marker:self.getUserMarker(user))
         }
         self.viewModel.uiEvent = .addMarkers(markers)
     }
     
-
     private func moveMe(loc:CLLocation){
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(
@@ -142,7 +139,6 @@ struct UserMap: PageView {
         marker.title = "Me"
         marker.icon = UIImage(named: Asset.map.me)
         self.viewModel.uiEvent = .me( MapMarker(id: "me", marker:  marker)  , follow:self.isFollowMe ? loc : nil )
-        
     }
    
 }

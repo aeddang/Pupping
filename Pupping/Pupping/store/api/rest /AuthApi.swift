@@ -15,7 +15,6 @@ class AuthApi :Rest{
         params["password"] = user.snsToken
         params["name"] = info?.nickName
         params["email"] = info?.email
-        
         fetch(route: AuthApiRoute (method: .post, body: params), completion: completion, error:error)
     }
     

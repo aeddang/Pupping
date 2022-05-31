@@ -144,7 +144,7 @@ struct PageHome: PageView {
         self.appSceneObserver.select = .select((self.tag , [String.button.preview, String.button.start]), 1){ idx in
             if idx == 0 {
                 self.pagePresenter.openPopup(
-                    PageProvider.getPageObject(.missionInfo)
+                    PageProvider.getPageObject(.missionPreview)
                         .addParam(key: .data, value: mission)
                 )
             }else {

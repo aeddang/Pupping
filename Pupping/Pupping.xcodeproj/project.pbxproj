@@ -206,7 +206,7 @@
 		31807D83265A16C800531063 /* SelectImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31807D82265A16C800531063 /* SelectImagePicker.swift */; };
 		31820D672785AECA00548821 /* PageHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31820D662785AECA00548821 /* PageHistory.swift */; };
 		31820D692785AF8800548821 /* HistoryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31820D682785AF8800548821 /* HistoryList.swift */; };
-		318D10122669AD1300B66977 /* PageMissionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D10112669AD1300B66977 /* PageMissionInfo.swift */; };
+		318D10122669AD1300B66977 /* PageMissionPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D10112669AD1300B66977 /* PageMissionPreview.swift */; };
 		318D1014266ADA1F00B66977 /* PlayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D1013266ADA1F00B66977 /* PlayInfo.swift */; };
 		318D1018266ADF6B00B66977 /* PlayWalkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D1017266ADF6B00B66977 /* PlayWalkModel.swift */; };
 		318D101A266B423800B66977 /* PlaySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D1019266B423800B66977 /* PlaySummary.swift */; };
@@ -509,7 +509,7 @@
 		31807D82265A16C800531063 /* SelectImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImagePicker.swift; sourceTree = "<group>"; };
 		31820D662785AECA00548821 /* PageHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageHistory.swift; sourceTree = "<group>"; };
 		31820D682785AF8800548821 /* HistoryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryList.swift; sourceTree = "<group>"; };
-		318D10112669AD1300B66977 /* PageMissionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMissionInfo.swift; sourceTree = "<group>"; };
+		318D10112669AD1300B66977 /* PageMissionPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMissionPreview.swift; sourceTree = "<group>"; };
 		318D1013266ADA1F00B66977 /* PlayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayInfo.swift; sourceTree = "<group>"; };
 		318D1017266ADF6B00B66977 /* PlayWalkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWalkModel.swift; sourceTree = "<group>"; };
 		318D1019266B423800B66977 /* PlaySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySummary.swift; sourceTree = "<group>"; };
@@ -1458,7 +1458,7 @@
 				318D1016266ADF5C00B66977 /* model */,
 				318D1015266ADA2400B66977 /* component */,
 				31807D7226592DE800531063 /* PageMission.swift */,
-				318D10112669AD1300B66977 /* PageMissionInfo.swift */,
+				318D10112669AD1300B66977 /* PageMissionPreview.swift */,
 				318D1023266C910700B66977 /* PageMissionCompleted.swift */,
 				318D101D266C3B3B00B66977 /* PageSelectProfile.swift */,
 				318D1029266CB17100B66977 /* PageWalk.swift */,
@@ -2161,7 +2161,7 @@
 				31D07B8D266079AA00BCC169 /* AppleManager.swift in Sources */,
 				316C49112653D3E300A8D7F5 /* PageHome.swift in Sources */,
 				314B87CD274E15F60084DA69 /* FaceBookButton.swift in Sources */,
-				318D10122669AD1300B66977 /* PageMissionInfo.swift in Sources */,
+				318D10122669AD1300B66977 /* PageMissionPreview.swift in Sources */,
 				3174AFD8279CD6F40034A986 /* GraphLine.swift in Sources */,
 				31F6A9FF27964ED800AE3590 /* PageHealthModify.swift in Sources */,
 				31807D6E265923FC00531063 /* ImageProcess.swift in Sources */,
@@ -2348,7 +2348,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 48;
+				CURRENT_PROJECT_VERSION = 51;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;
@@ -2423,7 +2423,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pupping/Pupping.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 48;
+				CURRENT_PROJECT_VERSION = 51;
 				DEVELOPMENT_ASSET_PATHS = "\"Pupping/Preview Content\"";
 				DEVELOPMENT_TEAM = TYPPBR5AQ8;
 				ENABLE_PREVIEWS = YES;

@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 import Combine
 import GoogleMaps
-extension PageMissionInfo {
+extension PageMissionPreview {
     static let zoomRatio:Float = 15.0
     static let zoomCloseup:Float = 16.0
     static let mapMoveDuration:Double = 1.0
     static let forceMoveDelay:Double = 2.0
 }
-struct PageMissionInfo: PageView {
+struct PageMissionPreview: PageView {
     @EnvironmentObject var pagePresenter:PagePresenter
     
     @EnvironmentObject var appSceneObserver:AppSceneObserver
@@ -153,10 +153,10 @@ struct PageMissionInfo: PageView {
 
 
 #if DEBUG
-struct PageMissionInfo_Previews: PreviewProvider {
+struct PageMissionPreview_Previews: PreviewProvider {
     static var previews: some View {
         Form{
-            PageMissionInfo().contentBody
+            PageMissionPreview().contentBody
                 .environmentObject(PagePresenter())
                 .environmentObject(PageSceneObserver())
                 .environmentObject(Repository())

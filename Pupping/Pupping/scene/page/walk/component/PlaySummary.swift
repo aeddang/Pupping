@@ -20,9 +20,6 @@ struct PlaySummary : PageComponent {
     @EnvironmentObject var locationObserver:LocationObserver
     
     @ObservedObject var viewModel:PlayWalkModel = PlayWalkModel()
-   
-    var profiles:[PetProfile] = []
-    
     @State var playTime:String = ""
     @State var playDistence:String = ""
     @State var progress:Float = 0

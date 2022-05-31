@@ -130,10 +130,11 @@ struct PlayInfo : PageComponent {
                     }
                     FillButton(
                         type: .stroke,
-                        text: String.button.stop , isSelected:true){ _ in
+                        text: String.button.stop ,
+                        icon: Asset.icon.stop,
+                        isSelected:true){ _ in
                         self.viewModel.complete()
                     }
-                    .frame(width: 211)
                 }
                 .padding(.horizontal,Dimen.margin.regular )
                 

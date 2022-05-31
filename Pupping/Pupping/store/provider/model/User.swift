@@ -168,11 +168,12 @@ class User:ObservableObject, PageProtocol, Identifiable{
         self.pets.filter{$0.isWith}.forEach{
             $0.update(exp: point)
         }
+        /*
         UserCoreData().update(
             data: ModifyUserData(
                 point: self.point,
                 mission: self.mission)
-        )
+        )*/
     }
     
     

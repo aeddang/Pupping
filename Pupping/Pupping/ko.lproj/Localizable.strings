@@ -88,7 +88,7 @@
 "alertPrevPlayMission" = "현재 수행중인 미션이 있어요. 종료하고 새로운 미션을 시작할까요?";
 "alertPrevPlayWalk" = "산책을 종료하고 미션을 시작할까요?";
 "alertClosePlayMission" = "미션을 종료할까요? 저장되지 않은 정보는 모두 지워집니다.";
-"alertClosePlayWalk" = "산책을 종료하시겠어요?\n%sm 이상 상책하셔야 보상을 받을수 있습니다.";
+"alertClosePlayWalk" = "산책을 종료하시겠어요?\n%sm 이상 산책하셔야 보상을 받을수 있습니다.";
 "alertNeedProfileRegist" = "함께할 강아지가 없어요. 강아지를 등록한 후 이용해주세요.";
 "alertSelectProfile" = "함께할 강아지를 선택해주세요";
 

@@ -34,7 +34,7 @@ struct PetProfileDetail: PageView {
     
     
    
-    @State var profileHeight:CGFloat = 0
+    @State var profileHeight:CGFloat = 300
     @State var profileScale:CGFloat = 1.0
     @State var bottomMargin:CGFloat = 0
     @State var isUiReady:Bool = false

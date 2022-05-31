@@ -24,15 +24,13 @@ struct PlayProfileInfo : PageComponent {
     @State var exp:String = ""
     */
     var body: some View {
-        HStack(spacing:Dimen.margin.micro){
+        HStack(spacing:Dimen.margin.tiny){
             PetProfileImage(
                 id : self.data.id,
                 image: self.data.image,
                 imagePath: self.data.imagePath,
                 size : Dimen.profile.thin
             )
-            .padding(.horizontal, Dimen.margin.tiny)
-            
             VStack(alignment: .leading, spacing:0){
                 Text(self.data.nickName ?? "")
                      .modifier(BoldTextStyle(
@@ -56,6 +54,7 @@ struct PlayProfileInfo : PageComponent {
             }
             .frame(width: Dimen.profile.thin)
         }
+        .padding(.trailing, Dimen.margin.thin)
         /*
         .onReceive(self.appSceneObserver.$pickImage) { pick in
             guard let pick = pick else {return}

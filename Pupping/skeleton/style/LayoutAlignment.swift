@@ -148,7 +148,7 @@ struct Shadow: ViewModifier {
     var opacity:Double = 0.12
     func body(content: Content) -> some View {
         return content
-            .shadow(color: color.opacity(opacity), radius: Dimen.radius.thin, x: 1, y: 1)
+            .shadow(color: color.opacity(opacity), radius: Dimen.radius.tiny, x: 1, y: 1)
     }
 }
 

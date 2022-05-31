@@ -16,7 +16,7 @@ extension PageID{
     static let walk:PageID = "walk"
     static let mission:PageID = "mission"
     static let explore:PageID = "explore"
-    static let missionInfo:PageID = "missionInfo"
+    static let missionPreview:PageID = "missionPreview"
     static let missionCompleted:PageID = "missionCompleted"
     static let walkCompleted:PageID = "walkCompleted"
     static let selectProfile:PageID = "selectProfile"
@@ -57,7 +57,7 @@ struct PageProvider {
     
     static func getType(_ pageID:PageID)-> PageAnimationType{
         switch pageID {
-        case  .mission ,.missionInfo, .walk: return .vertical
+        case  .mission ,.missionPreview, .walk: return .vertical
         case  .missionCompleted,.walkCompleted, .selectProfile, .picture : return .opacity
         default : return  .horizontal
         }
@@ -161,7 +161,7 @@ struct PageFactory{
         case .walk : return PageWalk()
         case .walkCompleted : return PageWalkCompleted()
         case .mission : return PageMission()
-        case .missionInfo : return PageMissionInfo()
+        case .missionPreview : return PageMissionPreview()
         case .missionCompleted : return PageMissionCompleted()
         case .selectProfile : return PageSelectProfile()
         case .user : return PageUser()

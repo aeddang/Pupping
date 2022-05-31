@@ -23,6 +23,7 @@ struct PlayMissionInfo : PageComponent {
     let data:Mission
     var uiType:MissionInfo.UiType = .normal
     @State var currentCompletedStep:Int = -1
+    @State var isStart:Bool = false
     var body: some View {
         ZStack(alignment: .topTrailing){
             HStack(spacing:Dimen.margin.thinExtra) {
@@ -65,6 +66,20 @@ struct PlayMissionInfo : PageComponent {
                     VStack(alignment: .leading, spacing:Dimen.margin.light){
                         if let destination = data.destination {
                             VStack(alignment: .leading, spacing:0){
+                                if let start = data.start {
+                                    WayPointInfo(
+                                        icon: self.currentCompletedStep >= 0 ? Asset.icon.wayPointHeaderOn : Asset.icon.wayPointHeader,
+                                        text: start.name ?? "",
+                                        color: self.currentCompletedStep >= 0 ? Color.brand.secondary : Color.app.white)
+                                    ZStack{
+                                        Spacer()
+                                            .frame(width: 1 , height: 14)
+                                            .background(
+                                                self.currentCompletedStep > 0 ? Color.brand.secondary : Color.app.white)
+                                    }
+                                    .frame(width: 1 , height: 10)
+                                    .padding(.leading, floor(Dimen.icon.tiny/2)-1)
+                                }
                                 ForEach( Array(data.waypoints.enumerated()), id: \.offset){idx,  point in
                                     WayPointInfo(
                                         icon: self.currentCompletedStep > idx ? Asset.icon.wayPointHeaderOn : Asset.icon.wayPointHeader,
@@ -116,6 +131,8 @@ struct PlayMissionInfo : PageComponent {
         .onReceive(self.viewModel.$event) { evt in
             guard let evt = evt  else { return }
             switch evt {
+            case .start:
+                self.isStart = true
             case .completeStep(let step):
                 self.currentCompletedStep = step
                 break

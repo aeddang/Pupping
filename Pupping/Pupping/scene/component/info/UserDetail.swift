@@ -26,7 +26,7 @@ struct UserDetail: PageView {
     @State var imagePath:String? = nil
     
     @State var isUiReady:Bool = false
-    @State var profileHeight:CGFloat = 0
+    @State var profileHeight:CGFloat = 300
     @State var profileScale:CGFloat = 1.0
     @State var bottomMargin:CGFloat = 0
     @State var scrollTop:CGFloat = 0
@@ -86,6 +86,14 @@ struct UserDetail: PageView {
                 useTracking:true)
             {
                 VStack(alignment: .leading, spacing: Dimen.margin.regular){
+                    UserProfileInfo(
+                        profile: self.user.currentProfile,
+                        isModifyAble: false,
+                        useProfileImage: false
+                    )
+                    .padding(.horizontal, Dimen.margin.regular)
+                    .padding(.top, Dimen.margin.regular)
+                    /*
                     VStack(alignment: .leading, spacing: Dimen.margin.tiny){
                         Text(self.user.currentProfile.nickName ?? "")
                              .modifier(BoldTextStyle(
@@ -111,6 +119,7 @@ struct UserDetail: PageView {
                         }
                     }
                     .padding(.horizontal ,Dimen.margin.regular)
+                    */
                     if !self.user.pets.isEmpty {
                         PetList(
                             pageDragingModel: self.pageDragingModel,
@@ -174,9 +183,7 @@ struct UserDetail: PageView {
         .onReceive(self.appSceneObserver.$safeBottomHeight){ height in
             withAnimation{ self.bottomMargin = height }
         }
-        .onReceive(self.user.currentProfile.$image) { img in
-            self.setupImage(img)
-        }
+        
         .onReceive(self.imageLoader.$event){ evt in
             switch evt {
             case .complete(let img): self.setupImage(img)
@@ -199,12 +206,7 @@ struct UserDetail: PageView {
             }
         }
         .onAppear(){
-            
-            if let img = self.user.currentProfile.image {
-                self.setupImage(img)
-            } else {
-                self.imagePath = self.user.currentProfile.imagePath
-            }
+            self.setupDefaultImage()
         }
         
     }
@@ -220,9 +222,23 @@ struct UserDetail: PageView {
             added = zip(start...end, datas).map { idx, d in
                 return Picture().setData(d, index:idx)
             }
+            /*
+            if let path = datas.first?.pictureUrl {
+                self.imagePath = path
+            } else {
+                self.setupDefaultImage()
+            }*/
+           
         }
         self.pictures.append(contentsOf: added)
         self.pictureScrollModel.onComplete(itemCount: added.count)
+    }
+    private func setupDefaultImage(){
+        if let img = self.user.currentProfile.image {
+            self.setupImage(img)
+        } else {
+            self.imagePath = self.user.currentProfile.imagePath
+        }
     }
     
     private func selectPicture(_ data:Picture){

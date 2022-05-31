@@ -137,7 +137,7 @@ struct AppLayout: PageComponent{
                 break
             case .openCamera(let pickId) :
                 self.imagePickerModel.pickId = pickId
-                self.cameraType = .camera
+                self.cameraType = .photoLibrary
                 withAnimation{
                     self.isShowCamera = true
                 }

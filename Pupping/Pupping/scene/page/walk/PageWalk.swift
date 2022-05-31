@@ -63,20 +63,30 @@ struct PageWalk: PageView {
                     )
                     .modifier(MatchParent())
                     .opacity(self.dragOpacity)
+                   
+                       
                     VStack(alignment: .trailing, spacing:Dimen.margin.thin){
-                        HStack(spacing:Dimen.margin.thin){
-                            DragOnOffButton(
-                                isOn: self.uiType == .normal
-                            ){
-                                self.pageDragingModel.uiEvent = .dragEnd(!self.isBottom)
+                        ZStack(alignment: .top){
+                            if self.uiType != .simple {
+                                Spacer().modifier(MatchHorizontal(height: 100))
+                                    .background(Color.transparent.clearUi)
                             }
-                            Spacer()
-                            CloseButton(){
-                                self.onClose()
+                            HStack(spacing:Dimen.margin.thin){
+                                DragOnOffButton(
+                                    isOn: self.uiType == .normal
+                                ){
+                                    self.pageDragingModel.uiEvent = .dragEnd(!self.isBottom)
+                                }
+                                .modifier(Shadow(opacity:0.3))
+                                Spacer()
+                                CloseButton(){
+                                    self.onClose()
+                                }
+                                .modifier(Shadow(opacity:0.3))
                             }
+                            .padding(.horizontal, Dimen.margin.regular)
+                            
                         }
-                        .padding(.horizontal, Dimen.margin.regular)
-                        
                         if self.uiType == .simple {
                             PlaySummary(
                                 viewModel: self.viewModel

@@ -43,7 +43,7 @@ struct PageMy: PageView {
                     isModifyAble: true
                 )
                 .modifier(ContentHorizontalEdges())
-                .padding(.top, Dimen.margin.mediumUltra)
+                .padding(.top, Dimen.margin.medium)
                 TitleTab(
                     title: String.pageTitle.myDogs,
                     type: .add){
@@ -52,7 +52,7 @@ struct PageMy: PageView {
                         )
                     }
                     .modifier(ContentHorizontalEdges())
-                    .padding(.top, Dimen.margin.mediumUltra)
+                    .padding(.top, Dimen.margin.medium)
                 if !self.profiles.isEmpty {
                     PetList(
                         viewModel:self.profileScrollModel,
@@ -60,7 +60,7 @@ struct PageMy: PageView {
                         userId: self.dataProvider.user.snsUser?.snsID
                     )
                     .modifier(MatchHorizontal(height: PetList.height))
-                    .padding(.top, Dimen.margin.light)
+                    .padding(.top, Dimen.margin.thin)
                 } else {
                     VStack(spacing:0){
                         Spacer().modifier(MatchHorizontal(height: 0))
@@ -95,7 +95,7 @@ struct PageMy: PageView {
                         )
                     }
                     .modifier(ContentHorizontalEdges())
-                    .padding(.top, Dimen.margin.mediumUltra)
+                    .padding(.top, Dimen.margin.medium)
                 if !self.pictures.isEmpty {
                     PictureList(
                         viewModel: self.pictureScrollModel,
@@ -104,7 +104,7 @@ struct PageMy: PageView {
                         }
                         .modifier(MatchHorizontal(height: PictureList.height))
                         .padding(.top, Dimen.margin.light)
-                        .padding(.bottom, Dimen.margin.mediumUltra)
+                        .padding(.bottom, Dimen.margin.regular)
                 } else {
                     Spacer().modifier(MatchParent())
                 }
